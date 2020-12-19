@@ -1,0 +1,6 @@
+src/*.o
+envy
+envy2
+log/
+envy.sublime-project
+envy.sublime-workspace
