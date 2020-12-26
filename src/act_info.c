@@ -784,7 +784,7 @@ void do_scan( CHAR_DATA *ch, char *argument )
 	    }
 		nexit = FALSE;
 
-        sprintf(buf, "%s:", exitname[d]);
+        sprintf(buf, "%s:\n\r", exitname[d]);
         send_to_char(buf, ch);
 
         /* We found an exit, so let's look in that direction */
@@ -793,8 +793,8 @@ void do_scan( CHAR_DATA *ch, char *argument )
             if (pRoom->exit[d] == NULL
 	    		|| (toRoom = pRoom->exit[d]->to_room) == NULL ) 
             {
-            	sprintf( buf, "\n\r");
-				send_to_char( buf, ch);
+            	/*sprintf( buf, "\n\r");
+				send_to_char( buf, ch);*/
 				
                 break;
         	}
