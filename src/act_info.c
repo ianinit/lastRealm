@@ -793,6 +793,9 @@ void do_scan( CHAR_DATA *ch, char *argument )
             if (pRoom->exit[d] == NULL
 	    		|| (toRoom = pRoom->exit[d]->to_room) == NULL ) 
             {
+            	sprintf( buf, "\n\r");
+				send_to_char( buf, ch);
+				
                 break;
         	}
 
@@ -800,7 +803,7 @@ void do_scan( CHAR_DATA *ch, char *argument )
 		     * We stop here if we find one */
 		    if ( IS_SET(pRoom->exit[d]->exit_info, EX_CLOSED) )
 		    {
-				sprintf( buf, " Closed Door (%d away).", parse - 1 );
+				sprintf( buf, " Closed Door (%d away).\n\r", parse - 1 );
 				send_to_char( buf, ch );
 				break;
 		    }
@@ -826,13 +829,10 @@ void do_scan( CHAR_DATA *ch, char *argument )
 		        /* Only show the player who's inside if someone there */
 				if ( seen )
 				{
-			    	sprintf( buf, " (%d away).", parse );
+			    	sprintf( buf, " (%d away).\n\r", parse );
 			    	send_to_char( buf, ch );
 				}
             }
-	    	sprintf( buf, "\n\r");
-			send_to_char( buf, ch);
-				
         }
     }
 
