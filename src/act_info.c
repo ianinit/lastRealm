@@ -758,7 +758,92 @@ void do_exits( CHAR_DATA *ch, char *argument )
     return;
 }
 
+/* Scan command coded by Martek of Glass Dragon */
+void do_scan( CHAR_DATA *ch, char *argument )
+{
+    ROOM_INDEX_DATA *pRoom;
+    ROOM_INDEX_DATA *toRoom;
+    int d, parse;
+    bool nexit;
+    bool seen;
+    char buf[MAX_STRING_LENGTH];
+    char *const exitname[] =
+	{ "North", "East", "South", "West", "Up", "Down" };
 
+    /* Look in all directions and assume we have no exits until we find one */
+    nexit = TRUE;
+    for (d = 0; d <= 5; d++)
+    {
+		pRoom = ch->in_room;
+        
+        if ( pRoom == NULL
+			|| pRoom->exit[d] == NULL
+			|| (toRoom = pRoom->exit[d]->to_room) == NULL )
+        {	
+	    	continue;
+	    }
+		nexit = FALSE;
+
+        sprintf(buf, "%s:", exitname[d]);
+        send_to_char(buf, ch);
+
+        /* We found an exit, so let's look in that direction */
+        for (parse = 1; parse <= 4 ; parse++)
+        {
+            if (pRoom->exit[d] == NULL
+	    		|| (toRoom = pRoom->exit[d]->to_room) == NULL ) 
+            {
+                break;
+        	}
+
+		    /* We can't look through closed doors
+		     * We stop here if we find one */
+		    if ( IS_SET(pRoom->exit[d]->exit_info, EX_CLOSED) )
+		    {
+				sprintf( buf, " Closed Door (%d away).", parse - 1 );
+				send_to_char( buf, ch );
+				break;
+		    }
+
+		    /* If the room is valid we show the player who's inside */
+	        pRoom = pRoom->exit[d]->to_room;
+		    seen = FALSE;
+	        if ( pRoom != NULL && pRoom->people !=NULL)
+	        {
+				CHAR_DATA *rch;
+
+				for ( rch = pRoom->people; rch != NULL;
+			    	rch = rch->next_in_room )
+				{
+			    	if ( !can_see( ch, rch ) )
+						continue;
+
+		    		seen = TRUE;
+			    	sprintf( buf, " %s,", PERS( rch, ch ) );
+			    	send_to_char( buf, ch );
+				}
+
+		        /* Only show the player who's inside if someone there */
+				if ( seen )
+				{
+			    	sprintf( buf, " (%d away).", parse );
+			    	send_to_char( buf, ch );
+				}
+            }
+	    	sprintf( buf, "\n\r");
+			send_to_char( buf, ch);
+				
+        }
+    }
+
+    /* Inform the character of an isolated room */
+    if( nexit )
+    {
+		send_to_char( "This room has no exits!\n\r", ch );
+	}
+
+    return;
+}
 
 void do_score( CHAR_DATA *ch, char *argument )
 {

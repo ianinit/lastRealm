@@ -114,6 +114,7 @@ const	struct	cmd_type	cmd_table	[ ] =
     { "pagelength",     do_pagelen,     POS_DEAD,        0,  LOG_NORMAL },
     { "read",		do_look,	POS_RESTING,	 0,  LOG_NORMAL	},
     { "score",		do_score,	POS_DEAD,	 0,  LOG_NORMAL	},
+    { "scan",       do_scan,    POS_RESTING,    0,  LOG_NORMAL  },
     { "slist",          do_slist,       POS_DEAD,        0,  LOG_NORMAL },
     { "socials",	do_socials,	POS_DEAD,	 0,  LOG_NORMAL },
     { "time",		do_time,	POS_DEAD,	 0,  LOG_NORMAL	},

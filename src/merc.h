@@ -83,7 +83,7 @@ typedef void GAME_FUN                   args( ( CHAR_DATA *ch,
  */
 #define	MAX_KEY_HASH		 1024
 #define MAX_STRING_LENGTH	 4096
-#define MAX_INPUT_LENGTH	  160
+#define MAX_INPUT_LENGTH	  161
 
 
 
@@ -1500,6 +1500,7 @@ DECLARE_DO_FUN(	do_sacrifice	);
 DECLARE_DO_FUN(	do_save		);
 DECLARE_DO_FUN(	do_say		);
 DECLARE_DO_FUN(	do_score	);
+DECLARE_DO_FUN( do_scan     );
 DECLARE_DO_FUN(	do_sell		);
 DECLARE_DO_FUN( do_shadow       );		/* by Thelonius */
 DECLARE_DO_FUN(	do_shout	);
