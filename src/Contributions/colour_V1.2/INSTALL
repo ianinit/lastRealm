@@ -1,0 +1,48 @@
+////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+                    
+     /\                                                                    /\    
+ /\  \/  /\                                                            /\  \/  /\ 
+ \/ ____ \/      ColoUr (C) 1994 Ant Whitehead, ant@solace.mh.se       \/ ____ \/
+   /    \                                                                /    \ 
+   (____)                                                                (____)
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\////////////////////////////////////////////
+
+This file explains step by step the installation of colour into your MUD
+there are two ways of installing, the simplest is to use one of the patch
+files included. These are designed to work on versions of Rom2.3, Envy2.0 and
+Rom2.4 with little modification.
+Most people should be able to install by copying the patch file into the src/
+directory and typing:
+
+patch < patch-[your code base]-colour
+
+If this does not work for you then you can apply the patch by hand, not a nice
+job :> INSTALL files for specific code bases may follow later if there is a
+significant demand for it.
+
+Once all the code is installed, you must comply with the conditions
+of use by including this helpfile entry:
+
+0 COLOUR COLOR ANSI~
+Syntax: colour    Toggles colour mode on/off
+
+        You may also talk in colour; the format is like this:
+	the 'escape character' to specify a colour is the left
+	handed brace '{{', following 
+	that you should use one of the following letters,
+		{r{{r     red     {c{{c     cyan
+		{g{{g     green   {y{{y     yellow
+		{b{{b     blue    {w{{w     white
+		{m{{m     magenta {x{{x     clear(reset colour)
+		{{{{      {{ char {{*       beep
+		{{/       newline
+	when using colour, it looks better if you finish the line
+	with whatever colour it would normally be in, such as a
+	gossip, the colour is magenta, so:
+		{mLope gossips '{ghello,{r world{m'{x
+	looks better than:
+		{mLope gossips '{ghello,{r world'{x
+
+	ColoUr is written by Lope (ant@solace.mh.se)
+~
