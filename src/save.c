@@ -346,7 +346,8 @@ bool load_char_obj( DESCRIPTOR_DATA *d, char *name )
     d->character			= ch;
     ch->desc				= d;
     ch->name				= str_dup( name );
-    ch->pcdata->prompt                  = str_dup( daPrompt );
+    /*ch->pcdata->prompt                  = str_dup( daPrompt );*/
+    ch->pcdata->prompt                  = str_dup( "{c<%hhp %mm %vmv>{x " );
     ch->last_note                       = 0;
     ch->act				= PLR_BLANK
 					| PLR_COMBINE
