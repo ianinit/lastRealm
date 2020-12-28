@@ -413,7 +413,10 @@ Mist Hound~
 faerie wolf~
 a faerie wolf mist hound paws at the ground as you approach.
 ~
-His blue fur burns bright in the forest shadows.  You seem to hear echoing howls that seem to come from all directions. Perhaps the fur would make a for a warm winter coat...if you could get one.
+His blue fur burns bright in the forest shadows.  You seem to hear echoing 
+howls that seem to come from all directions. Perhaps the fur would make a for 
+a warm winter coat...if you could get one.
+~
 1|32|64 8|256 -500 S
 5 -10 -20 1d1+29999 2d4+30
 0 -99000
