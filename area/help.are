@@ -3,23 +3,51 @@
 
 -1 GREETING~
 .
-         _______  _        _______  _______  ______  _______  _________ ______ 
-|\    /|(  ____ \( \      (  ____ \(  ___  )(      )(  ____ \ \__   __/(  __  )
-| )  ( || (    \/| (      | (    \/| (   ) || ()() || (    \/    ) (   | (  ) |
-| |  | || (__    | |      | |      | |   | || |||| || (__        | |   | |  | |
-| |()| ||  __)   | |      | |      | |   | || |()| ||  __)       | |   | |  | |
-| |||| || (      | |      | |      | |   | || |  | || (          | |   | |  | |
-| ()() || (____/\| (____/\| (____/\| (___) || )  ( || (____/\    | |   | (__) |
-(______)(_______/(_______/(_______/(_______)|/    \|(_______/    )_(   (______)
-                                                                                   
-             _______  _______  ______  _________ _______  _                                    
-            (       )(  ____ \(  __  \ \__   __/(  ___  )( (    /|                             
-            | () () || (    \/| (  \  )   ) (   | (   ) ||  \  ( |                             
-            | || || || (__    | |   ) |   | |   | (___) ||   \ | |                             
-            | |(_)| ||  __)   | |   | |   | |   |  ___  || (\ \) |                             
-            | |   | || (      | |   ) |   | |   | (   ) || | \   |                             
-            | )   ( || (____/\| (__/  )___) (___| )   ( || )  \  |                             
-            |/     \|(_______/(______/ \_______/|/     \||/    )_)   
+           __     ___   __  ______    ____   ____  ___  __    ___  ___
+           ||    // \\ (( \ | || |    || \\ ||    // \\ ||    ||\\//||
+           ||    ||=||  \\    ||      ||_// ||==  ||=|| ||    || \/ ||
+           ||__| || || \_))   ||      || \\ ||___ || || ||__| ||    ||
+                                                            
+MMMMMMMKoONNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMNXc'kolxooolllddkNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXK0OkkkO0KNMM
+MMMMMOc'...          .lKWMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXK0kxolc:;'..';:coxOKXWMM
+MMMMNc                 .oKWMMMMMMMMMMMMMMMMMWNK0kdoc:,'..          'kNMMMMMMMMMM
+MMMK:',                 .oNMMMMMMMMMMNKOxdl:,..                    .;oOXWMMMMMMM
+MMWl,kc      'od,        ;OWMMMMN0xl:'.                                .':ldxk0X
+MMWl...     'OMMk.       .xWMXd:..                                  ..,:cclllldk
+MMK, ,Oc   .kWM0'       .c0WMO.                                 .;okKNWMMMMMMMMM
+MNc .kMO. .kWWk.        ;OMMMO.                               .oKWMMMMMMMMMMMMMM
+Mx. .xNl  lXNo.        ,OWMMK;                               :KMMMMMMMMMMMMMMMMM
+Mk. ,KNc ;KK:         :0NMNk'                               :XMMMMMMMMMMMMMMMMMM
+MW0xKMMXOKO'        .l0WXx,                                .xMMMMMMMMMMMMMMMMMMM
+MMMMMMMMWk.         :K0l.                                   oWMMMMMMMMMMMMMMMMMM
+MMMMMMMMx.          .'                                      .OMMMMMMMMMMMMMMWMMM
+MMMMMMM0'                                      .;lxOO0Okdl:'..xWMMMMMMMMMMXdxNMM
+MMMMMMWo              ..                     .c0WMMMMMMMMMMN0dcdKWMMMMMMWO''OMMM
+MMMMMMN:             .co:.                  .dWMMMMMMMMMMMMMMMWXXWMMMMMWx. dWMMM
+MMMMMMWc                ..          'c:'..  ,KMMMMMMMMMMMMMMMMMMMMMMWXNx. .oXMMM
+MMMMMMMO.                           ,c:dOxl;:0MMMMMMMMMMMMMMMMMMMMMMO:c'   ,0MMM
+MMMMMMMWd.                              ...;;lOKKNMMMMMMMMMMMMMMMMMMx.    .oKWMM
+MMMMMMMMWk.                                    ..,cxXMMMMMMMMMMMMMMMd     ',xMMM
+MMMMMMMMMMKl.                                       'cxNMMMMMMMMMMMK:      lNMMM
+MMMMMMMWXKKK0xc'.                                     .;oKWMMMMMMMMK;     ;ONMMM
+MMMMMMWKo...',,'.                                        .c0WMMMMMMM0,    ;OWMMM
+MMMMMMWXk:.  ..';::,,oOdl:;,'....',,,.  .,ooooc:,.         ;0WMMMMMMMO.  .xWMMMM
+MMMMMMMWXxldk0XWMMMWNWMMMMMWX0Okxdo:.   .c0NWMMMWKx:.       oWMMMMMMMO'  ;XMMMMM
+MMMMMMMMWWMMMMMMMMMMMMMMMWKo;...   .;cloolccdKWMMMMWKc.     ,0MMMMMMWl   cWMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMWKd;.  .cONMMMMMMWXXWMMMMMMMWO'     :XMMMMMK,   oMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMX0ockXMMMMMMMMMMMMMMMMMMMMMM0'    .xMMMW0:   .kMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMWNWMMMMMMMMMMMMMMMMMMMMMMMMMx.    ;0Kx;.   .dWMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNc     ..     .xWMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMXc.        .lKMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMW0dc:;;:lkXMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+          __     ___   __  ______    ____   ____  ___  __    ___  ___
+           ||    // \\ (( \ | || |    || \\ ||    // \\ ||    ||\\//||
+           ||    ||=||  \\    ||      ||_// ||==  ||=|| ||    || \/ ||
+           ||__| || || \_))   ||      || \\ ||___ || || ||__| ||    ||
+                                                            
 
 State thy name: ~
 
