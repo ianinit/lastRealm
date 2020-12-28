@@ -408,6 +408,16 @@ pockets of the unwary.
 3 8 8 8d8+8 10d10+10
 8 8
 8 dwarf~ 1 
+#4452
+Mist Hound~
+faerie wolf~
+a faerie wolf mist hound paws at the ground as you approach.
+~
+His blue fur burns bright in the forest shadows.  You seem to hear echoing howls that seem to come from all directions. Perhaps the fur would make a for a warm winter coat...if you could get one.
+1|32|64 8|256 -500 S
+5 -10 -20 1d1+29999 2d4+30
+0 -99000
+8 wolf~ 0
 #0
 
 
@@ -2005,6 +2015,7 @@ O 0 4447 0 4469                    wineskin
 M 0 4450 1 4469               Binky's chef
 E 1 4450 1 16                 carving knife
 * M 0 4451 1 4401              midget thief, not loaded unless asterik removed
+M 0 4452 1 4402					Mist Hound from Shaun
 S
 
 
