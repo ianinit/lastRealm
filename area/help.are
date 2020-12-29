@@ -3,51 +3,36 @@
 
 -1 GREETING~
 .
-           __     ___   __  ______    ____   ____  ___  __    ___  ___
-           ||    // \\ (( \ | || |    || \\ ||    // \\ ||    ||\\//||
-           ||    ||=||  \\    ||      ||_// ||==  ||=|| ||    || \/ ||
-           ||__| || || \_))   ||      || \\ ||___ || || ||__| ||    ||
-                                                            
-MMMMMMMKoONNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-MMMMMNXc'kolxooolllddkNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXK0OkkkO0KNMM
-MMMMMOc'...          .lKWMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXK0kxolc:;'..';:coxOKXWMM
-MMMMNc                 .oKWMMMMMMMMMMMMMMMMMWNK0kdoc:,'..          'kNMMMMMMMMMM
-MMMK:',                 .oNMMMMMMMMMMNKOxdl:,..                    .;oOXWMMMMMMM
-MMWl,kc      'od,        ;OWMMMMN0xl:'.                                .':ldxk0X
-MMWl...     'OMMk.       .xWMXd:..                                  ..,:cclllldk
-MMK, ,Oc   .kWM0'       .c0WMO.                                 .;okKNWMMMMMMMMM
-MNc .kMO. .kWWk.        ;OMMMO.                               .oKWMMMMMMMMMMMMMM
-Mx. .xNl  lXNo.        ,OWMMK;                               :KMMMMMMMMMMMMMMMMM
-Mk. ,KNc ;KK:         :0NMNk'                               :XMMMMMMMMMMMMMMMMMM
-MW0xKMMXOKO'        .l0WXx,                                .xMMMMMMMMMMMMMMMMMMM
-MMMMMMMMWk.         :K0l.                                   oWMMMMMMMMMMMMMMMMMM
-MMMMMMMMx.          .'                                      .OMMMMMMMMMMMMMMWMMM
-MMMMMMM0'                                      .;lxOO0Okdl:'..xWMMMMMMMMMMXdxNMM
-MMMMMMWo              ..                     .c0WMMMMMMMMMMN0dcdKWMMMMMMWO''OMMM
-MMMMMMN:             .co:.                  .dWMMMMMMMMMMMMMMMWXXWMMMMMWx. dWMMM
-MMMMMMWc                ..          'c:'..  ,KMMMMMMMMMMMMMMMMMMMMMMWXNx. .oXMMM
-MMMMMMMO.                           ,c:dOxl;:0MMMMMMMMMMMMMMMMMMMMMMO:c'   ,0MMM
-MMMMMMMWd.                              ...;;lOKKNMMMMMMMMMMMMMMMMMMx.    .oKWMM
-MMMMMMMMWk.                                    ..,cxXMMMMMMMMMMMMMMMd     ',xMMM
-MMMMMMMMMMKl.                                       'cxNMMMMMMMMMMMK:      lNMMM
-MMMMMMMWXKKK0xc'.                                     .;oKWMMMMMMMMK;     ;ONMMM
-MMMMMMWKo...',,'.                                        .c0WMMMMMMM0,    ;OWMMM
-MMMMMMWXk:.  ..';::,,oOdl:;,'....',,,.  .,ooooc:,.         ;0WMMMMMMMO.  .xWMMMM
-MMMMMMMWXxldk0XWMMMWNWMMMMMWX0Okxdo:.   .c0NWMMMWKx:.       oWMMMMMMMO'  ;XMMMMM
-MMMMMMMMWWMMMMMMMMMMMMMMMWKo;...   .;cloolccdKWMMMMWKc.     ,0MMMMMMWl   cWMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMWKd;.  .cONMMMMMMWXXWMMMMMMMWO'     :XMMMMMK,   oMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMX0ockXMMMMMMMMMMMMMMMMMMMMMM0'    .xMMMW0:   .kMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMWNWMMMMMMMMMMMMMMMMMMMMMMMMMx.    ;0Kx;.   .dWMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNc     ..     .xWMMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMXc.        .lKMMMMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMW0dc:;;:lkXMMMMMMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-          __     ___   __  ______    ____   ____  ___  __    ___  ___
-           ||    // \\ (( \ | || |    || \\ ||    // \\ ||    ||\\//||
-           ||    ||=||  \\    ||      ||_// ||==  ||=|| ||    || \/ ||
-           ||__| || || \_))   ||      || \\ ||___ || || ||__| ||    ||
-                                                            
+                           .'                      '.                           
+                         .;W,                     'xo'.                         
+                .';codxkO0NW.                     .kWN0Okxoc;.                  
+            .;okKN########W'       . .              :X#######WXOd:.              
+         .;xKW############W'     .'::.             ,K###########WXk:.           
+       .:OW###############W'     .xXXkoc:;.        lW##############WKo'         
+      ;kW#################W;     oW#XxdKWWKd.     '0##################Xl.       
+    .xN####################W.  .oKOd;  ;kX#Wx.   .kW###################W0;      
+   :K######################WW,  ':    'dKN##X;  ,OW######################No.    
+ .xN#########################Xx,   .ckX#####Wo,dW#########################WO;   
+,ONW###########################NOooKW## #####NN#############################Xo. 
+ .';oK################################   ###############################WOl:cdd'
+     cW#############################   *   ############################No.    .
+     :N#######N0O0XW##################   #################WKOO0N#######k.       
+     :N## ###Wd.  .;dX################# ###############WKo,.  'O######Wc        
+     :NW   ##Wl      'kWNkc::o0W###############W0l:cdKNx.     ,K##  KWN:        
+     'Oc.   .#x.      .c;     'dkx0W######WKdcll.    ':.      :N'   .lK'        
+     ..    __     ___   __  ______    ____   ____  ___  __    ___  ___        
+           ||    // \\ (( \ | || |    || \\ ||    // \\ ||    ||\\//||       
+           ||    ||=||  \\    ||      ||_// ||==  ||=|| ||    || \/ ||          
+           ||__| || || \_))   ||      || \\ ||___ || || ||__| ||    ||          
+                  ..                                       ..                    
+                               .x##K,     ,c:,.',cxd'                           
+                               ,K##d     ,o.      .xO.                          
+                               '0#Wl     ,o' .::.  cX:                          
+                                dW#x.     ':,,;.   oX;                          
+                                .OWNo.            :Kk.                          
+                                 .xNNk;.       .,dXO'                           
+                                   ,dKX0kxlclox0KOc.                            
+                                     .cxO0XWWX0x:. 
 
 State thy name: ~
 
