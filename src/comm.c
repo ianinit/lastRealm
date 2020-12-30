@@ -1495,7 +1495,7 @@ void nanny( DESCRIPTOR_DATA *d, char *argument )
 	d->connected	= CON_PLAYING;
 
 	send_to_char(
-    "\r\nWelcome to Envy Diku Mud.  May your visit here be ... Fun.\r\n",
+    "\r\nWelcome to your Last Realm Envy Diku Mud.  May your visit here be ... Entertaining.\r\n",
 	    ch );
 
 	if ( ch->level == 0 )
