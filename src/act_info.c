@@ -1291,8 +1291,8 @@ void do_who( CHAR_DATA *ch, char *argument )
 	    switch ( wch->level )
 	      {
 	      default: break;
-	      case L_DIR: class = "DIRECT"; break;
-	      case L_SEN: class = "SENIOR"; break;
+	      case L_DIR: class = "ANTIQUITY"; break;
+	      case L_SEN: class = "WIZARD"; break;
 	      case L_JUN: class = "JUNIOR"; break;
 	      case L_APP: class = "APPREN"; break;
 	      }
@@ -1365,8 +1365,8 @@ void do_whois( CHAR_DATA *ch, char *argument )
 	if( wch->level >= LEVEL_IMMORTAL )
 	    switch( wch->level )
 	    {
-	      case L_DIR: class = "DIRECT"; break;
-	      case L_SEN: class = "SENIOR"; break;
+	      case L_DIR: class = "ANTIQUITY"; break;
+	      case L_SEN: class = "WIZARD"; break;
 	      case L_JUN: class = "JUNIOR"; break;
 	      case L_APP: class = "APPREN"; break;
 	    }
