@@ -36,143 +36,6 @@
 
 State your name: ~
 
-0 I3~
-Syntax: i3 <option>
-
-Note: You must meet the mud's minimum level requirement before accessing I3.
-You will be notified when you have reached the approptiate level.
-
-General Usage:
-------------------------------------------------
-
-List channels available                : i3 chanlist [all] [filter]
-To tune into a channel                 : i3 listen <localchannel>
-To see who is listening on another mud : i3 chanwho <channel> <mud>
-List muds connected to I3              : i3 mudlist [filter]
-Information on antoher mud             : i3 mudinfo <mud>
-Ignore someone who annoys you          : i3 ignore <person@mud>
-Make yourself invisible to I3          : i3 invis
-
-i3 chanlist: Lists the channels the mud has available to listen to.
-  Specifying 'all' will list the channels for the entire network.
-
-i3 listen  : Tunes you in to the specified channel. You must meet or
-  exceed whatever the minimum level is for that channel to do so,
-  and your mud must have the channel configured locally.
-
-i3 chanwho : Shows you who is listening to the specified channel on the
-  specified mud. Invisble players will not be shown.
-
-i3 mudlist : Lists the muds which are connected to the network.
-  Specifying a filter will narrow the list down to only those muds
-  whose information matches. IE: &Wi3 mudlist smaug&D will list all
-  muds who have &Wsmaug&D as part of their listing.
-
-i3 mudinfo : Lists the information provided by the specified mud.
-
-i3 ignore  : Allows you to selectively ignore all contact with person@mud.
-  This will block tells, beeps, locates, fingers, emotes, and whos. It will also
-  block channel output from them, but will NOT block them from seeing YOU on
-  a channel.
-
-i3 invis   : Makes you invisible to I3. Performs similar to the ignore option
-  except it prevents EVERYONE on the network from finding you. You will still
-  be able to use channels, and you will NOT be invisible to others if you
-  do so.
-
-See also: i3tell, i3finger, i3emote, i3locate, i3who
-~
-
-0 I3BEEP~
-Syntax: i3beep <person@mud>
-
-i3beep sends a quick message to a person on another mud.
-If the target mud supports the beep tone, then the person
-on that mud will hear the standard beep tone used by whatever
-client software they are using. Works in the same manner as
-the local beep command.
-
-See also: I3, INTERMUD3
-~
-
-0 I3EMOTE~
-Syntax i3emote <person@mud> <message>
-
-Sends a private emote to a person on another mud.
-
-See also: I3, INTERMUD3
-~
-
-0 I3FINGER~
-Syntax i3finger <person@mud>
-
-Request for information regarding a player on another mud.
-Operates in a similar manner to the local 'finger' command.
-Will only reveal information the target mud feels is appropriate.
-
-See also: I3, INTERMUD3
-~
-
-0 I3LOCATE~
-Syntax i3locate <name>
-
-Asks all the muds on the Intermud-3 network if a person
-known by the name is there. Be patient when using this command,
-there are a lot of muds on the network to search through, so
-a response may take some time to come back.
-
-See also: I3, INTERMUD3
-~
-
-0 I3TELL I3REPLY~
-Syntax: i3tell <person@mud> <message>
-Syntax: i3reply <message>
-
-i3tell sends a private message to a person on another mud.
-To send a tell to someone on a mud with a multi-word name, you need to
-enlcose person@mud in quotes, like so: i3tell 'person@mud with long name'
-Otherwise this command operates in much the same way as the local tell command.
-
-To reply to the last i3tell you received, simply type 'i3reply'
-followed by your message and it will be sent back to the last
-person on I3 who sent a tell to you. Works in the same manner
-as the local reply command.
-
-See also: I3, INTERMUD3
-~
-
-0 I3WHO~
-Syntax i3who <mud>
-
-Requests an overview of players on a different mud.
-Operates similarly to the local who command.
-
-See also: I3, INTERMUD3
-~
-
-0 INTERMUD3~
-Intermud-3 is a protocol which allows you to chat with people on
-other muds who are also connected to Intermud-3. It is primarily
-populated by LP based muds at this time, but the hope is to get
-more Diku based muds to join over time. While some may say that
-Diku based muds would be better served on the IMC Network, it
-is far easier for a mud to obtain a connection to the Intermud-3
-network, and the commands to use it are generally simpler.
-The protocol is also cleaner, more stable, and less prone to attack.
-In either case, should a mud desire it, Intermud-3 will coexist
-peacefully with an IMC enabled mud. Currently, there is limited
-support for cross-network traffic. This includes some channels,
-private tells, and mudlists from either network. This may or may
-not be expanded in the future.
-
---=[Bridged I3 Commands]=--
-i3tell Name:MUD@IMC2 (message)
-                - Sends a tell to a person on the IMC2 network.
-i3who imc2      - Shows IMC2 network mudlist.
-
-See also: I3, I3TELL, I3EMOTE, I3FINGER, I3WHO, I3LOCATE, IMC
-~
-
 -1 HANDBOOK~
 Immortal Rules/Guidelines
 -------------------------
@@ -191,7 +54,7 @@ Be helpful..and use your best judgement ||     is near death then flee/goto
                                         ||     unless harrassment is going on
                                         ||   Be anal
                                         ||   Have your Mortal & immortal chars
-					||     on at the same time
+          ||     on at the same time
 =============================================================================
  
 The above may be changed/added to so check this entry often review it sometime
@@ -209,13 +72,9 @@ or to render them null and void.
 
 -1 MOTD~
 ************************* This is the MOTD **************************
-We've made some significant changes. We hope you enjoy them.
-
-Please press <Enter> to continue
 ~
 
 50 IMOTD~
-
 ~
 
 -1 SCHOOL~
@@ -237,10 +96,31 @@ Mud School.  You may not practice until your character reaches 3rd level
 however.  See 'HELP PRACTICE'.
 ~
 
-0 !~
-Syntax: !
+-1 ! !! 'EVENT DESIGNATORS'~
+   {o{wEvent Designators{x
+       An event designator is a reference to a command line entry
+       in the history list.
 
-! repeats the last command you typed.
+       {o{w!{x      Start  a history substitution.
+       {o{w!!{x     Refer to the previous command.  This is  a  synonym
+              for `!-1'.
+       {o{w!{yn{x     Refer to command line {o{yn{x.
+       {o{w!-{yn{x    Refer to the current command line minus {o{yn{x.
+       {o{w!{ystring{x
+              Refer  to  the  most  recent  command starting with
+              {o{ystring{x.
+       {o{w!?{ystring{x
+              Refer to the most recent command containing {o{ystring{x.
+
+       History is written by Zen (vasc@camoes.rnl.ist.utl.pt)
+~
+
+0 HISTORY~
+Syntax: history
+
+Use this command to see the history list.
+
+See also: {o{wEVENT DESIGNATORS{x
 ~
 
 0 NORTH SOUTH EAST WEST UP DOWN~
@@ -327,7 +207,8 @@ When you cast an offensive spell, the victim usually gets a saving throw.
 The effect of the spell is reduced or eliminated if the victim makes the
 saving throw successfully.
 
-See also the help sections for individual spells.
+See also the help sections for individual spells, MAGIC, and also please read
+the MANA help.
 ~
 
 0 EXITS~
@@ -442,19 +323,19 @@ the appropriate skill.
 
 0 PSTEAL 'PSTEAL RULES'~
 GENERAL INFO:
-			To PSTEAL, you must:
+      To PSTEAL, you must:
 
 1)    You must be REGISTERED in order to PSTEAL or _BE_ PSTOLEN from.
-	   You must be > level 15 to REGISTER.
+     You must be > level 15 to REGISTER.
            At that point and forever,
-		you will have a flag on your 'who' info (PK).
-		you will have (PK) on normal 'look' info.
-	   Cost is 1000 coins per level.
+    you will have a flag on your 'who' info (PK).
+    you will have (PK) on normal 'look' info.
+     Cost is 1000 coins per level.
 
 2)    You must buy a license to be _ABLE_ to PSTEAL.
            licenses are inventory only and may be stolen, burned, etc.
-	   licenses MUST be in inventory in order to be useful.
-		(not in bags, containers or such.)
+     licenses MUST be in inventory in order to be useful.
+    (not in bags, containers or such.)
            upon death, licenses disappear
 
 RULES of PSTEALing:
@@ -466,46 +347,46 @@ RULES of PSTEALing:
 
       Breaking of these rules (IE: PSTEAL illegally) will cause you to have
            a (THIEF) flag permanently and be accosted by Midgaard.
-	   See HELP THIEVERY.
+     See HELP THIEVERY.
 ~
 
 -1 THIEVERY~
 .
-	   THIEVES will be offered no sanctuary in a safe zones
+     THIEVES will be offered no sanctuary in a safe zones
 
-	   THIEVES will lose 400 exps regardless of exps to level every
-		illegal PSTEAL.
+     THIEVES will lose 400 exps regardless of exps to level every
+    illegal PSTEAL.
 
-	   THIEVES may be attacked or stolen from _LEGALLY_ by ANYONE
-		regardless of PKILL status or level.
+     THIEVES may be attacked or stolen from _LEGALLY_ by ANYONE
+    regardless of PKILL status or level.
 
 NOTE:
-	   You may be able to just type KILL <victim> in addition to
-		MURDER <victim> to a THIEF.
+     You may be able to just type KILL <victim> in addition to
+    MURDER <victim> to a THIEF.
 ~
 
 0 PK PKILL 'PKILL RULES'~
 GENERAL INFO:
-			To PKILL, you must:
+      To PKILL, you must:
 
 1)    You must be REGISTERED in order to PKILL or _BE_ PKILLed.
-	   You must be > level 15 to REGISTER.
+     You must be > level 15 to REGISTER.
            At that point and forever,
-		you will have a flag on your 'who' info (PK).
-		you will have (PK) on normal 'look' info.
-	   Cost is 1000 coins per level.
+    you will have a flag on your 'who' info (PK).
+    you will have (PK) on normal 'look' info.
+     Cost is 1000 coins per level.
 
 2)    You must buy a license to be _ABLE_ to PKILL.
            licenses are inventory only and may be stolen, burned, etc.
-	   licenses MUST be in inventory in order to be useful.
-		(not in bags, containers or such.)
+     licenses MUST be in inventory in order to be useful.
+    (not in bags, containers or such.)
            upon death, licenses disappear
 
 _Note_:
       Vampires have no need for REGISTERING and licenses.
            They may be PKILLed or PKILL.
            Normal PKILLing rules apply (see below)
-	(NOTE:  Vampires must beware of victims < level 16.)
+  (NOTE:  Vampires must beware of victims < level 16.)
 
 RULES of PKILLing:
 
@@ -516,7 +397,7 @@ RULES of PKILLing:
 
       Breaking of these rules (IE: PKILL illegally) will cause you to have
            a (KILLER) flag permanently and be accosted by Midgaard.
-	   See HELP KILLER.
+     See HELP KILLER.
 
 Benefits of PKILLing:
 
@@ -537,17 +418,17 @@ Penalties for death:
 
 -1 KILLER~
 .
-	   KILLERs will be offered no sanctuary in a safe zones
+     KILLERs will be offered no sanctuary in a safe zones
 
            KILLER will lose 1000 exps regardless of exps to level and will
-		be demoted one level every illegal PKILL.
+    be demoted one level every illegal PKILL.
 
-	   KILLERs may be attacked or stolen from _LEGALLY_ by ANYONE
-		regardless of PKILL status or level.
+     KILLERs may be attacked or stolen from _LEGALLY_ by ANYONE
+    regardless of PKILL status or level.
 
 NOTE:
-	   You may be able to just type KILL <victim> in addition to
-		MURDER <victim> to a KILLER.
+     You may be able to just type KILL <victim> in addition to
+    MURDER <victim> to a KILLER.
 ~
 
 0 REGISTER~
@@ -675,11 +556,17 @@ to use it properly.
 
 REMOVE will take any object from your equipment and put it back into your
 inventory.
+
+REMOVE as well as most other object manipulation commands,
+allow the use of #.object format, where # is a number or the word "all".
+For example, if you had two bracers and you wanted to remove the second
+one, you would type "remove 2.bracer".  Or if you wanted to remove all your
+equipment you would type "remove all".
 ~
 
 0 'ARMOR WEAR' 'BASIC ARMOR'~
 Syntax:    wear <object>
-	 remove <object>
+   remove <object>
 
 ARMOR
   Armor is generally everything that will give you protection when you wear,
@@ -696,7 +583,7 @@ Sometimes armors have other minor protections, magically bestowed on them,
 which will be comparable to just a fraction of BASIC ARMOR.
 
 See also:  BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD,
-	   FINGERS, NECK, ABOUT, WAIST, WRIST, LIGHT
+     FINGERS, NECK, ABOUT, WAIST, WRIST, LIGHT
 ~
 
 0 'BODY WEAR' 'BODY' ~
@@ -707,7 +594,7 @@ Body armor protects the chest and sometimes also the back.  It provides
 chain or scale mail suits, jerkins, etc.
 
 See also: HEAD, LEGS, FEET, HANDS, ARMS, SHIELD, FINGERS,
-	  NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'HEAD WEAR' 'HEAD'~
@@ -717,7 +604,7 @@ Head armor protects the capital area and provides 2 times the BASIC ARMOR
 value.  This type of armor includes helmets, hats, diadems, glasses, etc.
 
 See also: BODY, LEGS, FEET, HANDS, ARMS, SHIELD, FINGERS,
-	  NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'LEG WEAR' 'LEGS'~
@@ -727,7 +614,7 @@ Leg armor protects the upper and lower legs and provides 2 times the BASIC
 ARMOR value.  This type of armor includes greaves, leg plates, leggings, etc.
 
 See also: BODY, HEAD, FEET, HANDS, ARMS, SHIELD, FINGERS,
-	  NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'FOOT WEAR' 'FEET'~
@@ -737,7 +624,7 @@ Foot armor protects the feet and provides the BASIC ARMOR value.  This type
 of armor includes shoes, sandals, boots, etc.
 
 See also: BODY, HEAD, LEGS, HANDS, ARMS, SHIELD, FINGERS,
-	  NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'HAND WEAR' 'HANDS'~
@@ -747,7 +634,7 @@ Hand armor protects the hands and provides the BASIC ARMOR value.  This
 type of armor includes gloves, gauntlets, etc.
 
 See also: BODY, HEAD, LEGS, FEET, ARMS, SHIELD, FINGERS,
-	  NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'ARM WEAR' 'ARMS'~
@@ -757,7 +644,7 @@ Arm wear protects the arms and provides the BASIC ARMOR value.  This type
 of armor includes arm guards, arm plates, bracers, pauldrons, etc.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, SHIELD, FINGERS,
-	  NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    NECK, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'SHIELD WEAR' 'SHIELD'~
@@ -767,13 +654,13 @@ Shields protect the left side of the chest and provides the BASIC ARMOR value.
 This type of armor includes bucklers, kites, shields, etc.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, FINGERS, NECK,
-	  ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'FINGER WEAR' 'FINGERS'~
 Syntax: remove 1.<object>
-	remove 2.<object>
-	if you wear two different objects with the same keyword
+  remove 2.<object>
+  if you wear two different objects with the same keyword
 
 Location: <worn on finger>
 
@@ -782,13 +669,13 @@ type of armor includes rings, etc.  You can wear two objects at this wear
 location.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD, NECK,
-	  ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'NECK WEAR' 'NECK'~
 Syntax: remove 1.<object>
-	remove 2.<object>
-	When you wear two different objects with the same keyword
+  remove 2.<object>
+  When you wear two different objects with the same keyword
 
 Location: <worn around neck>
 
@@ -797,7 +684,7 @@ BASIC ARMOR value.  This type of armor includes cloaks, collars, capes, etc.
 You can wear two objects at this wear location.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD,
-	  FINGERS, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
+    FINGERS, ABOUT, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'ABOUT WEAR' 'ABOUT'~
@@ -807,7 +694,7 @@ Objects you wear about your body protect the chest and back and provide 2
 times the BASIC ARMOR value.  This type of armor includes skins, capes, etc.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD,
-	  FINGERs, NECK, WAIST, WRIST, LIGHT, BASIC ARMOR
+    FINGERs, NECK, WAIST, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'WAIST WEAR' 'WAIST'~
@@ -817,7 +704,7 @@ Waist armor protects the waist and provides the BASIC ARMOR value. This
 type of armor includes girths, girdles, belts, sashes, etc.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD,
-	  FINGERS, NECK, ABOUT, WRIST, LIGHT, BASIC ARMOR
+    FINGERS, NECK, ABOUT, WRIST, LIGHT, BASIC ARMOR
 ~
 
 0 'WRIST WEAR' 'WRIST'~
@@ -827,7 +714,7 @@ Wrist armor protects the wrist and provides the BASIC ARMOR value.  This
 type of armor includes bracelets, bracers, wristbands, etc.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD,
-	  FINGERS, NECK, ABOUT, WAIST, LIGHT, BASIC ARMOR
+    FINGERS, NECK, ABOUT, WAIST, LIGHT, BASIC ARMOR
 ~
 
 0 'LIGHT WEAR' 'LIGHT'~
@@ -838,7 +725,7 @@ give you any BASIC ARMOR, but some magical light sources have been known to
 hold a minor amount protection and as such, should not be overlooked.
 
 See also: BODY, HEAD, LEGS, FEET, HANDS, ARMS, SHIELD,
-	  FINGERS, NECK, ABOUT, WAIST, WRIST, BASIC ARMOR
+    FINGERS, NECK, ABOUT, WAIST, WRIST, BASIC ARMOR
 ~
 
 50 WIZHELP~
@@ -861,27 +748,27 @@ SOCIALS shows you all of the social commands available to you.
 ~
 
 -1 SUMMARY~
-MOVEMENT                          GROUP
+{oMOVEMENT                          GROUP{x
 north south east west up down     follow group gtell split
 exits recall
 sleep wake rest stand
 
-OBJECTS                           INFORMATION / COMMUNICATION
+{oOBJECTS                           INFORMATION / COMMUNICATION{x
 get put drop give sacrifice       help credits areas commands socials
 donate wear wield hold            report score time weather where who
 recite quaff zap brandish         channels config description password title
 lock unlock open close pick bash  auction chat music question answer shout yell
-inventory equipment look compare  emote pose say tell
+inventory equipment look compare  emote pose say tell grats clantalk
 eat drink fill                    bug idea typo
 list buy sell value               note wizlist slist spells autoexit
-				  autoloot autosac blank brief combine prompt
+          autoloot autosac blank brief combine prompt
 
-COMBAT                            OTHER
+{oCOMBAT                            OTHER{x
 kill flee kick rescue disarm      ! save quit pagelength
 backstab cast wimpy               practice train
 
 For more help, type 'help <topic>' for any command, skill, or spell.
-Also help on: DAMAGE DEATH EXPERIENCE NEWS STORY TICK
+Also help on: {oDAMAGE DEATH EXPERIENCE NEWS STORY TICK{x
 ~
 
 0 DAMAGE~
@@ -1000,11 +887,47 @@ when it comes to bodily health.
 ~
 
 -1 NEWS~
-New Commands:
+{oNew UltraEnvy (HomeCooked) features as of version 0.87:{x
+I've worked like a slave this summer to do this... Enjoy! - Zen
+
+Areas:
+Zen's Arena
+Maniac's Mythran Mud Casino
+
+Features:
+Damage classes.
+Resistant, Immune, Susceptible flags.
+Ranged Weapons - see also SHOOT.
+HIT FUN's.
+WIZNET.
+Dice games.
+ANSI color code.
+ARENA code.
+Better CLANS code.
+Hunt/Track.
+MobPrograms - see also MOBINFO.
+Online Creation using ILAB OLC - see help OLC.
+Several new spells, too numerous to list.
+Several new skills, too numerous to list.
+Sacrifice and Remove changed so commands such as "sacrifice all.corpse" are
+  possible.
+
+Changes:
+Smarter Mobs
+Ridable Mobs
+Command history - see also HISTORY
+Aliases - see also ALIAS
+Mana types. Gems to boost spell casting - see also MANA
+Password and Retire commands now don't show your password
+
+
+{oNew Envy features as of version 2.2:{x
+
+Commands:
 "whois" gives information on characters.
 Many socials added by Binky and Katrina.
 
-New Areas:
+Areas:
 Binky's Circus
 Solace
 
@@ -1017,7 +940,7 @@ Purgatory added, so corpse retrieval parties are not necessary.
 
 Changes:
 50 mortal levels instead of 36.
-Dragon breath spells, now avaiable to mages for many levels, have increased
+Dragon breath spells, now available to mages for many levels, have increased
   mana cost and waitstate.
 Changed linked-list structure updates char_list, object_list, and extra
   descriptions every tick in one function rather than instantaneously in many
@@ -1290,60 +1213,67 @@ McFraggadocio.
 -1 "DREAM MAKERS"~
 This entry contains names of the contributing people of this Mud.
 There were the First people to hold these positions..we thank them!
-		Builders	Implementors	Coders
+    Builders  Implementors  Coders
 
-Directors	Hatchet		Kith		Kahn
+Directors Hatchet   Kith    Kahn
                                 Yaz
-Seniors		Maxx		Binky		Thelonius
-		Picard		Frag
-		Karl		Maverik
-				Picard
-				Tricia
-				Unisex
-				Icaza
+Seniors   Maxx    Binky   Thelonius
+    Picard    Frag
+    Karl    Maverik
+        Picard
+        Tricia
+        Unisex
+        Icaza
 
-Juniors		Ash		Anthea
-		Binky		Alexis		Binky
-		Demonspawn	Benito
-				Boom		Bongs
-		Dreads		Huka		Demonspawn
-		Elvishparsley	Katrina		Draiden
-		Forstall	Lunch
-				Manx		Globi
-		Katrina		Skie		Greydon
-		Katzenjammer	Katzenjammer	Katrina
-		Lupin		StrayKat	Morgan
-		Mandur				Sandman
-		Maverik				Skie
-		Morgan				Stooly
-		Pudu				Tre
-		Shapeshifter
-		Shoes
-		Stooly
-		Tholeus
+Juniors   Ash   Anthea
+    Binky   Alexis    Binky
+    Demonspawn  Benito
+        Boom    Bongs
+    Dreads    Huka    Demonspawn
+    Elvishparsley Katrina   Draiden
+    Forstall  Lunch
+        Manx    Globi
+    Katrina   Skie    Greydon
+    Katzenjammer  Katzenjammer  Katrina
+    Lupin   StrayKat  Morgan
+    Mandur        Sandman
+    Maverik       Skie
+    Morgan        Stooly
+    Pudu        Tre
+    Shapeshifter
+    Shoes
+    Stooly
+    Tholeus
 
-	All of these immortals have contributed in some way to the
+  All of these immortals have contributed in some way to the
 workings of this mud.  Please treat them with respect and dignity for
 they _SHAPE YOUR MUD FUTURE!_
-	Congratulations to all here and keep up the good work!
+  Congratulations to all here and keep up the good work!
 
 ~
 -1 WIZLIST~
 
-*******************************************************************************
-*  These people have achieved immortality and superior powers in this realm.  *
-*  They should be treated with respect and kindness..a few prayers wouldn't be*
-*  a bad idea now and again either. Lying or stealing from them is punishable *
-*  by Death. Word of advice....dont do it. *grin*                             *
-*******************************************************************************
+{o{r   These people have achieved immortality and superior powers in this realm.
+   They should be treated with respect and kindness..a few prayers wouldn't be
+   a bad idea now and again either. Lying or stealing from them is punishable
+   by Death. Word of advice....dont do it. *grin*{x
 
-				 Antiquity
-				===========
-
-				  Wizards
-				 =========
-
-
+{o{r                                 Antiquity
+{o{d        / \      _-'            ===========                 '-_      / \
+      _/|  \-''- _ /                                        \ _ -''-/  |\_
+ __-' {{ |          \                                        /          | } '-__
+      /             \             {o{Wizards                 {o{d /       
+     /       "{go{o{d.  |{go{o{d }           =========                {{ {go{o{d|  .{go{o{d"
+     |            \ ;                                      ; /
+                   ',                                      ,'
+        \_         __\            {r{o{d                 /__         _/
+          ''-_    \.//                                    \\./    _-''
+            / '-____'                                      '____-' \
+           /                                                        \
+          _'                    {m{o{d                         '_
+       _-'                                                            '-_
+                                               
+                                                                {x
 ~ 
 
 0 AUTO CONFIG~
@@ -1361,18 +1291,20 @@ option on or off.
 
 The options are:
 
+    EDITINFO  You see extra info on rooms (IMMORTAL ONLY).
     AUTOEXIT  You automatically see exits.
     AUTOGOLD  You automatically loot corpses of their gold.
     AUTOLOOT  You automatically loot corpses.
     AUTOSAC   You automatically sacrifice corpses.
     BLANK     You have a blank line before your prompt.
     BRIEF     You see brief descriptions only.
+    COLOUR    You see ANSI coloured text.
     COMBINE   You see object lists in combined format.
     PROMPT    You have a prompt.
     TELNETGA  You receive a telnet GA sequence.
 
 You can also type AUTOEXIT, AUTOGOLD, AUTOLOOT, AUTOSAC, BLANK, BRIEF,
-or COMBINE directly from the prompt to toggle the status of these
+COLOUR, or COMBINE directly from the prompt to toggle the status of these
 options.  See the helps for these commands.
 ~
 
@@ -1476,24 +1408,26 @@ PROMPT ALL will give you the standard "<hits mana moves>" prompt.
 
 PROMPT <%*> where the %* are the various variables you may set yourself.
 
-	%h :  Display your current hits
-	%H :  Display your maximum hits
-	%m :  Display your current mana
-	%M :  Display your maximum mana
-	%v :  Display your current moves
-	%V :  Display your maximum moves
-	%x :  Display your current experience
-	%g :  Display your gold held
-	%w :  Display your current Wait State
-	%a :  Display your alignment
-	%r :  Display the room name you are in
-	%R :  Display the vnum you are in (IMMORTAL ONLY)
-	%z :  Display the area name you are in (IMMORTAL ONLY)
-	%i :  Display whether or not you are invisible
-	%I :  Display whether or not you are wizinvis (IMMORTAL ONLY)
+  %h :  Display your current hits
+  %H :  Display your maximum hits
+  %m :  Display your current mana
+  %M :  Display your maximum mana
+  %v :  Display your current moves
+  %V :  Display your maximum moves
+  %x :  Display your current experience
+  %g :  Display your gold held
+  %w :  Display your current Wait State
+  %a :  Display your alignment
+  %r :  Display the room name you are in
+  %R :  Display the vnum you are in (IMMORTAL ONLY)
+  %z :  Display the area name you are in (IMMORTAL ONLY)
+  %i :  Display whether or not you are invisible
+  %I :  Display whether or not you are wizinvis (IMMORTAL ONLY)
+  %c :  Display the editing mode you are in (IMMORTAL ONLY)
+  %C :  Display the number of the area you are editing (IMMORTAL ONLY)
 
 Example:  PROMPT <%hhp %mm %vmv>
-	Will set your prompt to "<10hp 100m 100mv>"
+  Will set your prompt to "<10hp 100m 100mv>"
 ~
 
 0 TITLE~
@@ -1517,7 +1451,7 @@ WIMPY with no argument sets your wimpy value to 20% of your maximum hit points.
 Some monsters are wimpy.
 ~
 
-0 AUCTION CHAT . MUSIC QUESTION ANSWER SHOUT YELL~
+0 AUCTION CHAT . MUSIC QUESTION ANSWER SHOUT YELL WARTALK GRATS~
 Syntax: auction  <message>
 Syntax: chat     <message>
 Syntax: music    <message>
@@ -1525,17 +1459,21 @@ Syntax: question <message>
 Syntax: answer   <message>
 Syntax: shout    <message>
 Syntax: yell     <message>
+Syntax: wartalk  <message>
+Syntax: grats    <message>
 
 These commands send messages through communication channels to other players.
 
 SHOUT sends a message to all awake players in the world.  To curb excessive
 shouting, SHOUT imposes a three-second delay on the shouter.
 
-AUCTION, CHAT, MUSIC, and QUESTION and ANSWER also send messages to all
+AUCTION, CHAT, MUSIC, GRATS, and QUESTION and ANSWER also send messages to all
 interested players.  '.' is a synonym for CHAT.  The QUESTION and ANSWER
 commands both use the same 'question' channel.
 
 YELL sends a message to all awake players within your area.
+
+WARTALK sends a message to all interested members of your clan/order/guild.
 
 You can use the CHANNELS command to hear, or not hear, any of these channels.
 ~
@@ -1560,7 +1498,7 @@ Syntax: note list
 Syntax: note read
 Syntax: note read    <number>
 Syntax: note read    all
-Syntax: note +       <message>
+Syntax: note edit
 Syntax: note subject <string>
 Syntax: note to      <to-list>
 Syntax: note clear
@@ -1573,8 +1511,8 @@ NOTE LIST lists notes which you can read.  NOTE READ reads one or all notes.
 
 NOTE SUBJECT sets the subject line of a new note.  NOTE TO sets the list of
 recipients.  The recipient ALL means all players, and the recipient IMMORTAL
-means all immortals.  Use NOTE + to write message lines onto the note, one line
-at a time.  NOTE SHOW shows your note in progress; NOTE CLEAR starts over.
+means all immortals.  Use NOTE EDIT to write you message onto the note, using an
+online editor.  NOTE SHOW shows your note in progress; NOTE CLEAR starts over.
 
 NOTE POST or NOTE SEND posts your note for reading.  Posting is not automatic.
 
@@ -1672,6 +1610,12 @@ SACRIFICE offers an object to your God.  God may reward you for the sacrifice.
 The nature of the reward depends upon the type of object.
 
 Hint: God likes corpses.
+
+SACRIFICE as well as most other object manipulation commands,
+allow the use of #.object format, where # is a number or the word "all".
+For example, if you had five daggers and you wanted to sacrifice the third
+one, you would type "sacrifice 3.dagger".  Or if you wanted to clean up all the
+trash on the floor you would type "sacrifice all".
 ~
 
 0 FLEE RESCUE~
@@ -2356,7 +2300,7 @@ This spell allows the victim to breathe water as if it was air.  It is
 a necessity for travelling in UNDERWATER areas.
 
 Note:  If you are affected by 'Breath Water' and are on land, you will
-	react as if you were breathing air while submersed in water.
+  react as if you were breathing air while submersed in water.
 ~
 
 0 UNDERWATER~
@@ -2429,10 +2373,13 @@ Syntax: cast 'control weather' worse
 This spell makes the weather either better or worse.
 ~
 
-0 'CREATE FOOD'~
+0 'CREATE FOOD' 'CREATE BUFFET'~
 Syntax: cast 'create food'
+Syntax: cast 'create buffet'
 
-This spell creates a Magic Mushroom, which you or anyone else can eat.
+CREATE FOOD creates a Magic Mushroom, which you or anyone else can eat.
+
+CREATE BUFFET creates a bunch of Magic Mushrooms, which you or anyone can eat.
 ~
 
 0 'CREATE SPRING'~
@@ -2529,6 +2476,12 @@ This spell detects the presence of poison in food or drink.
 Syntax: cast 'dispel evil' <victim>
 
 This spell invokes the wrath of God on an evil victim.
+~
+
+0 'DISPEL GOOD'~
+Syntax: cast 'dispel good' <victim>
+
+This spell invokes the wrath of Satan on a good victim.
 ~
 
 0 'DISPEL MAGIC'~
@@ -2637,7 +2590,7 @@ This spell enables the target character to see objects in the dark in
 relation to heat gradients.
 
 Note:  You will not be able to distinguish between a table and chair but will
-	between an ELF and a HUMAN.
+  between an ELF and a HUMAN.
 ~
 
 0 INVIS 'MASS INVIS'~
@@ -2688,11 +2641,15 @@ rewarding or problematic.  Because of the power of this spell, all currently
 known magics are not able to remove the affects of this spell.
 ~
 
-0 PROTECTION SANCTUARY~
-Syntax: cast protection
+0 PROTECTION 'PROTECTION EVIL' 'PROTECTION GOOD' SANCTUARY~
+Syntax: cast 'protection good'
+Syntax: cast 'protection evil'
 Syntax: cast sanctuary  <character>
 
-The PROTECTION spell reduces the damage taken from any attack by an evil
+The PROTECTION EVIL spell reduces the damage taken from any attack by an evil
+creature by one quarter.
+
+The PROTECTION GOOD spell reduces the damage taken from any attack by a good
 creature by one quarter.
 
 The SANCTUARY spell reduces the damage taken by the character from any attack
@@ -2831,13 +2788,13 @@ This skill shows you a character's inventory when you look at a character.
 Use of the skill is automatic once you have practiced it.
 ~
 
-0 'SECOND ATTACK' 'THIRD ATTACK'~
+0 'SECOND ATTACK' 'THIRD ATTACK' 'FOURTH ATTACK'~
 
 These skills let you attack more than once during a combat round.  Use of
 these skills is automatic once you have practiced them.
 
 You can practice THIRD ATTACK before you have mastered SECOND ATTACK,
-although it isn't efficient to do so.
+although it isn't efficient to do so. The same goes to FOURTH ATTACK.
 ~
 
 0 DUAL 'SECOND WEAPON'~
@@ -2889,9 +2846,9 @@ Take care of the more arcane and mysterious races.
 HUMANs are the most "neutral" of all races.  They have normal attribute
 levels yet are the most versatile in all the available professions.
 Their strengths are:
-	* Other races view HUMANs neutrally and normally do not attack.
-	* Are equally good in all classes.
-	* Their stature does not make them an easy target to hit.
+  * Other races view HUMANs neutrally and normally do not attack.
+  * Are equally good in all classes.
+  * Their stature does not make them an easy target to hit.
 ~
 
 -1 HALFELF~
@@ -2901,7 +2858,7 @@ HUMANs.  Their stature is equivalent with that of HUMANs.  Unfortunately,
 having ELVEN characteristics, certain races may impart their hatred for ELVES
 upon HALFELVES.
 HALFELVES have certain abilities available to them.
-	* Infravision.
+  * Infravision.
 ~
 
 -1 HALFDWARF HALFDWARVES~
@@ -2910,7 +2867,7 @@ attributes of DWARVES and have the stature normally associated with HUMANs.
 Unfortunately having DWARVEN characteristics, certain races may impart their
 hatred for DWARVES upon HALFDWARVES.
 HALFDWARVES have certain abilities available to them.
-	* Infravision.
+  * Infravision.
 ~
 
 -1 HOBBIT~
@@ -2920,8 +2877,8 @@ HOBBITs have small frames and are quite agile.  Because of their size, they
 gain certain advantages when fighting much larger foes but they are also picked
 upon by these large gruesome beasts too.
 HOBBITs have certain abilities available to them.
-	* Infravision.
-	* Detect Hidden.
+  * Infravision.
+  * Detect Hidden.
 ~
 
 -1 WERERAT~
@@ -2935,9 +2892,9 @@ although they recover more quickly from physical damage.  They are also
 very nimble, and prize agility above all other traits.  In fact, children who
 have shown themselves to be clumsy are sacrificed in a yearly ritual, amidst
 great ceremony."
-	- Ruk-T'ar of the Drow Histological Academy
-	  "WERE the Wild Things Are:  a Study of the Savage Were Races of
-	   Envy MUD"
+  - Ruk-T'ar of the Drow Histological Academy
+    "WERE the Wild Things Are:  a Study of the Savage Were Races of
+     Envy MUD"
 ~
 
 -1 HALF-KOBOLD HALFKOBOLD HLFKOBOLD~
@@ -2949,7 +2906,7 @@ are not very healthy, being prone to any number of canine diseases.
 They are not very intellectual, spending most of their time thinking
 about food, how to get food, and who will give them food.
 HALFKOBOLDs have certain abilities available to them:
-	* Infravision
+  * Infravision
 ~
 
 -1 HALF-OGRE HALFOGRE~
@@ -2961,7 +2918,7 @@ is not to say that they can outhink or outmaneuver a HUMAN!
 Because they are so strong and robust, they have an advantage when
 healing wounds.
 HALFOGREs have certain abilities available to them.
-	* Infravision
+  * Infravision
 ~
 
 -1 MINOTAUR MINOTAURS~
@@ -3187,7 +3144,7 @@ in the art of mortal combat.  They much prefer to be civil servants to
 society or doctors to their comrades in arms.
 ~
 
--1 MAG MAGE MAGIC MAGIC-USER 'MAGIC USER'~
+-1 MAG MAGE MAGIC-USER 'MAGIC USER'~
 The MAGE class is a 'spellcasting' class devoted primarily toward control
 over the elements.  The universe contains an unmeasured power the MAGE taps
 into to influence the world.  MAGE spells are devoted to the invoking,
@@ -3431,27 +3388,430 @@ possible to augment the strength of several others, as long as the psionicist
 does not become too weak.
 ~
 
+0 'METEOR SWARM'~
+Syntax: cast 'meteor swarm'
+
+This high level magic-user spell inflicts damage on every enemy character in
+the room. Beware that other characters who are not yet fighting may attack you
+as a result! It may only be cast out of doors.
+~
+
+0 'CHAIN LIGHTNING'~
+Syntax: cast 'chain lightning' <character>
+
+This magic-user spell inflicts heavy damage on the victim and if it has enough
+power, on every other character in the room. Beware that other characters who
+are not yet fighting may attack you as a result!  This includes other players
+as well!  If the lightning doesn't find a target and still has power on it will
+strike the caster himself...
+~
+
+0 'VORTEX LIFT'~
+Syntax: cast 'vortex lift' <character>
+
+This spell takes the caster from his current location to another caracter's 
+location somewhere in the world.
+You cannot vortex lift to characters who are in a private or solitary room.
+~
+
+0 'WIZARD EYE'~
+Syntax: cast 'wizard eye' <character>
+
+This spell enables the caster to see the location of another caracter somewhere
+in the world.
+~
+
+0 'MASS VORTEX LIFT'~
+Syntax: cast 'mass vortex lift' <character>
+
+This spell takes the caster & group from his current location to another
+character's location somewhere in the world.
+You cannot vortex lift to characters who are in a private or solitary room.
+If you aren't skilled enough some of your group members may not be able to
+vortex lift with you.
+~
+
+0 'SHIELD BLOCK'~
+
+This skill wards off incoming attacks, taking no damage from them.  Use of the
+skill is automatic once you have practiced it.  You must be wielding a shield
+to shield block.
+~
+
+
+0 MEDITATE~
+
+This skill enables you to regain mana faster than normal.
+Use of the skill is automatic once you have practiced it. You may meditate
+while resting or sleeping.
+~
+
+0 'FAST HEALING'~
+
+This skill makes you heal much faster than normal.
+Use of the skill is automatic once you have practiced it.
+~
+
+0 SCRIBE BREW~
+A spell caster of sufficient level holding a 'clean parchment' or 'empty vial'
+may transform them into spelled scrolls or potions via the scribe and
+brew commands.
+
+It takes significantly more mana to bind a spell to a potion or scroll
+than to simply cast it.
+~
+
+0 'PORTAL'~
+Syntax: cast 'portal' <character>
+
+The portal spell creates a lasting one-way portal to the target creature.
+Portals are entered using 'enter' command, as in 'enter portal'.  Portals
+cannot be made to certain destinations, nor used to escape from gate-proof
+rooms.  Portal requires a special source of power to be used, unfortunately the
+secret of this material component has been lost...
+~
+
+0 NEXUS~
+Syntax: cast 'nexus' <character>
+
+This spell is virtually identical to portal (see 'help portal'), with the
+only difference being that while portal creates a one-way gate, a nexus 
+spell makes a two-sided gate.  It also lasts longer than the lower-powered
+portal spell.  Both spells require an additional power source, the secret
+of which has been lost...
+~
+
+0 SCAN~
+Syntax: scan
+
+This skill enables the high-level thief to sense characters around him.
+You may SCAN characters upto 4 squares away from you.
+~
+
+0 'DIRT KICKING'~
+Syntax: dirt
+
+This skill enables you to blind an opponent by throwing dirt into his eyes.
+Of course for this to work properly the location you are on must have dirt.
+~
+
+0 WHIRLWIND~
+Syntax: whirlwind
+
+This skill enables a warrior to spin around the room with his weapon, hiting
+every single enemy character in there once. You may only use this skill to
+start a fight.
+~
+
+0 CLANS CLAN~
+
+When you are above level 20 you may wish to join a clan in order to do a special
+type of pkilling. Clan killing. By killing other clan's members you may win
+fantastic prizes! All pkilling rules apply here also.
+
+See also:  INITIATE, PKILL
+~
+
+0 ARENA~
+
+If you feel bored you may go out and try to kill your friend in the Steel Cage
+Arena. Here there is no need for the respect of pkilling rules and anyone may
+kill anyone, no restrictions! Of course if you do kill anyone in the Arena you
+will not win any exps, only gold. Can't have something for nothing you know!
+The Steel Cage Arena is west from the entrance to the Big Top (Binky's Circus).
+
+See also:  PKILL, CLANS
+~
+
+0 RETIR~
+Syntax: retir
+
+RETIR is a command trap to prevent you from mistakenly typing RETIRE.
+
+If you wish to RETIRE and erase you char type RETIRE in whole.
+~
+
+0 RETIRE~
+Syntax: retire <password>
+
+This command makes you quit the game and erase your player file.
+WARNING! ONCE ERASED YOUR PLAYER FILE IS NOT RECOVERABLE!
+~
+
+51 SOBER~
+Syntax: sober <character>
+
+This Apprentice command allows to sober up a character. Stop drunkness effects.
+~
+
+53 DELET~
+Syntax: DELET
+
+DELET is a command trap to prevent you from mistakenly typing DELETE.
+
+If you wish to DELETE and erase the target char type DELETE in whole.
+~
+
+53 DELETE~
+Syntax: delete <character>
+
+This Senior command makes you disconnect the char and erase his player
+file. The file is recoverable.
+~
+
+52 CLIST~
+Syntax: clist <clan number>
+Syntax: clist all
+
+CLIST shows the clan's name for the given clan number.
+
+CLIST ALL shows this information for all clans.
+~
+
+0 TRACK~
+Syntax: track <character>
+
+Track will assist you in tracking down a character that is within the area, 
+giving you its general direction.
+~
+
+0 SWIM~
+
+This skill enables the character to swim.
+Use of the skill is automatic once you have practiced it.
+The better skilled you are, better will you swim.
+~
+
 0 COLOUR COLOR ANSI~
 Syntax: colour    Toggles colour mode on/off
 
         You may also talk in colour; the format is like this:
-  the 'escape character' to specify a colour is the left
-  handed brace '{{', following 
-  that you should use one of the following letters,
-    {r{{r     red     {c{{c     cyan
-    {g{{g     green   {y{{y     yellow
-    {b{{b     blue    {w{{w     white
-    {m{{m     magenta {x{{x     clear(reset colour)
-    {{{{      {{ char {{*       beep
-    {{/       newline
-  when using colour, it looks better if you finish the line
-  with whatever colour it would normally be in, such as a
-  gossip, the colour is magenta, so:
-    {mLope gossips '{ghello,{r world{m'{x
-  looks better than:
-    {mLope gossips '{ghello,{r world'{x
+        the 'escape character' to specify a colour is the left
+        handed brace '{{', following 
+        that you should use one of the following letters.
+                {r{{r     red     {c{{c     cyan
+                {g{{g     green   {y{{y     yellow
+                {b{{b     blue    {w{{w     white
+                {m{{m     magenta {x{{x     clear(reset colour)
+                {{{{     {{ char
 
-  ColoUr is written by Lope (ant@solace.mh.se)
+        ColoUr is written by Lope (ant@solace.mh.se)
+~
+
+-1 MOBINFO~
+.             Our Mobiles have been infused with the breath of a
+             shy faeyrie to give them a slightly warmer nature.
+             Perhaps you have noticed this already.  If not, do
+             take a moment to ask a mobile to tea.  The code is
+             written by J Murphy, N'Atas-Ha of ThePrincedom and
+             based on a concept created on Worlds of Carnage by
+             Aaron Buhr. questions/comments to murph@cs.cmu.edu
+             A little rewriting of the code/DOC/INSTALL done by
+             Kahn of MERC Industries and tested extensively on
+             Marble Mud (marble.bu.edu 4000).
+~
+
+-1 ALIAS UNALIAS~
+Syntax: alias
+        alias   <word>
+        alias   <word> <substitution>
+        unalias <word>
+
+The ALIAS command allows limited shortening of command names.
+At this time, aliases cannot generate more than one command.
+
+ALIAS by itself lists your current aliases.
+ALIAS <word> lists the alias with that name (if such exist)
+ALIAS with both a word and an argument produces a new alias.
+You cannot alias either alias or unalias to a new command.
+
+Examples of use:
+alias gc get all corpse :: typing gc will equal typing 'get all corpse'
+alias ff cast 'fireball' :: ff orc will equal 'cast 'fireball' orc'
+
+alias x orc
+alias ff cast 'fireball' x :: ff will equal cast 'fireball' orc
+
+Only the first word on the line and the words in aliases will be substituted at
+this time.
+~
+
+0 MANA~
+Long ago, when the world was young and the Nordwar's hatred had long since
+been quelled by the death throes of battle, the council of elders began to
+study the amazing gems left on Tyselorrd from ancient times.  The gems
+allow a person to harness the power of the internal crystal and focus it
+into a useful energy.  This release of energy is in the form of spells.
+Each gem can be used for a specific element.  Some rare gems can be used
+for multiple elements.  Different spells use different elements to fuel
+the magic.  Each gem holds a specific amount of mana, and when this mana
+is depleted, the gem implodes and shatters into thousands of tiny, unusable
+shards.
+
+See also: 'THE ELEMENTS'
+~
+
+0 MAGIC~
+To cast spells, first you have to learn them.  Then practice makes perfect
+when attempting to successfully cast.  Finally, the use of gems for the
+empowering of spells is highly recomended.  Using gems you can save your
+precious inner mana. Inner mana is automagically converted into any required
+element unlike gem mana.
+
+See also: MANA
+~
+
+0 'THE ELEMENTS'~
+The elements are as follows:
+
+EARTH
+Nature, the earth, controls mending and binding magic.  The earth shields
+and heals.  It is the element of earth that holds the most powerful healing
+spells, and it is also this element which can be used to thwart dangerous
+foes.
+
+AIR
+Air controls travel and visibility, twisting and bending lights and shadow.
+Air conceals, and it also can forcefully move like the winds of powerful
+storms.
+
+FIRE
+Fire allows the unseen to glow brightly, to light the darkest room and to
+burn harshly the most evil.  Fire allows a person to see the truth behind
+the dark shrouds that covertly conceal many.
+
+WATER
+Water, the cleansing spirit, dominates and overcomes with unfolding strength.
+It is a holy thing, coveted and used to help cure the sickest and vilest of
+diseases, whether those diseases be plagues of the heart or of the mind.
+~
+
+0 'FROST SHIELD'~
+Syntax: cast 'frost shield'
+
+This spell creates a "shield" of magical ice around the caster.  This shield
+when in close contact with an enemy will cause him/her/it to be accosted by
+tongues of ice.
+
+This spell takes a long time to cast and saps a LOT of mana.  Take care you
+do not prepare this spell in an area with many enemies.
+~
+
+0 'SHOCK SHIELD'~
+Syntax: cast 'shock shield'
+
+This spell creates a "shield" of magical electricity around the caster.
+This shield when in close contact with an enemy will cause him/her/it to be
+accosted by bolts of lightning.
+
+This spell takes a long time to cast and saps a LOT of mana.  Take care you
+do not prepare this spell in an area with many enemies.
+~
+
+0 'ETHEREAL SHIELD'~
+Syntax: cast 'ethereal shield'
+
+This spell decreases the amount of damage taken from energy attacks.
+~
+
+0 PUGILISM 'LONG BLADES' 'SHORT BLADES' 'FLEXIBLE ARMS' 'TORNADO SUCTION' BLUDGEONS 'MARKSMANSHIP' 'BLAST WEAPONS'~
+These skills represent your facility with various type of weapons.  Different
+classes have different proficiencies with different types of arms, i.e.
+Mages are best with 'short blades' and Clerics with 'bludgeons'.
+These skills are automatic: you need not type anything to invoke them.
+
+Each skill makes you more proficiencient with a certain weapon. e.g.
+
+Long Blades        swords, axes, other slashing weapons...
+Short Blades       daggers, other piercing weapons...
+Flexible Arms      whips...
+Tornado Suction    vacuum cleaners?!?!
+Bludgeons    maces, hammers, other crushing weapons...
+Marksmanship     missile weapons...
+Blast Weapons      some magical weapons.
+Pugilism           other unclassified weapons.
+~
+
+0 CLANS~
+Syntax:  clans
+ 
+Displays a list of active clans, their overlord, their chieftain and their
+pkills (number of people killed by the members of each clan).
+~
+
+0 GUILDS~
+Syntax:  guilds
+ 
+Displays a list of currently operating guilds, their overlord, their chieftain
+and their mkills (number of mobs killed by guildmembers) and mdeaths (number
+of guild members killed by mobs).
+~
+
+0 ORDERS~
+Syntax:  orders
+ 
+Displays a list of active orders, their overlord, their chieftain and their
+mkills (number of mobs the order has killed) and their mdeaths (the
+number of of order members killed by mobs).
+~
+
+0 INITIATE EXILE~
+Syntax:  initiate  <character>
+         exile     <character>
+ 
+Induct and exile are clan commands.  The overlord and chieftain of the 
+clan receive the initiate commands, while only the overlord receives exile.
+Initiate will bring a new player into the clan, while exile will remove him.
+~
+
+0 MOUNT DISMOUNT~
+Syntax: mount      <character>
+Syntax: dismount
+
+Mount is a skill, which allows you to mount certain mobs.  Being mounted 
+on a mob cuts down on movement points that are used whenever you move.
+~
+
+51 SETCLAN~
+Syntax: setclan <clan> <sedit>                     
+or:     setclan <clan> <field>            <value>  
+or:     setclan <clan> <string>           <value>  
+or:     setclan <clan> overlord|chieftain <player> 
+
+Field being one of:                            
+ mkills mdeaths pkills pdeaths illegalpk type      
+ members clanheros subchiefs                       
+ recall donation class score                       
+ obj1 obj2 obj3                                    
+String being one of:                               
+ name whoname filename motto                       
+Sedit being one of:                                
+ desc
+
+This command is used to define clan, order and guild files.  The filename
+field must be defined before other fields can be entered.
+ 
+See SHOWCLAN, MAKECLAN
+~
+
+52 SHOWCLAN~
+Syntax: showclan <clan>
+ 
+Used to display statistics for any clan organization, which includes
+clans, Orders and guilds.
+ 
+See SETCLAN, MAKECLAN and CLANS
+~
+
+51 MAKECLAN~
+Syntax:  makeclan <clan name>
+Example: makeclan Krushers
+
+Used to create a new clan, order or guild, which can then be defined using
+the 'setclan' command.  Orders, guilds and clans are distinguished using the
+'type' field in 'setclan'.
+ 
+See also: SETCLAN, SHOWCLAN
 ~
 
 0 $~
