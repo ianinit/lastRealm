@@ -34,6 +34,7 @@
 #include <string.h>
 #include <time.h>
 #include "merc.h"
+#include "olc.h"
 
 
 char *	const	where_name	[] =
@@ -56,7 +57,8 @@ char *	const	where_name	[] =
     "<worn around wrist> ",
     "<wielded, primary>  ",
     "<held>              ",
-    "<wielded, second>   "
+    "<wielded, second>   ",
+    "<missile held>      "
 };
 
 
@@ -79,18 +81,25 @@ char *format_obj_to_char( OBJ_DATA *obj, CHAR_DATA *ch, bool fShort )
     static char buf [ MAX_STRING_LENGTH ];
 
     buf[0] = '\0';
-    if ( IS_OBJ_STAT( obj, ITEM_INVIS)     )   strcat( buf, "(Invis) "     );
+    if ( IS_OBJ_STAT( obj, ITEM_INVIS)     )   strcat( buf, "{o{c(Invis){x "     );
+    if ( IS_OBJ_STAT( obj, ITEM_VIS_DEATH) )   strcat( buf, "{o{w(VisDeath){x "  );
     if ( ( IS_AFFECTED( ch, AFF_DETECT_EVIL  )
 	  || ( IS_SET( race_table[ ch->race ].race_abilities,
 		      RACE_DETECT_ALIGN )
 	      && IS_GOOD( ch ) ) )
-	&& IS_OBJ_STAT( obj, ITEM_EVIL )   )   strcat( buf, "(Red Aura) "  );
+	&& IS_OBJ_STAT( obj, ITEM_EVIL )   )   strcat( buf, "{o{r(Red Aura){x " );
+    if ( ( IS_AFFECTED( ch, AFF_DETECT_GOOD  )
+	  || ( IS_SET( race_table[ ch->race ].race_abilities,
+		      RACE_DETECT_ALIGN )
+	      && IS_EVIL( ch ) ) )
+	&& IS_OBJ_STAT( obj, ITEM_BLESS )   )   strcat( buf, "{o{c(Blue Aura){x " );
     if ( IS_AFFECTED( ch, AFF_DETECT_MAGIC )
-	&& IS_OBJ_STAT( obj, ITEM_MAGIC )  )   strcat( buf, "(Magical) "   );
-    if ( IS_OBJ_STAT( obj, ITEM_GLOW )     )   strcat( buf, "(Glowing) "   );
-    if ( IS_OBJ_STAT( obj, ITEM_HUM )      )   strcat( buf, "(Humming) "   );
-    if ( IS_OBJ_STAT( obj, ITEM_POISONED ) )   strcat( buf, "(Poisoned) "  );
-
+	&& IS_OBJ_STAT( obj, ITEM_MAGIC )  )   strcat( buf, "{o{y(Magical){x "   );
+    if ( IS_OBJ_STAT( obj, ITEM_GLOW )     )   strcat( buf, "{o{y(Glowing){x "   );
+    if ( IS_OBJ_STAT( obj, ITEM_HUM )      )   strcat( buf, "{o{y(Humming){x "   );
+    if ( IS_OBJ_STAT( obj, ITEM_POISONED ) )   strcat( buf, "{o{g(Poisoned){x "  );
+    strcat ( buf, "{o{g");
+    
     if ( fShort )
     {
 	if ( obj->short_descr )
@@ -101,6 +110,7 @@ char *format_obj_to_char( OBJ_DATA *obj, CHAR_DATA *ch, bool fShort )
 	if ( obj->description )
 	    strcat( buf, obj->description );
     }
+    strcat ( buf, "{x");
 
     return buf;
 }
@@ -191,7 +201,7 @@ void show_list_to_char( OBJ_DATA *list, CHAR_DATA *ch, bool fShort, bool fShowNo
 	{
 	    if ( prgnShow[iShow] != 1 )
 	    {
-		sprintf( buf, "(%2d) ", prgnShow[iShow] );
+		sprintf( buf, "{o{g(%2d){x ", prgnShow[iShow] );
 		strcat( buf1, buf );
 	    }
 	    else
@@ -200,7 +210,7 @@ void show_list_to_char( OBJ_DATA *list, CHAR_DATA *ch, bool fShort, bool fShowNo
 	    }
 	}
 	strcat( buf1, prgpstrShow[iShow] );
-	strcat( buf1, "\r\n" );
+	strcat( buf1, "{x\n\r" );
 	free_string( prgpstrShow[iShow] );
     }
 
@@ -208,7 +218,7 @@ void show_list_to_char( OBJ_DATA *list, CHAR_DATA *ch, bool fShort, bool fShowNo
     {
 	if ( IS_NPC( ch ) || IS_SET( ch->act, PLR_COMBINE ) )
 	    strcat( buf1, "     " );
-	strcat( buf1, "Nothing.\r\n" );
+	strcat( buf1, "{o{rNothing.{x\n\r" );
     }
 
     /*
@@ -229,32 +239,45 @@ void show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
 
     buf[0] = '\0';
 
+    if ( !victim || !ch )
+	return;
+
+    if ( victim->rider
+	&& victim->rider->in_room == ch->in_room )
+        return;
+
     if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_WIZINVIS )
 	&& get_trust( victim ) < get_trust( ch ) )
-                                                strcat( buf, "(Wizinvis) "   );
+                                                strcat( buf, "{o{d(Wizinvis){r "   );
     if ( IS_AFFECTED( victim, AFF_INVISIBLE )   )
-                                                strcat( buf, "(Invis) "      );
+                                                strcat( buf, "{o{c(Invis){r "      );
     if ( IS_AFFECTED( victim, AFF_HIDE )        )
-                                                strcat( buf, "(Hide) "       );
+                                                strcat( buf, "{o{y(Hide){r "       );
     if ( IS_AFFECTED( victim, AFF_CHARM )       )
-                                                strcat( buf, "(Charmed) "    );
+                                                strcat( buf, "{o{g(Charmed){r "    );
     if ( IS_AFFECTED( victim, AFF_PASS_DOOR )
 	|| ( IS_SET( race_table[ victim->race ].race_abilities, RACE_PASSDOOR )
 	    && ( !str_cmp( race_table[ victim->race ].name, "undead" )
 		|| !str_cmp( race_table[ victim->race ].name, "vampire" ) ) ) )
-                                                strcat( buf, "(Translucent) ");
+                                                strcat( buf, "{o{c(Translucent){r ");
     if ( IS_AFFECTED( victim, AFF_FAERIE_FIRE ) )
-                                                strcat( buf, "(Pink Aura) "  );
+                                                strcat( buf, "{o{m(Pink Aura){r "  );
     if ( IS_EVIL( victim )
 	&& ( IS_AFFECTED( ch, AFF_DETECT_EVIL )
 	    || ( IS_SET( race_table[ ch->race ].race_abilities,
 			RACE_DETECT_ALIGN )
 		&& IS_GOOD( ch ) ) ) )
-                                                strcat( buf, "(Red Aura) "   );
+                                                strcat( buf, "{o{r(Red Aura){r "   );
+    if ( IS_GOOD( victim )
+	&& ( IS_AFFECTED( ch, AFF_DETECT_GOOD )
+	    || ( IS_SET( race_table[ ch->race ].race_abilities,
+			RACE_DETECT_ALIGN )
+		&& IS_EVIL( ch ) ) ) )
+                                                strcat( buf, "{o{y(Golden Aura){r ");
     if ( IS_AFFECTED( victim, AFF_SANCTUARY )
 	|| IS_SET( race_table[ victim->race ].race_abilities, RACE_SANCT ) )
-                                                strcat( buf, "(White Aura) " );
-    if ( IS_AFFECTED( victim, AFF_FLAMING ) )   strcat( buf, "(Black Aura) " );
+                                                strcat( buf, "{o{w(White Aura){r " );
+    if ( IS_AFFECTED( victim, AFF_FLAMING ) )   strcat( buf, "{o{d(Black Aura){r " );
     if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_KILLER )  )
 						strcat( buf, "(KILLER) "     );
     if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_THIEF  )  )
@@ -262,11 +285,13 @@ void show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
     if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_REGISTER  )  )
 						strcat( buf, "(PK) "      );
     if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_AFK )  )
-						strcat( buf, "(AFK) "        );
+						strcat( buf, "[AFK] "        );
 
+    strcat ( buf, "{o{r" );
     if ( victim->position == POS_STANDING && victim->long_descr[0] != '\0' )
     {
 	strcat( buf, victim->long_descr );
+        strcat( buf, "{x" );
 	send_to_char( buf, ch );
 	return;
     }
@@ -278,12 +303,12 @@ void show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
     switch ( victim->position )
     {
     case POS_DEAD:     strcat( buf, " is DEAD!!"              ); break;
-    case POS_MORTAL:   strcat( buf, " is mortally wounded."   ); break;
-    case POS_INCAP:    strcat( buf, " is incapacitated."      ); break;
-    case POS_STUNNED:  strcat( buf, " is lying here stunned." ); break;
-    case POS_SLEEPING: strcat( buf, " is sleeping here."      ); break;
-    case POS_RESTING:  strcat( buf, " is resting here."       ); break;
-    case POS_STANDING: strcat( buf, " is here."               ); break;
+    case POS_MORTAL:   strcat( buf, " is mortally wounded"   ); break;
+    case POS_INCAP:    strcat( buf, " is incapacitated"      ); break;
+    case POS_STUNNED:  strcat( buf, " is lying here stunned" ); break;
+    case POS_SLEEPING: strcat( buf, " is sleeping here"      ); break;
+    case POS_RESTING:  strcat( buf, " is resting here"       ); break;
+    case POS_STANDING: strcat( buf, " is here"               ); break;
     case POS_FIGHTING:
 	strcat( buf, " is here, fighting " );
 	if ( !victim->fighting )
@@ -291,16 +316,24 @@ void show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
 	else if ( victim->fighting == ch )
 	    strcat( buf, "YOU!" );
 	else if ( victim->in_room == victim->fighting->in_room )
-	{
 	    strcat( buf, PERS( victim->fighting, ch ) );
-	    strcat( buf, "." );
-	}
 	else
-	    strcat( buf, "somone who left??" );
+	    strcat( buf, "someone who left??" );
 	break;
     }
 
-    strcat( buf, "\r\n" );
+    if ( victim->riding
+	&& victim->riding->in_room == victim->in_room )
+    {
+        char buf1 [ MAX_STRING_LENGTH ];
+
+        sprintf( buf1, ", mounted on %s.\n\r", PERS( victim->riding, ch ) );
+        strcat( buf, buf1 );
+    }
+    else
+	strcat( buf, "." );
+
+    strcat( buf, "{x\n\r" );
     buf[0] = UPPER( buf[0] );
     send_to_char( buf, ch );
     return;
@@ -311,7 +344,8 @@ void show_char_to_char_0( CHAR_DATA *victim, CHAR_DATA *ch )
 void show_char_to_char_1( CHAR_DATA *victim, CHAR_DATA *ch )
 {
     OBJ_DATA *obj;
-    char      buf [ MAX_STRING_LENGTH ];
+    char      buf  [ MAX_STRING_LENGTH ];
+    char      buf1 [ MAX_STRING_LENGTH ];
     int       iWear;
     int       percent;
     bool      found;
@@ -322,7 +356,31 @@ void show_char_to_char_1( CHAR_DATA *victim, CHAR_DATA *ch )
 	act( "$n looks at $N.",  ch, NULL, victim, TO_NOTVICT );
     }
 
-    sprintf( buf, "$N the %s:\r\n\r\n", race_table[ victim->race ].name );
+    buf[0] = '\0';
+    if ( victim->riding )
+    {
+	sprintf( buf1, "Mounted on %s, ", PERS( victim->riding, ch ) );
+	strcat( buf, buf1 );
+    }
+    else
+    if ( victim->rider )
+    {
+	sprintf( buf1, "Ridden by %s, ", PERS( victim->rider, ch ) );
+	strcat( buf, buf1 );
+    }
+
+    sprintf( buf1, "$N the %s:\n\r", race_table[ victim->race ].name );
+    strcat( buf, buf1 );
+
+    if ( !IS_NPC( victim ) && is_clan( victim  ) )
+    {
+	sprintf( buf1, "%s of %s.{x\n\r", 
+		flag_string( rank_flags, victim->pcdata->rank ),
+		victim->pcdata->clan->name );
+	buf1[0] = UPPER( buf1[0] );
+	strcat( buf, buf1 );
+    }
+    
     act( buf, ch, NULL, victim, TO_CHAR );
 
     if ( victim->description[0] != '\0' )
@@ -341,17 +399,17 @@ void show_char_to_char_1( CHAR_DATA *victim, CHAR_DATA *ch )
 
     strcpy( buf, PERS( victim, ch ) );
 
-         if ( percent >= 100 ) strcat( buf, " is in perfect health.\r\n"  );
-    else if ( percent >=  90 ) strcat( buf, " is slightly scratched.\r\n" );
-    else if ( percent >=  80 ) strcat( buf, " has a few bruises.\r\n"     );
-    else if ( percent >=  70 ) strcat( buf, " has some cuts.\r\n"         );
-    else if ( percent >=  60 ) strcat( buf, " has several wounds.\r\n"    );
-    else if ( percent >=  50 ) strcat( buf, " has many nasty wounds.\r\n" );
-    else if ( percent >=  40 ) strcat( buf, " is bleeding freely.\r\n"    );
-    else if ( percent >=  30 ) strcat( buf, " is covered in blood.\r\n"   );
-    else if ( percent >=  20 ) strcat( buf, " is leaking guts.\r\n"       );
-    else if ( percent >=  10 ) strcat( buf, " is almost dead.\r\n"        );
-    else                       strcat( buf, " is DYING.\r\n"              );
+         if ( percent >= 100 ) strcat( buf, " is in perfect health.\n\r"  );
+    else if ( percent >=  90 ) strcat( buf, " is slightly scratched.\n\r" );
+    else if ( percent >=  80 ) strcat( buf, " has a few bruises.\n\r"     );
+    else if ( percent >=  70 ) strcat( buf, " has some cuts.\n\r"         );
+    else if ( percent >=  60 ) strcat( buf, " has several wounds.\n\r"    );
+    else if ( percent >=  50 ) strcat( buf, " has many nasty wounds.\n\r" );
+    else if ( percent >=  40 ) strcat( buf, " is bleeding freely.\n\r"    );
+    else if ( percent >=  30 ) strcat( buf, " is covered in blood.\n\r"   );
+    else if ( percent >=  20 ) strcat( buf, " is leaking guts.\n\r"       );
+    else if ( percent >=  10 ) strcat( buf, " is almost dead.\n\r"        );
+    else                       strcat( buf, " is DYING.\n\r"              );
 
     buf[0] = UPPER( buf[0] );
     send_to_char( buf, ch );
@@ -364,20 +422,22 @@ void show_char_to_char_1( CHAR_DATA *victim, CHAR_DATA *ch )
 	{
 	    if ( !found )
 	    {
-		send_to_char( "\r\n", ch );
-		act( "$E is using", ch, NULL, victim, TO_CHAR );
+		send_to_char( "\n\r", ch );
+		act( "{o{r$E is using{x", ch, NULL, victim, TO_CHAR );
 		found = TRUE;
 	    }
 	    send_to_char( where_name[iWear], ch );
 	    send_to_char( format_obj_to_char( obj, ch, TRUE ), ch );
-	    send_to_char( "\r\n", ch );
+	    send_to_char( "\n\r", ch );
 	}
     }
 
-    if ( victim != ch
-	&& !IS_NPC( ch ) && number_percent( ) < ch->pcdata->learned[gsn_peek] )
+    if ( ( victim != ch
+	 && !IS_NPC( ch ) && number_percent( ) < ch->pcdata->learned[gsn_peek] )
+	|| ch->riding == victim 
+	|| ch->rider  == victim )
     {
-	send_to_char( "\r\nYou peek at the inventory:\r\n", ch );
+	send_to_char( "\n\r{o{rYou peek at the inventory:{x\n\r", ch );
 	show_list_to_char( victim->carrying, ch, TRUE, TRUE );
     }
 
@@ -412,7 +472,7 @@ void show_char_to_char( CHAR_DATA *list, CHAR_DATA *ch )
 		     || IS_SET( race_table[ rch->race ].race_abilities,
 			       RACE_INFRAVISION ) ) )
 	{
-	    send_to_char( "You see glowing red eyes watching YOU!\r\n", ch );
+	    send_to_char( "{o{rYou see glowing red eyes watching YOU!{x\n\r", ch );
 	}
     }
 
@@ -428,7 +488,7 @@ bool check_blind( CHAR_DATA *ch )
 
     if ( IS_AFFECTED( ch, AFF_BLIND ) )
     {
-	send_to_char( "You can't see a thing!\r\n", ch );
+	send_to_char( "You can't see a thing!\n\r", ch );
 	return FALSE;
     }
 
@@ -453,14 +513,14 @@ void do_look( CHAR_DATA *ch, char *argument )
 
     if ( ch->position < POS_SLEEPING )
     {
-	send_to_char( "You can't see anything but stars!  See how pretty!\r\n",
+	send_to_char( "You can't see anything but stars!  See how pretty!\n\r",
 		     ch );
 	return;
     }
 
     if ( ch->position == POS_SLEEPING )
     {
-	send_to_char( "You can't see anything, you're sleeping!  Zzz.\r\n",
+	send_to_char( "You can't see anything, you're sleeping!  Zzz.\n\r",
 		     ch );
 	return;
     }
@@ -472,7 +532,7 @@ void do_look( CHAR_DATA *ch, char *argument )
 	&& !IS_SET( ch->act, PLR_HOLYLIGHT )
 	&& room_is_dark( ch->in_room ) )
     {
-	send_to_char( "It is pitch black ... \r\n", ch );
+	send_to_char( "It is pitch black ... \n\r", ch );
 	show_char_to_char( ch->in_room->people, ch );
 	return;
     }
@@ -483,18 +543,26 @@ void do_look( CHAR_DATA *ch, char *argument )
     if ( arg1[0] == '\0' || !str_cmp( arg1, "auto" ) )
     {
 	/* 'look' or 'look auto' */
-	send_to_char( ch->in_room->name, ch );
-	send_to_char( "\r\n", ch );
+	if ( !IS_SET( ch->act, PLR_EDIT_INFO ) )
+	{
+	    sprintf ( buf, "{o{c%s{x\n\r", ch->in_room->name );
+	    send_to_char( buf, ch );
+	}
+	else
+	    show_room_info( ch, ch->in_room );
 
 	if ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOEXIT ) )
 	    do_exits( ch, "auto" );
 
 	if ( arg1[0] == '\0'
-	    || ( !IS_NPC( ch ) && !IS_SET( ch->act, PLR_BRIEF ) ) )
-	    send_to_char( ch->in_room->description, ch );
-
+	    || ( !IS_NPC( ch ) && !IS_SET( ch->act, PLR_BRIEF ) ) ) 
+	{
+            sprintf ( buf, "{o{y%s{x", ch->in_room->description );
+	    send_to_char( buf, ch );
+	}
+	
         if ( IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-            send_to_char( "It seems eerily quiet.\r\n", ch );
+	    send_to_char( "{o{dIt seems eerily quiet.{x\n\r", ch );
 
 	show_list_to_char( ch->in_room->contents, ch, FALSE, FALSE );
 	show_char_to_char( ch->in_room->people,   ch );
@@ -506,30 +574,30 @@ void do_look( CHAR_DATA *ch, char *argument )
 	/* 'look in' */
 	if ( arg2[0] == '\0' )
 	{
-	    send_to_char( "Look in what?\r\n", ch );
+	    send_to_char( "Look in what?\n\r", ch );
 	    return;
 	}
 
 	if ( !( obj = get_obj_here( ch, arg2 ) ) )
 	{
-	    send_to_char( "You do not see that here.\r\n", ch );
+	    send_to_char( "You do not see that here.\n\r", ch );
 	    return;
 	}
 
 	switch ( obj->item_type )
 	{
 	default:
-	    send_to_char( "That is not a container.\r\n", ch );
+	    send_to_char( "That is not a container.\n\r", ch );
 	    break;
 
 	case ITEM_DRINK_CON:
 	    if ( obj->value[1] <= 0 )
 	    {
-		send_to_char( "It is empty.\r\n", ch );
+		send_to_char( "It is empty.\n\r", ch );
 		break;
 	    }
 
-	    sprintf( buf, "It's %s full of a %s liquid.\r\n",
+	    sprintf( buf, "It's %s full of a %s liquid.\n\r",
 		obj->value[1] <     obj->value[0] / 4
 		    ? "less than half" :
 		obj->value[1] < 3 * obj->value[0] / 4
@@ -545,7 +613,7 @@ void do_look( CHAR_DATA *ch, char *argument )
 	case ITEM_CORPSE_PC:
 	    if ( IS_SET( obj->value[1], CONT_CLOSED ) )
 	    {
-		send_to_char( "It is closed.\r\n", ch );
+		send_to_char( "It is closed.\n\r", ch );
 		break;
 	    }
 
@@ -584,7 +652,7 @@ void do_look( CHAR_DATA *ch, char *argument )
 	if ( is_name( arg1, obj->name ) )
 	{
 	    send_to_char( obj->description, ch );
-	    send_to_char( "\r\n", ch );
+	    send_to_char( "\n\r", ch );
 	    return;
 	}
     }
@@ -611,7 +679,7 @@ void do_look( CHAR_DATA *ch, char *argument )
 	if ( is_name( arg1, obj->name ) )
 	{
 	    send_to_char( obj->description, ch );
-	    send_to_char( "\r\n", ch );
+	    send_to_char( "\n\r", ch );
 	    return;
 	}
     }
@@ -631,21 +699,21 @@ void do_look( CHAR_DATA *ch, char *argument )
     else if ( !str_prefix( arg1, "down"  ) ) door = 5;
     else
     {
-	send_to_char( "You do not see that here.\r\n", ch );
+	send_to_char( "You do not see that here.\n\r", ch );
 	return;
     }
 
     /* 'look direction' */
     if ( !( pexit = ch->in_room->exit[door] ) )
     {
-	send_to_char( "Nothing special there.\r\n", ch );
+	send_to_char( "Nothing special there.\n\r", ch );
 	return;
     }
 
     if ( pexit->description && pexit->description[0] != '\0' )
 	send_to_char( pexit->description, ch );
     else
-	send_to_char( "Nothing special there.\r\n", ch );
+	send_to_char( "Nothing special there.\n\r", ch );
 
     if (   pexit->keyword
 	&& pexit->keyword[0] != '\0'
@@ -675,7 +743,7 @@ void do_examine( CHAR_DATA *ch, char *argument )
 
     if ( arg[0] == '\0' )
     {
-	send_to_char( "Examine what?\r\n", ch );
+	send_to_char( "Examine what?\n\r", ch );
 	return;
     }
 
@@ -692,7 +760,7 @@ void do_examine( CHAR_DATA *ch, char *argument )
 	case ITEM_CONTAINER:
 	case ITEM_CORPSE_NPC:
 	case ITEM_CORPSE_PC:
-	    send_to_char( "When you look inside, you see:\r\n", ch );
+	    send_to_char( "{o{bWhen you look inside, you see:{x\n\r", ch );
 	    sprintf( buf, "in %s", arg );
 	    do_look( ch, buf );
 	}
@@ -721,7 +789,7 @@ void do_exits( CHAR_DATA *ch, char *argument )
     if ( !check_blind( ch ) )
 	return;
 
-    strcpy( buf, fAuto ? "[Exits:" : "Obvious exits:\r\n" );
+    strcpy( buf, fAuto ? "{o{m[Exits:" : "Obvious exits:\n\r" );
 
     found = FALSE;
     for ( door = 0; door <= 5; door++ )
@@ -738,7 +806,7 @@ void do_exits( CHAR_DATA *ch, char *argument )
 	    }
 	    else
 	    {
-		sprintf( buf + strlen( buf ), "%-5s - %s\r\n",
+		sprintf( buf + strlen( buf ), "%-5s - %s\n\r",
 		    capitalize( dir_name[door] ),
 		    room_is_dark( pexit->to_room )
 			?  "Too dark to tell"
@@ -749,262 +817,295 @@ void do_exits( CHAR_DATA *ch, char *argument )
     }
 
     if ( !found )
-	strcat( buf, fAuto ? " none" : "None.\r\n" );
+	strcat( buf, fAuto ? " none" : "None.\n\r" );
 
     if ( fAuto )
-	strcat( buf, "]\r\n" );
+	strcat( buf, "]{x\n\r" );
 
     send_to_char( buf, ch );
     return;
 }
 
-/* Scan command coded by Martek of Glass Dragon */
-void do_scan( CHAR_DATA *ch, char *argument )
+
+
+/*
+ * Enhanced version of do_exits() done by Zen.
+ */
+void show_room_info( CHAR_DATA *ch, ROOM_INDEX_DATA *room )
 {
-    ROOM_INDEX_DATA *pRoom;
-    ROOM_INDEX_DATA *toRoom;
-    int d, parse;
-    bool nexit;
-    bool seen;
-    char buf[MAX_STRING_LENGTH];
-    char *const exitname[] =
-	{ "North", "East", "South", "West", "Up", "Down" };
+    char buf	[ MAX_STRING_LENGTH ];
+    char buf1	[ MAX_STRING_LENGTH ];
 
-    /* Look in all directions and assume we have no exits until we find one */
-    nexit = TRUE;
-    for (d = 0; d <= 5; d++)
-    {
-		pRoom = ch->in_room;
-        
-        if ( pRoom == NULL
-			|| pRoom->exit[d] == NULL
-			|| (toRoom = pRoom->exit[d]->to_room) == NULL )
-        {	
-	    	continue;
-	    }
-		nexit = FALSE;
+    if ( !IS_SET( ch->act, PLR_EDIT_INFO ) )
+	return;
 
-        sprintf(buf, "%s:\n\r", exitname[d]);
-        send_to_char(buf, ch);
-
-        /* We found an exit, so let's look in that direction */
-        for (parse = 1; parse <= 4 ; parse++)
-        {
-            if (pRoom->exit[d] == NULL
-	    		|| (toRoom = pRoom->exit[d]->to_room) == NULL ) 
-            {
-            	/*sprintf( buf, "\n\r");
-				send_to_char( buf, ch);*/
-				
-                break;
-        	}
-
-		    /* We can't look through closed doors
-		     * We stop here if we find one */
-		    if ( IS_SET(pRoom->exit[d]->exit_info, EX_CLOSED) )
-		    {
-				sprintf( buf, " Closed Door (%d away).\n\r", parse - 1 );
-				send_to_char( buf, ch );
-				break;
-		    }
-
-		    /* If the room is valid we show the player who's inside */
-	        pRoom = pRoom->exit[d]->to_room;
-		    seen = FALSE;
-	        if ( pRoom != NULL && pRoom->people !=NULL)
-	        {
-				CHAR_DATA *rch;
-
-				for ( rch = pRoom->people; rch != NULL;
-			    	rch = rch->next_in_room )
-				{
-			    	if ( !can_see( ch, rch ) )
-						continue;
-
-		    		seen = TRUE;
-			    	sprintf( buf, " %s,", PERS( rch, ch ) );
-			    	send_to_char( buf, ch );
-				}
-
-		        /* Only show the player who's inside if someone there */
-				if ( seen )
-				{
-			    	sprintf( buf, " (%d away).\n\r", parse );
-			    	send_to_char( buf, ch );
-				}
-            }
-        }
-    }
-
-    /* Inform the character of an isolated room */
-    if( nexit )
-    {
-		send_to_char( "This room has no exits!\n\r", ch );
-	}
+    buf[0] = '\0';
+    strcpy ( buf1, flag_string( room_flags, room->room_flags ) );
+    sprintf( buf, "{m[{o%d{x{m]{o{c %s{x ( %s ) [ %s ]{x\n\r",
+	    room->vnum,
+	    room->name,
+	    flag_string( sector_flags, room->sector_type ),
+	    all_capitalize( buf1 ) );
+    buf1[0] = '\0';
+    strcat( buf1, buf );
+    send_to_char( buf1, ch );
 
     return;
 }
+
+
 
 void do_score( CHAR_DATA *ch, char *argument )
 {
     AFFECT_DATA *paf;
     char         buf  [ MAX_STRING_LENGTH ];
     char         buf1 [ MAX_STRING_LENGTH ];
+    char         buf2 [ MAX_STRING_LENGTH ];
 
     buf1[0] = '\0';
-    sprintf( buf,
-	    "You are %s%s, level %d, %d years old (%d hours).\r\n",
-	    ch->name,
-	    IS_NPC( ch ) ? "" : ch->pcdata->title,
-	    ch->level,
-	    get_age( ch ),
-	    ( ch->played / 3600 ) );
-    strcat( buf1, buf );
 
-    sprintf( buf, "You are %s.\r\n", race_table[ ch->race ].name );
+    sprintf( buf,
+	    "{o{cScore for %s%s.{x\n\r",
+	    ch->name,
+	    IS_NPC( ch ) ? "" : ch->pcdata->title );
     strcat( buf1, buf );
 
     if ( get_trust( ch ) != ch->level )
     {
-	sprintf( buf, "You are trusted at level %d.\r\n",
+	sprintf( buf, "{o{cYou are trusted at level %d.{x\n\r",
 		get_trust( ch ) );
 	strcat( buf1, buf );
     }
 
+    strcat( buf1, "{o{c-----------------------------------------------------------------------------{x\n\r" );
+
     sprintf( buf,
-	"You have %d/%d hit, %d/%d mana, %d/%d movement, %d practices.\r\n",
-	    ch->hit,  ch->max_hit,
-	    ch->mana, ch->max_mana,
-	    ch->move, ch->max_move,
-	    ch->practice );
+	    "{o{cLEVEL: %-3d         Race : %-10.10s        Played: %d hours{x\n\r",
+	    ch->level,
+	    race_table[ ch->race ].name,
+	    ( ch->played / 3600 ) );
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "You are carrying %d/%d items with weight %d/%d kg.\r\n",
-	    ch->carry_number, can_carry_n( ch ),
-	    ch->carry_weight, can_carry_w( ch ) );
+	    "{o{cYEARS: %-6d      Class: %-11.11s       Time:   %s{x\r",
+	    get_age( ch ),
+	    class_table[ ch->class ]->name,
+	    ctime ( &current_time ) );
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "Str: %d  Int: %d  Wis: %d  Dex: %d  Con: %d.\r\n",
-	    get_curr_str( ch ),
-	    get_curr_int( ch ),
-	    get_curr_wis( ch ),
-	    get_curr_dex( ch ),
-	    get_curr_con( ch ) );
+	    "{o{cSTR  : %2d(%2d)      Armor: ",
+	    get_curr_str( ch ), get_max_str( ch ) );
     strcat( buf1, buf );
 
-    sprintf( buf,
-	    "You have scored %d exp, and have %d gold coins.\r\n",
-	    ch->exp,  ch->gold );
-    strcat( buf1, buf );
-
-    sprintf( buf,
-	    "Autoexit: %s.  Autoloot: %s.  Autogold: %s.  Autosac: %s.\r\n",
-	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOEXIT ) ) ? "yes"
-	                                                         : "no",
-	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOLOOT ) ) ? "yes"
-	                                                         : "no",
-	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOGOLD ) ) ? "yes"
-	                                                         : "no",
-	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOSAC  ) ) ? "yes"
-	                                                         : "no" );
-    strcat( buf1, buf );
-    
-    sprintf( buf, "Wimpy set to %d hit points.\r\n", ch->wimpy );
-    strcat( buf1, buf );
-
-    if ( !IS_NPC( ch ) )
+    if ( ch->level >= 25 )
     {
-	sprintf( buf, "Page pausing set to %d lines of text.\r\n",
-		ch->pcdata->pagelen );
+	sprintf( buf, "%4.4d, ", GET_AC( ch ) );
 	strcat( buf1, buf );
     }
 
-    if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_DRUNK]   > 10 )
-	strcat( buf1, "You are drunk.\r\n"   );
-    if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_THIRST] ==  0
-	&& ch->level < LEVEL_IMMORTAL )
-	strcat( buf1, "You are thirsty.\r\n" );
-    if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_FULL]   ==  0
-	&& ch->level < LEVEL_IMMORTAL )
-	strcat( buf1, "You are hungry.\r\n"  );
+         if ( GET_AC( ch ) >=  101 ) strcat( buf1, "WORSE than naked!" );
+    else if ( GET_AC( ch ) >=   80 ) strcat( buf1, "naked."            );
+    else if ( GET_AC( ch ) >=   60 ) strcat( buf1, "wearing clothes."  );
+    else if ( GET_AC( ch ) >=   40 ) strcat( buf1, "slightly armored." );
+    else if ( GET_AC( ch ) >=   20 ) strcat( buf1, "somewhat armored." );
+    else if ( GET_AC( ch ) >=    0 ) strcat( buf1, "armored."          );
+    else if ( GET_AC( ch ) >= - 20 ) strcat( buf1, "well armored."     );
+    else if ( GET_AC( ch ) >= - 40 ) strcat( buf1, "strongly armored." );
+    else if ( GET_AC( ch ) >= - 60 ) strcat( buf1, "heavily armored."  );
+    else if ( GET_AC( ch ) >= - 80 ) strcat( buf1, "superbly armored." );
+    else if ( GET_AC( ch ) >= -100 ) strcat( buf1, "divinely armored." );
+    else                           strcat( buf1, "invincible!"       );
+    strcat( buf1, "{x\n\r" );
+
+    sprintf( buf,
+	    "{o{cINT  : %2d(%2d)      Align: ",
+	    get_curr_int( ch ), get_max_int( ch ) );
+    strcat( buf1, buf );
+
+         if ( ch->alignment >  900 ) strcpy( buf2, "angelic." );
+    else if ( ch->alignment >  700 ) strcpy( buf2, "saintly." );
+    else if ( ch->alignment >  350 ) strcpy( buf2, "good."    );
+    else if ( ch->alignment >  100 ) strcpy( buf2, "kind."    );
+    else if ( ch->alignment > -100 ) strcpy( buf2, "neutral." );
+    else if ( ch->alignment > -350 ) strcpy( buf2, "mean."    );
+    else if ( ch->alignment > -700 ) strcpy( buf2, "evil."    );
+    else if ( ch->alignment > -900 ) strcpy( buf2, "demonic." );
+    else                             strcpy( buf2, "satanic." );
+
+    if ( ch->level >= 10 )
+	sprintf( buf, "%+4.4d, %-14.14s   ", ch->alignment, buf2 );
+    else
+	sprintf( buf, "%-20.20s   ", buf2 );
+    strcat( buf1, buf );
+
+    sprintf( buf,
+	    "Items: %5.5d   (max %5.5d){x\n\r",
+	    ch->carry_number, can_carry_n( ch ) );
+    strcat( buf1, buf );
 
     switch ( ch->position )
     {
     case POS_DEAD:     
-	strcat( buf1, "You are DEAD!!\r\n"            ); break;
+	strcpy( buf2, "DEAD!!"            ); break;
     case POS_MORTAL:
-	strcat( buf1, "You are mortally wounded.\r\n" ); break;
+	strcpy( buf2, "mortally wounded." ); break;
     case POS_INCAP:
-	strcat( buf1, "You are incapacitated.\r\n"    ); break;
+	strcpy( buf2, "incapacitated."    ); break;
     case POS_STUNNED:
-	strcat( buf1, "You are stunned.\r\n"          ); break;
+	strcpy( buf2, "stunned."          ); break;
     case POS_SLEEPING:
-	strcat( buf1, "You are sleeping.\r\n"         ); break;
+	strcpy( buf2, "sleeping."         ); break;
     case POS_RESTING:
-	strcat( buf1, "You are resting.\r\n"          ); break;
+	strcpy( buf2, "resting."          ); break;
     case POS_STANDING:
-	strcat( buf1, "You are standing.\r\n"         ); break;
+	strcpy( buf2, "standing."         ); break;
     case POS_FIGHTING:
-	strcat( buf1, "You are fighting.\r\n"         ); break;
+	strcpy( buf2, "fighting."         ); break;
     }
 
-    if ( ch->level >= 25 )
-    {
-	sprintf( buf, "AC: %d.  ", GET_AC( ch ) );
-	strcat( buf1, buf );
-    }
+    sprintf( buf,
+	    "{o{cWIS  : %2d(%2d)      Pos'n: %-21.21s  Weight: %5.5d (max %7.7d){x\n\r",
+	    get_curr_wis( ch ), get_max_wis( ch ), buf2,
+	    ch->carry_weight, can_carry_w( ch ) );
+    strcat( buf1, buf );
 
-    strcat( buf1, "You are " );
-         if ( GET_AC( ch ) >=  101 ) strcat( buf1, "WORSE than naked!\r\n" );
-    else if ( GET_AC( ch ) >=   80 ) strcat( buf1, "naked.\r\n"            );
-    else if ( GET_AC( ch ) >=   60 ) strcat( buf1, "wearing clothes.\r\n"  );
-    else if ( GET_AC( ch ) >=   40 ) strcat( buf1, "slightly armored.\r\n" );
-    else if ( GET_AC( ch ) >=   20 ) strcat( buf1, "somewhat armored.\r\n" );
-    else if ( GET_AC( ch ) >=    0 ) strcat( buf1, "armored.\r\n"          );
-    else if ( GET_AC( ch ) >= - 20 ) strcat( buf1, "well armored.\r\n"     );
-    else if ( GET_AC( ch ) >= - 40 ) strcat( buf1, "strongly armored.\r\n" );
-    else if ( GET_AC( ch ) >= - 60 ) strcat( buf1, "heavily armored.\r\n"  );
-    else if ( GET_AC( ch ) >= - 80 ) strcat( buf1, "superbly armored.\r\n" );
-    else if ( GET_AC( ch ) >= -100 ) strcat( buf1, "divinely armored.\r\n" );
-    else                           strcat( buf1, "invincible!\r\n"       );
+    sprintf( buf,
+	    "{o{cDEX  : %2d(%2d)      Wimpy: %d{x\n\r",
+	    get_curr_dex( ch ), get_max_dex( ch ), ch->wimpy );
+    strcat( buf1, buf );
+
+    sprintf( buf,
+	    "{o{cCON  : %2d(%2d)                                                    Autosac (%c){x\n\r",
+	    get_curr_con( ch ), get_max_con( ch ),
+	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOSAC  ) ) ? 'X'
+	                                                         : ' ' );
+    strcat( buf1, buf );
+
+    sprintf( buf,
+	    "{o{cPRACT: %3.3d         Hitpoints: %-5d of %5d   Pager: (%c) %3d    Autoexit(%c){x\n\r",
+	    ch->practice,
+	    ch->hit,  ch->max_hit,
+	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_PAGER    ) ) ? 'X'
+	                                                         : ' ',
+	    ( IS_NPC( ch ) ? 0 : ch->pcdata->pagelen ),
+	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOEXIT ) ) ? 'X'
+	                                                         : ' ' );
+    strcat( buf1, buf );
+
+    sprintf( buf,
+	    "{o{cXP   : %-9d        Mana: %-5d of %5d   MKills:  %-5.5d    Autoloot(%c){x\n\r",
+	    ch->exp,
+	    ch->mana, ch->max_mana,
+	    ( IS_NPC( ch ) ? 0 : ch->pcdata->mkills ),
+	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOLOOT ) ) ? 'X'
+	                                                         : ' ' );
+    strcat( buf1, buf );
+
+    sprintf( buf,
+	    "{o{cGOLD : %-10d       Move: %-5d of %5d   MDeaths: %-5.5d    Autogold(%c){x\n\r",
+	    ch->gold,
+	    ch->move, ch->max_move,
+	    ( IS_NPC( ch ) ? 0 : ch->pcdata->mdeaths ),
+	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOGOLD ) ) ? 'X'
+	                                                         : ' ' );
+    strcat( buf1, buf );
+
+    if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_DRUNK]   > 10 )
+	strcat( buf1, "{o{cYou are drunk.{x\n\r"   );
+    if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_THIRST] ==  0
+	&& ch->level < LEVEL_IMMORTAL )
+	strcat( buf1, "{o{cYou are thirsty.{x\n\r" );
+    if ( !IS_NPC( ch ) && ch->pcdata->condition[COND_FULL]   ==  0
+	&& ch->level < LEVEL_IMMORTAL )
+	strcat( buf1, "{o{cYou are hungry.{x\n\r"  );
+
+        strcat( buf1, "{x\n\r" );
 
     if ( ch->level >= 15 )
     {
         if ( IS_NPC( ch )
 	    || ch->level >=
                 skill_table[gsn_dual].skill_level[ch->class] )
-            strcat ( buf1, "Primary Weapon " );
-        sprintf( buf, "Hitroll: %d  Damroll: %d.\r\n",
+            strcat ( buf1, "{o{cPrimary weapon       " );
+        sprintf( buf, "{o{cHitRoll: %-3d              DamRoll: %-3d",
             get_hitroll( ch, WEAR_WIELD ), get_damroll( ch, WEAR_WIELD) );
         strcat( buf1, buf );
+        strcat( buf1, "{x\n\r" );
         if ( get_eq_char( ch, WEAR_WIELD_2 ) )
         {
-            sprintf( buf, " Second Weapon Hitroll: %d  Damroll: %d.\r\n",
+            sprintf( buf, "{o{cSecondary weapon     HitRoll: %-3d              DamRoll: %-3d{x\n\r",
 		get_hitroll( ch, WEAR_WIELD_2 ),
 		get_damroll( ch, WEAR_WIELD_2 ) );
             strcat( buf1, buf );
         }
     }
     
-    if ( ch->level >= 10 )
+    if ( !IS_NPC( ch ) &&
+	( IS_SET( ch->act, PLR_REGISTER ) ||
+	  ch->race == race_lookup( "Vampire" ) ) )
     {
-	sprintf( buf, "Alignment: %d.  ", ch->alignment );
+	strcat( buf1, "{o{c-----------------------------------------------------------------------------{x\n\r" );
+
+	sprintf( buf,
+		"{o{cPKILL DATA:  PKills: %3.3d    PDeaths: %3.3d  Illegal PKills: %3.3d{x\n\r",
+		ch->pcdata->pkills, ch->pcdata->pdeaths,
+		ch->pcdata->illegal_pk );
 	strcat( buf1, buf );
     }
 
-    strcat( buf1, "You are " );
-         if ( ch->alignment >  900 ) strcat( buf1, "angelic.\r\n" );
-    else if ( ch->alignment >  700 ) strcat( buf1, "saintly.\r\n" );
-    else if ( ch->alignment >  350 ) strcat( buf1, "good.\r\n"    );
-    else if ( ch->alignment >  100 ) strcat( buf1, "kind.\r\n"    );
-    else if ( ch->alignment > -100 ) strcat( buf1, "neutral.\r\n" );
-    else if ( ch->alignment > -350 ) strcat( buf1, "mean.\r\n"    );
-    else if ( ch->alignment > -700 ) strcat( buf1, "evil.\r\n"    );
-    else if ( ch->alignment > -900 ) strcat( buf1, "demonic.\r\n" );
-    else                             strcat( buf1, "satanic.\r\n" );
-    
+    if ( !IS_NPC( ch ) && is_clan( ch )
+	&& ch->pcdata->clan->clan_type != CLAN_ORDER
+	&& ch->pcdata->clan->clan_type != CLAN_GUILD )
+    {
+	strcat( buf1, "{o{c-----------------------------------------------------------------------------{x\n\r" );
+
+	sprintf( buf,
+		"{o{cCLAN STATS:  %-15.15s  Clan PKills:  %-6.6d     Clan PDeaths:  %-6.6d{x\n\r",
+		ch->pcdata->clan->name, ch->pcdata->clan->pkills,
+		ch->pcdata->clan->pdeaths );
+	strcat( buf1, buf );
+
+	sprintf( buf, "{o{cYou are %s of %s.{x\n\r",
+		flag_string( rank_flags, ch->pcdata->rank ),
+		ch->pcdata->clan->name );
+	strcat( buf1, buf );
+    }
+
+    if ( !IS_NPC( ch ) && is_clan( ch )
+	&& ch->pcdata->clan->clan_type == CLAN_ORDER )
+    {
+	strcat( buf1, "{o{c-----------------------------------------------------------------------------{x\n\r" );
+
+	sprintf( buf,
+		"{o{cOrder:  %-20s  Order MKills:  %-6.6d   Order MDeaths:  %-6.6d{x\n\r",
+		ch->pcdata->clan->name, ch->pcdata->clan->mkills,
+		ch->pcdata->clan->mdeaths );
+	strcat( buf1, buf );
+
+	sprintf( buf, "{o{cYou are %s of %s.{x\n\r",
+		flag_string( rank_flags, ch->pcdata->rank ),
+		ch->pcdata->clan->name );
+	strcat( buf1, buf );
+    }
+
+    if ( !IS_NPC( ch ) && is_clan( ch )
+	&& ch->pcdata->clan->clan_type == CLAN_GUILD )
+    {
+	strcat( buf1, "{o{c-----------------------------------------------------------------------------{x\n\r" );
+
+	sprintf( buf,
+		"{o{cGuild:  %-20s  Guild MKills:  %-6.6d   Guild MDeaths:  %-6.6d{x\n\r",
+		ch->pcdata->clan->name, ch->pcdata->clan->mkills,
+		ch->pcdata->clan->mdeaths );
+	strcat( buf1, buf );
+
+	sprintf( buf, "{o{cYou are %s of %s.{x\n\r",
+		flag_string( rank_flags, ch->pcdata->rank ),
+		ch->pcdata->clan->name );
+	strcat( buf1, buf );
+    }
+
     if ( ch->affected )
     {
         bool printed = FALSE;
@@ -1016,11 +1117,12 @@ void do_score( CHAR_DATA *ch, char *argument )
 
 	    if ( !printed )
 	    {
-		strcat( buf1, "You are affected by:\r\n" );
+		strcat( buf1, "{o{c-----------------------------------------------------------------------------{x\n\r" );
+		strcat( buf1, "{o{cAFFECT DATA:{x\n\r" );
 		printed = TRUE;
 	    }
 
-	    sprintf( buf, "Spell: '%s'", skill_table[paf->type].name );
+	    sprintf( buf, "{o{c[ '%s'", skill_table[paf->type].name );
 	    strcat( buf1, buf );
 
 	    if ( ch->level >= 20 )
@@ -1033,7 +1135,7 @@ void do_score( CHAR_DATA *ch, char *argument )
 		strcat( buf1, buf );
 	    }
 
-	    strcat( buf1, ".\r\n" );
+	    strcat( buf1, " ].{x\n\r" );
 	}
     }
 
@@ -1073,7 +1175,7 @@ void do_time( CHAR_DATA *ch, char *argument )
     else                             suf = "th";
 
     sprintf( buf,
-	    "It is %d o'clock %s, Day of %s, %d%s the Month of %s.\r\n",
+	    "{o{yIt is %d o'clock %s, Day of %s, %d%s the Month of %s.{x\n\r",
 	    ( time_info.hour % 12 == 0 ) ? 12 : time_info.hour % 12,
 	    time_info.hour >= 12 ? "pm" : "am",
 	    day_name[day % 7],
@@ -1081,13 +1183,13 @@ void do_time( CHAR_DATA *ch, char *argument )
 	    month_name[time_info.month] );
     send_to_char( buf, ch );
     sprintf( buf,
-	    "EnvyMud started up %s\rThe system time is %s\r",
+	    "{o{yEnvyMud started up %s\rThe system time is %s{x\r",
 	    str_boot_time,
 	    (char *) ctime( &current_time ) );
     send_to_char( buf, ch );
     if ( down_time > 0 )
     {
-	sprintf( buf, "%s will be at %s\r", Reboot ? "Reboot" : "Shutdown",
+	sprintf( buf, "{o{y%s will be at %s{x\r", Reboot ? "Reboot" : "Shutdown",
 		(char *) ctime( &down_time ) );
 	send_to_char( buf, ch );
     }
@@ -1099,26 +1201,45 @@ void do_time( CHAR_DATA *ch, char *argument )
 void do_weather( CHAR_DATA *ch, char *argument )
 {
            char         buf     [ MAX_STRING_LENGTH ];
-    static char * const sky_look[ 4 ] =
+           char         descr   [ MAX_STRING_LENGTH ];
+           int          wind;
+    static char * const sky_look[ 8 ] =
     {
 	"cloudless",
 	"cloudy",
 	"rainy",
-	"lit by flashes of lightning"
+	"lit by flashes of lightning",
+	"slightly overcast",
+	"scattered with a few flakes",
+	"filled with flakes",
+	"a blizzard of white"
     };
 
     if ( !IS_OUTSIDE( ch ) )
     {
-	send_to_char( "You can't see the weather indoors.\r\n", ch );
+	send_to_char( "You can't see the weather indoors.\n\r", ch );
 	return;
     }
 
-    sprintf( buf, "The sky is %s and %s.\r\n",
-	    sky_look[weather_info.sky],
-	    weather_info.change >= 0
-	    ? "a warm southerly breeze blows"
-	    : "a cold northern gust blows" );
-    send_to_char( buf, ch );
+    wind = weather_info.windspeed;
+    descr[0] = '\0';
+    sprintf( buf, "The sky is %s ",
+	    (time_info.month <= 4 || time_info.month >= 15)
+	    ? sky_look[weather_info.sky + 4]
+	    : sky_look[weather_info.sky] );
+    strcat( descr, buf );
+    sprintf( buf, "and a %s %sward %s blows.\n\r",
+	    ( weather_info.temperature < 35 ) ? "cold" :
+	    ( weather_info.temperature < 60 ) ? "cool" :
+	    ( weather_info.temperature < 90 ) ? "warm" : "hot",
+	    dir_name[abs( weather_info.winddir ) % 3],
+	    wind <= 20 ? "breeze" :
+	    wind <= 50 ? "wind" :
+	    wind <= 80 ? "gust" :
+			 "torrent" );
+    strcat( descr, buf );
+
+    send_to_char( descr, ch );
     return;
 }
 
@@ -1141,12 +1262,12 @@ void do_help( CHAR_DATA *ch, char *argument )
 	if ( is_name( argument, pHelp->keyword ) )
 	{
 	    if ( hfound )
-	        send_to_char( "\r\n----------------------------------------------------------------------------\r\n\r\n", ch );
+	        send_to_char( "\n\r----------------------------------------------------------------------------\n\r\n\r", ch );
 
 	    if ( pHelp->level >= 0 && str_cmp( argument, "imotd" ) )
 	    {
 		send_to_char( pHelp->keyword, ch );
-		send_to_char( "\r\n", ch );
+		send_to_char( "\n\r", ch );
 	    }
 
 	    /*
@@ -1161,7 +1282,7 @@ void do_help( CHAR_DATA *ch, char *argument )
     }
     
     if ( !hfound )
-        send_to_char( "No help on that word.\r\n", ch );
+        send_to_char( "No help on that word.\n\r", ch );
     return;
 }
 
@@ -1174,7 +1295,6 @@ void do_who( CHAR_DATA *ch, char *argument )
 {
     DESCRIPTOR_DATA *d;
     char             buf      [ MAX_STRING_LENGTH*3 ];
-    char             buf2     [ MAX_STRING_LENGTH   ];
     int              iClass;
     int              iLevelLower;
     int              iLevelUpper;
@@ -1183,7 +1303,13 @@ void do_who( CHAR_DATA *ch, char *argument )
     bool             rgfClass [ MAX_CLASS ];
     bool             fClassRestrict;
     bool             fImmortalOnly;
- 
+
+    WHO_DATA *curr_who		= NULL;
+    WHO_DATA *next_who		= NULL;
+    WHO_DATA *first_mortal	= NULL;
+    WHO_DATA *first_imm		= NULL;
+    WHO_DATA *first_pk		= NULL;
+
     /*
      * Set default arguments.
      */
@@ -1213,7 +1339,7 @@ void do_who( CHAR_DATA *ch, char *argument )
 	    case 1: iLevelLower = atoi( arg ); break;
 	    case 2: iLevelUpper = atoi( arg ); break;
 	    default:
-		send_to_char( "Only two level numbers allowed.\r\n", ch );
+		send_to_char( "Only two level numbers allowed.\n\r", ch );
 		return;
 	    }
 	}
@@ -1223,7 +1349,7 @@ void do_who( CHAR_DATA *ch, char *argument )
 
 	    if ( strlen( arg ) < 3 )
 	    {
-		send_to_char( "Classes must be longer than that.\r\n", ch );
+		send_to_char( "Classes must be longer than that.\n\r", ch );
 		return;
 	    }
 
@@ -1240,7 +1366,7 @@ void do_who( CHAR_DATA *ch, char *argument )
 		fClassRestrict = TRUE;
 		for ( iClass = 0; iClass < MAX_CLASS; iClass++ )
 		{
-		    if ( !str_cmp( arg, class_table[iClass].who_name ) )
+		    if ( !str_cmp( arg, class_table[iClass]->who_name ) )
 		    {
 			rgfClass[iClass] = TRUE;
 			break;
@@ -1249,7 +1375,7 @@ void do_who( CHAR_DATA *ch, char *argument )
 
 		if ( iClass == MAX_CLASS )
 		{
-		    send_to_char( "That's not a class.\r\n", ch );
+		    send_to_char( "That's not a class.\n\r", ch );
 		    return;
 		}
 	    }
@@ -1260,7 +1386,6 @@ void do_who( CHAR_DATA *ch, char *argument )
      * Now show matching chars.
      */
     nMatch = 0;
-    buf[0] = '\0';
     for ( d = descriptor_list; d; d = d->next )
     {
 	CHAR_DATA       *wch;
@@ -1272,7 +1397,7 @@ void do_who( CHAR_DATA *ch, char *argument )
 	 * Check for match against restrictions.
 	 * Don't use trust as that exposes trusted mortals.
 	 */
-	if ( d->connected != CON_PLAYING || !can_see( ch, wch ) )
+	if ( !CONNECTED( d ) || !can_see( ch, wch ) )
 	    continue;
 
 	if (   wch->level < iLevelLower
@@ -1282,50 +1407,143 @@ void do_who( CHAR_DATA *ch, char *argument )
 	    continue;
 
 	nMatch++;
+	buf[0] = '\0';
 
 	/*
 	 * Figure out what to print for class.
 	 */
-	class = class_table[wch->class].who_name;
+	class = class_table[wch->class]->name;
 	if ( wch->level >= LEVEL_IMMORTAL )
 	    switch ( wch->level )
 	      {
 	      default: break;
-	      case L_DIR: class = "DIRECT"; break;
-	      case L_SEN: class = "SENIOR"; break;
-	      case L_JUN: class = "JUNIOR"; break;
-	      case L_APP: class = "APPREN"; break;
+	      case L_DIR: class = "Director";	break;
+	      case L_SEN: class = "Senior";	break;
+	      case L_JUN: class = "Junior";	break;
+	      case L_APP: class = "Apprentice";	break;
 	      }
 
 	/*
 	 * Format it up.
 	 */
 	if ( wch->level < LEVEL_IMMORTAL )
-	    sprintf( buf + strlen( buf ), "(%2d %s %-10s) %s%s%s%s%s%s\r\n",
-		    wch->level,
-		    class,
-		    race_table[wch->race].name,
-		    IS_SET( wch->act, PLR_KILLER   ) ? "(KILLER) " : "",
-		    IS_SET( wch->act, PLR_THIEF    ) ? "(THIEF) "  : "",
-		    IS_SET( wch->act, PLR_REGISTER ) ? "(PK) "     : "",
-		    IS_SET( wch->act, PLR_AFK      ) ? "(AFK) "    : "",
+	{
+	    char buf1 [ MAX_STRING_LENGTH ];
+	    char buf2 [ MAX_STRING_LENGTH ];
+	    char leftletter;
+	    char rightletter;
+
+	    sprintf( buf1, "%s%s%s%s%s.",
+		    IS_SET( wch->act, PLR_KILLER   ) ? "{o{r(KILLER) {g" : "",
+		    IS_SET( wch->act, PLR_THIEF    ) ? "{o{r(THIEF) {g"  : "",
+		    IS_SET( wch->act, PLR_AFK      ) ? "{y[AFK] {g"    : "",
 		    wch->name,
 		    wch->pcdata->title );
-	else
-	    sprintf( buf + strlen( buf ), "(      %s     ) %s%s%s%s%s%s%s\r\n",
+	    leftletter = !is_clan( wch ) 
+			? ' '
+			: ( wch->pcdata->clan->clan_type == CLAN_GUILD ) ? '<'
+			: '(';
+	    rightletter = !is_clan( wch ) 
+			? ' '
+			: ( wch->pcdata->clan->clan_type == CLAN_GUILD ) ? '>'
+			: ')';
+	    sprintf( buf2, "%c %-14.14s %c",
+		    leftletter,
+		    !is_clan( wch ) ? "" : wch->pcdata->clan->who_name,
+		    rightletter );
+	    sprintf( buf + strlen( buf ), "{o{g%-2d %-12s %-43.43s %18.18s{x\n\r",
+		    wch->level,
 		    class,
+		    buf1,
+		    buf2 );
+	}
+	else
+	{
+	    char buf1 [ MAX_STRING_LENGTH ];
+	    char buf2 [ MAX_STRING_LENGTH ];
+	    char leftletter;
+	    char rightletter;
+
+	    sprintf( buf1, "%s%s%s%s%s%s.",
 		    IS_SET( wch->act, PLR_WIZINVIS ) ? "(WIZINVIS) " : "", 
 		    IS_SET( wch->act, PLR_KILLER   ) ? "(KILLER) " : "",
 		    IS_SET( wch->act, PLR_THIEF    ) ? "(THIEF) "  : "",
-		    IS_SET( wch->act, PLR_REGISTER ) ? "(PK) "     : "",
-		    IS_SET( wch->act, PLR_AFK      ) ? "(AFK) "    : "",
+		    IS_SET( wch->act, PLR_AFK      ) ? "{y[AFK] {o{g"    : "",
 		    wch->name,
 		    wch->pcdata->title );
+	    leftletter = !is_clan( wch ) 
+			? ' '
+			: ( wch->pcdata->clan->clan_type == CLAN_GUILD ) ? '<'
+			: '(';
+	    rightletter = !is_clan( wch ) 
+			? ' '
+			: ( wch->pcdata->clan->clan_type == CLAN_GUILD ) ? '>'
+			: ')';
+	    sprintf( buf2, "%c %-14.14s %c",
+		    leftletter,
+		    !is_clan( wch ) ? "" : wch->pcdata->clan->who_name,
+		    rightletter );
+	    sprintf( buf + strlen( buf ), "{o{g%-15s %-43.43s %18.18s{x\n\r",
+		    class,
+		    buf1,
+		    buf2 );
+	}
+
+	curr_who	= alloc_mem( sizeof( WHO_DATA ) );
+	curr_who->text	= str_dup( buf );
+
+	if ( wch->level < LEVEL_IMMORTAL )
+	{
+	    if ( IS_SET( wch->act, PLR_REGISTER ) )
+	    {
+		curr_who->next	= first_pk;
+		first_pk	= curr_who;
+	    }
+	    else
+	    {
+		curr_who->next	= first_mortal;
+		first_mortal	= curr_who;
+	    }
+	}
+	else
+	{
+	    curr_who->next	= first_imm;
+	    first_imm		= curr_who;
+	}
     }
 
-    sprintf( buf2, "You see %d player%s in the game.\r\n",
+    for ( curr_who = first_mortal; curr_who; curr_who = next_who )
+    {
+	send_to_char( curr_who->text, ch );
+	next_who = curr_who->next;
+	free_string( curr_who->text );
+	free_mem( curr_who, sizeof( WHO_DATA ) ); 
+    }
+
+    if ( first_pk )
+	send_to_char( "\n\r{o{g---------------------------------[ PK CHARACTERS ]----------------------------{x\n\r\n\r", ch );
+
+    for ( curr_who = first_pk; curr_who; curr_who = next_who )
+    {
+	send_to_char( curr_who->text, ch );
+	next_who = curr_who->next;
+	free_string( curr_who->text );
+	free_mem( curr_who, sizeof( WHO_DATA ) ); 
+    }
+
+    if ( first_imm )
+	send_to_char( "\n\r{o{g-----------------------------------[ IMMORTALS ]------------------------------{x\n\r\n\r", ch );
+
+    for ( curr_who = first_imm; curr_who; curr_who = next_who )
+    {
+	send_to_char( curr_who->text, ch );
+	next_who = curr_who->next;
+	free_string( curr_who->text );
+	free_mem( curr_who, sizeof( WHO_DATA ) ); 
+    }
+
+    sprintf( buf, "{o{yYou see %d player%s in the game.{x\n\r",
 	    nMatch, nMatch == 1 ? "" : "s" );
-    strcat( buf, buf2 );
     send_to_char( buf, ch );
     return;
 }
@@ -1341,7 +1559,7 @@ void do_whois( CHAR_DATA *ch, char *argument )
 
     if( name[0] == '\0' )
     {
-	send_to_char( "Usage:  whois <name>\r\n", ch );
+	send_to_char( "Usage:  whois <name>\n\r", ch );
 	return;
     }
 
@@ -1355,50 +1573,67 @@ void do_whois( CHAR_DATA *ch, char *argument )
 	
 	wch = ( d->original ) ? d->original : d->character; 
 
-	if( d->connected != CON_PLAYING || !can_see( ch, wch ) )
+	if( !CONNECTED( d ) || !can_see( ch, wch ) )
 	    continue;
   
 	if( str_prefix( name, wch->name ) )
 	    continue;
 
-	class = class_table[ wch->class ].who_name;
+	class = class_table[ wch->class ]->name;
 	if( wch->level >= LEVEL_IMMORTAL )
 	    switch( wch->level )
 	    {
-	      case L_DIR: class = "DIRECT"; break;
-	      case L_SEN: class = "SENIOR"; break;
-	      case L_JUN: class = "JUNIOR"; break;
-	      case L_APP: class = "APPREN"; break;
+	      case L_DIR: class = "Director";	break;
+	      case L_SEN: class = "Senior";	break;
+	      case L_JUN: class = "Junior";	break;
+	      case L_APP: class = "Apprentice";	break;
 	    }
     
 	/*
 	 * Format it up.
 	 */
 	if ( wch->level < LEVEL_IMMORTAL )
-	    sprintf( buf + strlen( buf ), "(%2d %s %-10s) %s%s%s%s%s%s\r\n",
+	{
+	    sprintf( buf + strlen( buf ), "{o{g%s%s.{x\n\r",
+		    wch->name,
+		    wch->pcdata->title );
+	    sprintf( buf + strlen( buf ), "{o{g%s%s%s%s{x\n\r",
+		    IS_SET( wch->act, PLR_REGISTER ) ? "(PK) "     : "",
+		    IS_SET( wch->act, PLR_KILLER   ) ? "{o{r(KILLER) {g" : "",
+		    IS_SET( wch->act, PLR_THIEF    ) ? "{o{r(THIEF) {g"  : "",
+		    IS_SET( wch->act, PLR_AFK      ) ? "{y[AFK] {g"    : "" );
+	    sprintf( buf + strlen( buf ), "{o{glevel %d %s %s.{x\n\r",
 		    wch->level,
 		    class,
-		    race_table[wch->race].name,
-		    IS_SET( wch->act, PLR_KILLER   ) ? "(KILLER) " : "",
-		    IS_SET( wch->act, PLR_THIEF    ) ? "(THIEF) "  : "",
-		    IS_SET( wch->act, PLR_REGISTER ) ? "(PK) "     : "",
-		    IS_SET( wch->act, PLR_AFK      ) ? "(AFK) "    : "",
-		    wch->name,
-		    wch->pcdata->title );
+		    race_table[wch->race].name );
+	}
 	else
-	    sprintf( buf + strlen( buf ), "(      %s     ) %s%s%s%s%s%s%s\r\n",
-		    class,
-		    IS_SET( wch->act, PLR_WIZINVIS ) ? "(WIZINVIS) " : "", 
-		    IS_SET( wch->act, PLR_KILLER   ) ? "(KILLER) " : "",
-		    IS_SET( wch->act, PLR_THIEF    ) ? "(THIEF) "  : "",
-		    IS_SET( wch->act, PLR_REGISTER ) ? "(PK) "     : "",
-		    IS_SET( wch->act, PLR_AFK      ) ? "(AFK) "    : "",
+	{
+	    sprintf( buf + strlen( buf ), "{o{g%s%s.{x\n\r",
 		    wch->name,
 		    wch->pcdata->title );
+	    sprintf( buf + strlen( buf ), "{o{g%s%s%s%s%s{x\n\r",
+		    IS_SET( wch->act, PLR_WIZINVIS ) ? "(WIZINVIS) " : "", 
+		    IS_SET( wch->act, PLR_REGISTER ) ? "(PK) "     : "",
+		    IS_SET( wch->act, PLR_KILLER   ) ? "{o{r(KILLER) {g" : "",
+		    IS_SET( wch->act, PLR_THIEF    ) ? "{o{r(THIEF) {g"  : "",
+		    IS_SET( wch->act, PLR_AFK      ) ? "{y[AFK] {g"    : "" );
+	    sprintf( buf + strlen( buf ), "{o{g%s.{x\n\r",
+		    class );
+	}
+
+	if ( is_clan( wch ) )
+	{
+	    sprintf( buf + strlen( buf ), "{o{g%s of %s.{x\n\r",
+		    flag_string( rank_flags, wch->pcdata->rank ),
+		    wch->pcdata->clan->name );
+	}
+
+	strcat( buf, "{o{g-----------------------------------------------------------------------------{x\n\r" );
       }
 
     if ( buf[0] == '\0' )
-        send_to_char( "No one matches the given criteria.\r\n", ch );
+        send_to_char( "No one matches the given criteria.\n\r", ch );
     else
         send_to_char( buf, ch );
     return;
@@ -1407,7 +1642,7 @@ void do_whois( CHAR_DATA *ch, char *argument )
 
 void do_inventory( CHAR_DATA *ch, char *argument )
 {
-    send_to_char( "You are carrying:\r\n", ch );
+    send_to_char( "{o{rYou are carrying:{x\n\r", ch );
     show_list_to_char( ch->carrying, ch, TRUE, TRUE );
     return;
 }
@@ -1420,7 +1655,7 @@ void do_equipment( CHAR_DATA *ch, char *argument )
     int       iWear;
     bool      found;
 
-    send_to_char( "You are using:\r\n", ch );
+    send_to_char( "{o{rYou are using:{x\n\r", ch );
     found = FALSE;
     for ( iWear = 0; iWear < MAX_WEAR; iWear++ )
     {
@@ -1431,17 +1666,17 @@ void do_equipment( CHAR_DATA *ch, char *argument )
 	if ( can_see_obj( ch, obj ) )
 	{
 	    send_to_char( format_obj_to_char( obj, ch, TRUE ), ch );
-	    send_to_char( "\r\n", ch );
+	    send_to_char( "\n\r", ch );
 	}
 	else
 	{
-	    send_to_char( "something.\r\n", ch );
+	    send_to_char( "something.\n\r", ch );
 	}
 	found = TRUE;
     }
 
     if ( !found )
-	send_to_char( "Nothing.\r\n", ch );
+	send_to_char( "{o{rNothing.{x\n\r", ch );
 
     return;
 }
@@ -1463,13 +1698,13 @@ void do_compare( CHAR_DATA *ch, char *argument )
 
     if ( arg1[0] == '\0' )
     {
-	send_to_char( "Compare what to what?\r\n", ch );
+	send_to_char( "Compare what to what?\n\r", ch );
 	return;
     }
 
     if ( !( obj1 = get_obj_carry( ch, arg1 ) ) )
     {
-	send_to_char( "You do not have that item.\r\n", ch );
+	send_to_char( "You do not have that item.\n\r", ch );
 	return;
     }
 
@@ -1486,7 +1721,7 @@ void do_compare( CHAR_DATA *ch, char *argument )
 
 	if ( !obj2 )
 	{
-	    send_to_char( "You aren't wearing anything comparable.\r\n", ch );
+	    send_to_char( "You aren't wearing anything comparable.\n\r", ch );
 	    return;
 	}
     }
@@ -1504,13 +1739,13 @@ void do_compare( CHAR_DATA *ch, char *argument )
 
 	    if ( !( obj2 = get_obj_wear( ch, new_arg2 ) ) )
 	    {
-		send_to_char( "You do not have that item.\r\n", ch );
+		send_to_char( "You do not have that item.\n\r", ch );
 		return;
 	    }
 	
 	    if ( ( obj1->wear_flags & obj2->wear_flags & ~ITEM_TAKE ) == 0 )
 	    {
-		send_to_char( "They are not comparable items.\r\n", ch );
+		send_to_char( "They are not comparable items.\n\r", ch );
 		return;
 	    }
 
@@ -1538,6 +1773,11 @@ void do_compare( CHAR_DATA *ch, char *argument )
 	    break;
 
 	case ITEM_ARMOR:
+	    value1 = obj1->value[0];
+	    value2 = obj2->value[0];
+	    break;
+
+	case ITEM_CLOTHING:
 	    value1 = obj1->value[0];
 	    value2 = obj2->value[0];
 	    break;
@@ -1598,11 +1838,11 @@ void do_where( CHAR_DATA *ch, char *argument )
 
     if ( arg[0] == '\0' )
     {
-	send_to_char( "Players near you:\r\n", ch );
+	send_to_char( "Players near you:\n\r", ch );
 	found = FALSE;
 	for ( d = descriptor_list; d; d = d->next )
 	{
-	    if ( d->connected == CON_PLAYING
+	    if ( CONNECTED( d )
 		&& ( victim = d->character )
 		&& !IS_NPC( victim )
 		&& victim->in_room
@@ -1610,13 +1850,13 @@ void do_where( CHAR_DATA *ch, char *argument )
 		&& can_see( ch, victim ) )
 	    {
 		found = TRUE;
-		sprintf( buf, "%-28s %s\r\n",
+		sprintf( buf, "%-28s %s\n\r",
 			victim->name, victim->in_room->name );
 		send_to_char( buf, ch );
 	    }
 	}
 	if ( !found )
-	    send_to_char( "None\r\n", ch );
+	    send_to_char( "None\n\r", ch );
     }
     else
     {
@@ -1633,7 +1873,7 @@ void do_where( CHAR_DATA *ch, char *argument )
 		&& is_name( arg, victim->name ) )
 	    {
 		found = TRUE;
-		sprintf( buf, "%-28s %s\r\n",
+		sprintf( buf, "%-28s %s\n\r",
 			PERS( victim, ch ), victim->in_room->name );
 		send_to_char( buf, ch );
 		break;
@@ -1662,19 +1902,19 @@ void do_consider( CHAR_DATA *ch, char *argument )
 
     if ( arg[0] == '\0' )
     {
-	send_to_char( "Consider killing whom?\r\n", ch );
+	send_to_char( "Consider killing whom?\n\r", ch );
 	return;
     }
 
     if ( !( victim = get_char_room( ch, arg ) ) )
     {
-	send_to_char( "They're not here.\r\n", ch );
+	send_to_char( "They're not here.\n\r", ch );
 	return;
     }
 
     if ( !IS_NPC( victim ) && !IS_SET( victim->act, PLR_KILLER ) )
     {
-	send_to_char( "The gods do not accept this type of sacrifice.\r\n",
+	send_to_char( "The gods do not accept this type of sacrifice.\n\r",
 		     ch );
 	return;
     }
@@ -1763,7 +2003,7 @@ void do_title( CHAR_DATA *ch, char *argument )
 
     if ( argument[0] == '\0' )
     {
-	send_to_char( "Change your title to what?\r\n", ch );
+	send_to_char( "Change your title to what?\n\r", ch );
 	return;
     }
 
@@ -1772,45 +2012,17 @@ void do_title( CHAR_DATA *ch, char *argument )
 
     smash_tilde( argument );
     set_title( ch, argument );
-    send_to_char( "Ok.\r\n", ch );
+    send_to_char( "Ok.\n\r", ch );
 }
 
 
 
 void do_description( CHAR_DATA *ch, char *argument )
 {
-    char buf [ MAX_STRING_LENGTH ];
-
     if ( IS_NPC( ch ) )
         return;
 
-    if ( argument[0] != '\0' )
-    {
-	buf[0] = '\0';
-	smash_tilde( argument );
-	if ( argument[0] == '+' )
-	{
-	    if ( ch->description )
-		strcat( buf, ch->description );
-	    argument++;
-	    while ( isspace( *argument ) )
-		argument++;
-	}
-
-	if ( strlen( buf ) + strlen( argument ) >=  MAX_STRING_LENGTH  - 2 )
-	{
-	    send_to_char( "Description too long.\r\n", ch );
-	    return;
-	}
-
-	strcat( buf, argument );
-	strcat( buf, "\r\n" );
-	free_string( ch->description );
-	ch->description = str_dup( buf );
-    }
-
-    send_to_char( "Your description is:\r\n", ch );
-    send_to_char( ch->description ? ch->description : "(None).\r\n", ch );
+    string_append( ch, &ch->description );
     return;
 }
 
@@ -1821,7 +2033,7 @@ void do_report( CHAR_DATA *ch, char *argument )
     char buf [ MAX_INPUT_LENGTH ];
 
     sprintf( buf,
-	    "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
+	    "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\n\r",
 	    ch->hit,  ch->max_hit,
 	    ch->mana, ch->max_mana,
 	    ch->move, ch->max_move,
@@ -1858,7 +2070,7 @@ void do_practice( CHAR_DATA *ch, char *argument )
     if ( ch->level < 3 )
     {
 	send_to_char(
-	    "You must be third level to practice.  Go train instead!\r\n",
+	    "You must be third level to practice.  Go train instead!\n\r",
 	    ch );
 	return;
     }
@@ -1887,21 +2099,21 @@ void do_practice( CHAR_DATA *ch, char *argument )
 
 	    if ( ( mob ) || ( ch->pcdata->learned[sn] > 0 ) )
 	    {
-		sprintf( buf, "%18s %3d%%  ",
+		sprintf( buf, "{o{b%18s {o{r%3d%%{x  ",
 			skill_table[sn].name, ch->pcdata->learned[sn] );
 		strcat( buf1, buf );
 		if ( ++col % 3 == 0 )
-		    strcat( buf1, "\r\n" );
+		    strcat( buf1, "\n\r" );
 	    }
 	}
 
 	if ( col % 3 != 0 )
-	    strcat( buf1, "\r\n" );
+	    strcat( buf1, "\n\r" );
 
-	sprintf( buf, "You have %d practice sessions left.\r\n",
+	sprintf( buf, "{o{cYou have %d practice sessions left.{x\n\r",
 		ch->practice );
 	strcat( buf1, buf );
-	sprintf( buf, "Cost of practicing is %d gold coins.\r\n", money );
+	sprintf( buf, "{o{cCost of practicing is %d gold coins.{x\n\r", money );
 	strcat( buf1, buf );
 	send_to_char( buf1, ch );
     }
@@ -1912,7 +2124,7 @@ void do_practice( CHAR_DATA *ch, char *argument )
 
 	if ( !IS_AWAKE( ch ) )
 	{
-	    send_to_char( "In your dreams, or what?\r\n", ch );
+	    send_to_char( "In your dreams, or what?\n\r", ch );
 	    return;
 	}
 
@@ -1926,18 +2138,18 @@ void do_practice( CHAR_DATA *ch, char *argument )
 
 	if ( !mob )
 	{
-	    send_to_char( "You can't do that here.\r\n", ch );
+	    send_to_char( "You can't do that here.\n\r", ch );
 	    return;
 	}
 
 	if ( ch->practice <= 0 )
 	{
-	    send_to_char( "You have no practice sessions left.\r\n", ch );
+	    send_to_char( "You have no practice sessions left.\n\r", ch );
 	    return;
 	}
 	else if ( money > ch->gold )
 	{
-	    send_to_char( "You don't have enough money to practice.\r\n", ch );
+	    send_to_char( "You don't have enough money to practice.\n\r", ch );
 	    return;
 	}
 
@@ -1945,15 +2157,15 @@ void do_practice( CHAR_DATA *ch, char *argument )
 	    || ( !IS_NPC( ch )
 		&& ch->level < skill_table[sn].skill_level[ch->class] ) )
 	{
-	    send_to_char( "You can't practice that.\r\n", ch );
+	    send_to_char( "You can't practice that.\n\r", ch );
 	    return;
 	}
 
-	adept = IS_NPC( ch ) ? 100 : class_table[ch->class].skill_adept;
+	adept = IS_NPC( ch ) ? 100 : class_table[ch->class]->skill_adept;
 
 	if ( ch->pcdata->learned[sn] >= adept )
 	{
-	    sprintf( buf, "You are already an adept of %s.\r\n",
+	    sprintf( buf, "You are already an adept of %s.\n\r",
 		skill_table[sn].name );
 	    send_to_char( buf, ch );
 	}
@@ -2002,18 +2214,18 @@ void do_wimpy( CHAR_DATA *ch, char *argument )
 
     if ( wimpy < 0 )
     {
-	send_to_char( "Your courage exceeds your wisdom.\r\n", ch );
+	send_to_char( "Your courage exceeds your wisdom.\n\r", ch );
 	return;
     }
 
     if ( wimpy > ch->max_hit )
     {
-	send_to_char( "Such cowardice ill becomes you.\r\n", ch );
+	send_to_char( "Such cowardice ill becomes you.\n\r", ch );
 	return;
     }
 
     ch->wimpy	= wimpy;
-    sprintf( buf, "Wimpy set to %d hit points.\r\n", wimpy );
+    sprintf( buf, "Wimpy set to %d hit points.\n\r", wimpy );
     send_to_char( buf, ch );
     return;
 }
@@ -2022,97 +2234,14 @@ void do_wimpy( CHAR_DATA *ch, char *argument )
 
 void do_password( CHAR_DATA *ch, char *argument )
 {
-    char *pArg;
-    char *pwdnew;
-    char *p;
-    char  arg1 [ MAX_INPUT_LENGTH ];
-    char  arg2 [ MAX_INPUT_LENGTH ];
-    char  cEnd;
+    extern const char echo_off_str [ ];
 
     if ( IS_NPC( ch ) )
 	return;
 
-    /*
-     * Can't use one_argument here because it smashes case.
-     * So we just steal all its code.  Bleagh.
-     */
-    pArg = arg1;
-    while ( isspace( *argument ) )
-	argument++;
-
-    cEnd = ' ';
-    if ( *argument == '\'' || *argument == '"' )
-	cEnd = *argument++;
-
-    while ( *argument != '\0' )
-    {
-	if ( *argument == cEnd )
-	{
-	    argument++;
-	    break;
-	}
-	*pArg++ = *argument++;
-    }
-    *pArg = '\0';
-
-    pArg = arg2;
-    while ( isspace( *argument ) )
-	argument++;
-
-    cEnd = ' ';
-    if ( *argument == '\'' || *argument == '"' )
-	cEnd = *argument++;
-
-    while ( *argument != '\0' )
-    {
-	if ( *argument == cEnd )
-	{
-	    argument++;
-	    break;
-	}
-	*pArg++ = *argument++;
-    }
-    *pArg = '\0';
-    *argument = '\0';
-
-    if ( arg1[0] == '\0' || arg2[0] == '\0' )
-    {
-	send_to_char( "Syntax: password <old> <new>.\r\n", ch );
-	return;
-    }
-
-    if ( strcmp( crypt( arg1, ch->pcdata->pwd ), ch->pcdata->pwd ) )
-    {
-	WAIT_STATE( ch, 40 );
-	send_to_char( "Wrong password.  Wait 10 seconds.\r\n", ch );
-	return;
-    }
-
-    if ( strlen( arg2 ) < 5 )
-    {
-	send_to_char(
-	    "New password must be at least five characters long.\r\n", ch );
-	return;
-    }
-
-    /*
-     * No tilde allowed because of player file format.
-     */
-    pwdnew = crypt( arg2, ch->name );
-    for ( p = pwdnew; *p != '\0'; p++ )
-    {
-	if ( *p == '~' )
-	{
-	    send_to_char(
-		"New password not acceptable, try again.\r\n", ch );
-	    return;
-	}
-    }
-
-    free_string( ch->pcdata->pwd );
-    ch->pcdata->pwd = str_dup( pwdnew );
-    save_char_obj( ch );
-    send_to_char( "Ok.\r\n", ch );
+    write_to_buffer( ch->desc, "Password: ", 0 );
+    write_to_buffer( ch->desc, echo_off_str, 0 );
+    ch->desc->connected = CON_PASSWD_GET_OLD;
     return;
 }
 
@@ -2120,23 +2249,32 @@ void do_password( CHAR_DATA *ch, char *argument )
 
 void do_socials( CHAR_DATA *ch, char *argument )
 {
-    char buf  [ MAX_STRING_LENGTH ];
-    char buf1 [ MAX_STRING_LENGTH ];
-    int  iSocial;
-    int  col;
+    SOC_INDEX_DATA *social;
+    char            buf  [ MAX_STRING_LENGTH ];
+    char            buf1 [ MAX_STRING_LENGTH ];
+    int             col;
+    int             x;
+    
 
     buf1[0] = '\0';
     col = 0;
-    for ( iSocial = 0; social_table[iSocial].name[0] != '\0'; iSocial++ )
+
+    for ( x = 0; x < MAX_WORD_HASH; x++ )
     {
-	sprintf( buf, "%-12s", social_table[iSocial].name );
+	for ( social = soc_index_hash[x]; social; social = social->next )
+	{
+	    if ( !social->name || social->name[0] == '\0' )
+		continue;
+
+	sprintf( buf, "%-12s", social->name );
 	strcat( buf1, buf );
 	if ( ++col % 6 == 0 )
-	    strcat( buf1, "\r\n" );
+	    strcat( buf1, "\n\r" );
+	}
     }
  
     if ( col % 6 != 0 )
-	strcat( buf1, "\r\n" );
+	strcat( buf1, "\n\r" );
 
     send_to_char( buf1, ch );
     return;
@@ -2153,23 +2291,24 @@ void do_commands( CHAR_DATA *ch, char *argument )
     char buf1 [ MAX_STRING_LENGTH ];
     int  cmd;
     int  col;
- 
+
     buf1[0] = '\0';
     col = 0;
     for ( cmd = 0; cmd_table[cmd].name[0] != '\0'; cmd++ )
     {
         if (   cmd_table[cmd].level <  LEVEL_HERO
-	    && cmd_table[cmd].level <= get_trust( ch ) )
+	    && cmd_table[cmd].level <= get_trust( ch )
+	    && cmd_table[cmd].show )
 	{
-	    sprintf( buf, "%-16s", cmd_table[cmd].name );
-	    strcat( buf1, buf );
-	    if ( ++col % 5 == 0 )
-		strcat( buf1, "\r\n" );
+		sprintf( buf, "%-16s", cmd_table[cmd].name );
+		strcat( buf1, buf );
+		if ( ++col % 5 == 0 )
+		    strcat( buf1, "\n\r" );
 	}
     }
- 
+
     if ( col % 5 != 0 )
-	strcat( buf1, "\r\n" );
+	strcat( buf1, "\n\r" );
 
     send_to_char( buf1, ch );
     return;
@@ -2187,7 +2326,7 @@ void do_channels( CHAR_DATA *ch, char *argument )
     {
 	if ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_SILENCE ) )
 	{
-	    send_to_char( "You are silenced.\r\n", ch );
+	    send_to_char( "You are silenced.\n\r", ch );
 	    return;
 	}
 
@@ -2203,17 +2342,14 @@ void do_channels( CHAR_DATA *ch, char *argument )
 		     : " -chat",
 		     ch );
 
-	if ( IS_HERO( ch ) )
-	{
-	    send_to_char( !IS_SET( ch->deaf, CHANNEL_IMMTALK )
-			 ? " +IMMTALK"
-			 : " -immtalk",
-			 ch );
-	}
-
 	send_to_char( !IS_SET( ch->deaf, CHANNEL_MUSIC    )
 		     ? " +MUSIC"
 		     : " -music",
+		     ch );
+
+	send_to_char( !IS_SET( ch->deaf, CHANNEL_GRATS    )
+		     ? " +GRATS"
+		     : " -grats",
 		     ch );
 
 	send_to_char( !IS_SET( ch->deaf, CHANNEL_QUESTION )
@@ -2231,7 +2367,25 @@ void do_channels( CHAR_DATA *ch, char *argument )
 		     : " -yell",
 		     ch );
 
-	send_to_char( ".\r\n", ch );
+	if ( is_clan( ch ) )
+	{
+	    send_to_char( !IS_SET( ch->deaf, CHANNEL_CLANTALK )
+			 ? " +CLANTALK"
+			 : " -clantalk",
+			 ch );
+	}
+
+
+	if ( IS_HERO( ch ) )
+	{
+	    send_to_char( "\n\r", ch );
+	    send_to_char( !IS_SET( ch->deaf, CHANNEL_IMMTALK )
+			 ? " +IMMTALK"
+			 : " -immtalk",
+			 ch );
+	}
+
+	send_to_char( ".\n\r", ch );
     }
     else
     {
@@ -2242,20 +2396,22 @@ void do_channels( CHAR_DATA *ch, char *argument )
 	else if ( arg[0] == '-' ) fClear = FALSE;
 	else
 	{
-	    send_to_char( "Channels -channel or +channel?\r\n", ch );
+	    send_to_char( "Channels -channel or +channel?\n\r", ch );
 	    return;
 	}
 
 	     if ( !str_cmp( arg+1, "auction"  ) ) bit = CHANNEL_AUCTION;
         else if ( !str_cmp( arg+1, "chat"     ) ) bit = CHANNEL_CHAT;
 	else if ( !str_cmp( arg+1, "immtalk"  ) ) bit = CHANNEL_IMMTALK;
+	else if ( !str_cmp( arg+1, "clantalk" ) ) bit = CHANNEL_CLANTALK;
 	else if ( !str_cmp( arg+1, "music"    ) ) bit = CHANNEL_MUSIC;
+	else if ( !str_cmp( arg+1, "grats"    ) ) bit = CHANNEL_GRATS;
 	else if ( !str_cmp( arg+1, "question" ) ) bit = CHANNEL_QUESTION;
 	else if ( !str_cmp( arg+1, "shout"    ) ) bit = CHANNEL_SHOUT;
 	else if ( !str_cmp( arg+1, "yell"     ) ) bit = CHANNEL_YELL;
 	else
 	{
-	    send_to_char( "Set or clear which channel?\r\n", ch );
+	    send_to_char( "Set or clear which channel?\n\r", ch );
 	    return;
 	}
 
@@ -2264,7 +2420,7 @@ void do_channels( CHAR_DATA *ch, char *argument )
 	else
 	    SET_BIT    ( ch->deaf, bit );
 
-	send_to_char( "Ok.\r\n", ch );
+	send_to_char( "Ok.\n\r", ch );
     }
 
     return;
@@ -2286,66 +2442,82 @@ void do_config( CHAR_DATA *ch, char *argument )
 
     if ( arg[0] == '\0' )
     {
-        send_to_char( "[ Keyword  ] Option\r\n", ch );
+        send_to_char( "[ Keyword  ] Option\n\r", ch );
+
+	if ( IS_IMMORTAL( ch ) )
+	send_to_char(  IS_SET( ch->act, PLR_EDIT_INFO  )
+            ? "[+EDITINFO ] You see extra info on rooms.\n\r"
+	    : "[-editinfo ] You don't see extra info on rooms.\n\r"
+	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_AUTOEXIT  )
-            ? "[+AUTOEXIT ] You automatically see exits.\r\n"
-	    : "[-autoexit ] You don't automatically see exits.\r\n"
+            ? "[+AUTOEXIT ] You automatically see exits.\n\r"
+	    : "[-autoexit ] You don't automatically see exits.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_AUTOLOOT  )
-	    ? "[+AUTOLOOT ] You automatically loot corpses.\r\n"
-	    : "[-autoloot ] You don't automatically loot corpses.\r\n"
+	    ? "[+AUTOLOOT ] You automatically loot corpses.\n\r"
+	    : "[-autoloot ] You don't automatically loot corpses.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_AUTOGOLD  )
-	    ? "[+AUTOGOLD ] You automatically get gold from corpses.\r\n"
-	    : "[-autogold ] You don't automatically get gold from corpses.\r\n"
+	    ? "[+AUTOGOLD ] You automatically get gold from corpses.\n\r"
+	    : "[-autogold ] You don't automatically get gold from corpses.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_AUTOSAC   )
-	    ? "[+AUTOSAC  ] You automatically sacrifice corpses.\r\n"
-	    : "[-autosac  ] You don't automatically sacrifice corpses.\r\n"
+	    ? "[+AUTOSAC  ] You automatically sacrifice corpses.\n\r"
+	    : "[-autosac  ] You don't automatically sacrifice corpses.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_BLANK     )
-	    ? "[+BLANK    ] You have a blank line before your prompt.\r\n"
-	    : "[-blank    ] You have no blank line before your prompt.\r\n"
+	    ? "[+BLANK    ] You have a blank line before your prompt.\n\r"
+	    : "[-blank    ] You have no blank line before your prompt.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_BRIEF     )
-	    ? "[+BRIEF    ] You see brief descriptions.\r\n"
-	    : "[-brief    ] You see long descriptions.\r\n"
+	    ? "[+BRIEF    ] You see brief descriptions.\n\r"
+	    : "[-brief    ] You see long descriptions.\n\r"
 	    , ch );
          
 	send_to_char(  IS_SET( ch->act, PLR_COMBINE   )
-	    ? "[+COMBINE  ] You see object lists in combined format.\r\n"
-	    : "[-combine  ] You see object lists in single format.\r\n"
+	    ? "[+COMBINE  ] You see object lists in combined format.\n\r"
+	    : "[-combine  ] You see object lists in single format.\n\r"
+	    , ch );
+
+	send_to_char(  IS_SET( ch->act, PLR_COLOUR    )
+	    ? "[+COLOUR   ] You see ANSI colours.\n\r"
+	    : "[-colour   ] You don't see ANSI colours.\n\r"
+	    , ch );
+
+	send_to_char(  IS_SET( ch->act, PLR_PAGER     )
+	    ? "[+PAGER    ] You have a pager.\n\r"
+	    : "[-pager    ] You don't have a pager.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_PROMPT    )
-	    ? "[+PROMPT   ] You have a prompt.\r\n"
-	    : "[-prompt   ] You don't have a prompt.\r\n"
+	    ? "[+PROMPT   ] You have a prompt.\n\r"
+	    : "[-prompt   ] You don't have a prompt.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_TELNET_GA )
-	    ? "[+TELNETGA ] You receive a telnet GA sequence.\r\n"
-	    : "[-telnetga ] You don't receive a telnet GA sequence.\r\n"
+	    ? "[+TELNETGA ] You receive a telnet GA sequence.\n\r"
+	    : "[-telnetga ] You don't receive a telnet GA sequence.\n\r"
 	    , ch );
 
 	send_to_char(  IS_SET( ch->act, PLR_SILENCE   )
-	    ? "[+SILENCE  ] You are silenced.\r\n"
+	    ? "[+SILENCE  ] You are silenced.\n\r"
 	    : ""
 	    , ch );
 
 	send_to_char( !IS_SET( ch->act, PLR_NO_EMOTE  )
 	    ? ""
-	    : "[-emote    ] You can't emote.\r\n"
+	    : "[-emote    ] You can't emote.\n\r"
 	    , ch );
 
 	send_to_char( !IS_SET( ch->act, PLR_NO_TELL   )
 	    ? ""
-	    : "[-tell     ] You can't use 'tell'.\r\n"
+	    : "[-tell     ] You can't use 'tell'.\n\r"
 	    , ch );
     }
     else
@@ -2358,36 +2530,40 @@ void do_config( CHAR_DATA *ch, char *argument )
 	else if ( arg[0] == '-' ) fSet = FALSE;
 	else
 	{
-	    send_to_char( "Config -option or +option?\r\n", ch );
+	    send_to_char( "Config -option or +option?\n\r", ch );
 	    return;
 	}
 
-             if ( !str_cmp( arg+1, "autoexit" ) ) bit = PLR_AUTOEXIT;
+             if ( !str_cmp( arg+1, "editinfo" )
+		 && IS_IMMORTAL( ch ) ) bit = PLR_EDIT_INFO;
+        else if ( !str_cmp( arg+1, "autoexit" ) ) bit = PLR_AUTOEXIT;
 	else if ( !str_cmp( arg+1, "autoloot" ) ) bit = PLR_AUTOLOOT;
 	else if ( !str_cmp( arg+1, "autogold" ) ) bit = PLR_AUTOGOLD;
 	else if ( !str_cmp( arg+1, "autosac"  ) ) bit = PLR_AUTOSAC;
 	else if ( !str_cmp( arg+1, "blank"    ) ) bit = PLR_BLANK;
 	else if ( !str_cmp( arg+1, "brief"    ) ) bit = PLR_BRIEF;
 	else if ( !str_cmp( arg+1, "combine"  ) ) bit = PLR_COMBINE;
+	else if ( !str_cmp( arg+1, "colour"   ) ) bit = PLR_COLOUR;
+        else if ( !str_cmp( arg+1, "pager"    ) ) bit = PLR_PAGER;
         else if ( !str_cmp( arg+1, "prompt"   ) ) bit = PLR_PROMPT;
 	else if ( !str_cmp( arg+1, "telnetga" ) ) bit = PLR_TELNET_GA;
 	else
 	{
-	    send_to_char( "Config which option?\r\n", ch );
+	    send_to_char( "Config which option?\n\r", ch );
 	    return;
 	}
 
 	if ( fSet )
 	{
 	    SET_BIT    ( ch->act, bit );
-	    sprintf( buf, "%s is now ON.\r\n", arg+1 );
+	    sprintf( buf, "%s is now ON.\n\r", arg+1 );
 	    buf[0] = UPPER( buf[0] );
 	    send_to_char( buf, ch );
 	}
 	else
 	{
 	    REMOVE_BIT ( ch->act, bit );
-	    sprintf( buf, "%s is now OFF.\r\n", arg+1 );
+	    sprintf( buf, "%s is now OFF.\n\r", arg+1 );
 	    buf[0] = UPPER( buf[0] );
 	    send_to_char( buf, ch );
 	}
@@ -2413,9 +2589,9 @@ void do_spells ( CHAR_DATA *ch, char *argument )
     int  col;
 
     if ( IS_NPC( ch )
-	|| ( !IS_NPC( ch ) && !class_table[ch->class].fMana ) )
+	|| ( !IS_NPC( ch ) && !class_table[ch->class]->fMana ) )
     {  
-       send_to_char ( "You don't need no stinking spells!\r\n", ch );
+       send_to_char ( "You don't need no stinking spells!\n\r", ch );
        return;
     }
 
@@ -2430,15 +2606,15 @@ void do_spells ( CHAR_DATA *ch, char *argument )
 	    || ( skill_table[sn].skill_level[ch->class] > LEVEL_HERO ) )
 	   continue;
 
-	sprintf ( buf, "%18s %3dpts ",
+	sprintf ( buf, "{o{b%18s {o{r%3dpts{x ",
            skill_table[sn].name, MANA_COST( ch, sn ) );
 	strcat( buf1, buf );
 	if ( ++col % 3 == 0 )
-	   strcat( buf1, "\r\n" );
+	   strcat( buf1, "\n\r" );
     }
 
     if ( col % 3 != 0 )
-      strcat( buf1, "\r\n" );
+      strcat( buf1, "\n\r" );
 
     send_to_char ( buf1, ch );
     return;
@@ -2456,14 +2632,14 @@ void do_slist ( CHAR_DATA *ch, char *argument )
 
     if ( IS_NPC( ch ) )
     {  
-       send_to_char ( "You do not need any stinking spells!\r\n", ch );
+       send_to_char ( "You do not need any stinking spells!\n\r", ch );
        return;
     }
 
     buf1[0] = '\0';
 
-    strcat ( buf1, "ALL Abilities available for your class.\r\n\r\n" );
-    strcat ( buf1, "Lv          Abilities\r\n\r\n" );
+    strcat ( buf1, "{mALL Abilities available for your class.{x\n\r\n\r" );
+    strcat ( buf1, "{o{rLv          Abilities{x\n\r\n\r" );
 
     for ( level = 1; level <= LEVEL_HERO; level++ )
     {
@@ -2480,7 +2656,7 @@ void do_slist ( CHAR_DATA *ch, char *argument )
 
 	if ( pSpell )
 	{
-	  sprintf ( buf, "%2d:", level );
+	  sprintf ( buf, "{o{r%2d:{x", level );
 	  strcat ( buf1, buf );
 	  pSpell = FALSE;
 	}
@@ -2489,16 +2665,16 @@ void do_slist ( CHAR_DATA *ch, char *argument )
 	if ( ++col % 4 == 0 )
 	  strcat ( buf1, "   " );
 
-	sprintf ( buf, "%18s", skill_table[sn].name );
+	sprintf ( buf, "{o{b%18s{x", skill_table[sn].name );
 	strcat ( buf1, buf );
 
 	if ( col % 4 == 0 )
-	  strcat ( buf1, "\r\n" );
+	  strcat ( buf1, "\n\r" );
 
       }
 
       if ( col % 4 != 0 )
-	strcat ( buf1, "\r\n" );
+	strcat ( buf1, "\n\r" );
 
     }
 
@@ -2631,13 +2807,13 @@ void do_pagelen ( CHAR_DATA *ch, char *argument )
     if ( lines > 60 )
     {
 	send_to_char(
-		"I don't know of a screen that is larger than 60 lines!\r\n",
+		"I don't know of a screen that is larger than 60 lines!\n\r",
 		     ch );
 	lines = 60;
     }
 
     ch->pcdata->pagelen = lines;
-    sprintf( buf, "Page pause set to %d lines.\r\n", lines );
+    sprintf( buf, "Page pause set to %d lines.\n\r", lines );
     send_to_char( buf, ch );
     return;
 }
@@ -2679,7 +2855,7 @@ void do_prompt( CHAR_DATA *ch, char *argument )
 
    free_string( ch->pcdata->prompt );
    ch->pcdata->prompt = str_dup( buf );
-   send_to_char( "Ok.\r\n", ch );
+   send_to_char( "Ok.\n\r", ch );
    return;
 } 
 
@@ -2699,16 +2875,15 @@ void do_afk( CHAR_DATA *ch, char *argument )
     if ( IS_SET( ch->act, PLR_AFK ) )
     {
 	REMOVE_BIT( ch->act, PLR_AFK );
-	send_to_char( "You are back at your keyboard.\r\n", ch        );
+	send_to_char( "You are back at your keyboard.\n\r", ch        );
 	act( "$n has returned to $s keyboard.", ch, NULL, ch, TO_ROOM );
     }
     else
     {
 	SET_BIT( ch->act, PLR_AFK );
-	send_to_char( "You are now away from keyboard.\r\n", ch       );
+	send_to_char( "You are now away from keyboard.\n\r", ch       );
 	act( "$n has left $s keyboard.", ch, NULL, ch, TO_ROOM        );
     }
     
     return;
 }
-	

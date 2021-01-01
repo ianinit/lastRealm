@@ -11,8 +11,6 @@
  *  EnvyMud 2.0 improvements copyright (C) 1995 by Michael Quan and        *
  *  Mitchell Tse.                                                          *
  *                                                                         *
- *  EnvyMud 2.2 improvements copyright (C) 1996, 1997 by Michael Quan.     *
- *                                                                         *
  *  In order to use any part of this Envy Diku Mud, you must comply with   *
  *  the original Diku license in 'license.doc', the Merc license in        *
  *  'license.txt', as well as the Envy license in 'license.nvy'.           *
@@ -63,36 +61,57 @@ DECLARE_SPEC_FUN(	spec_thief		);
 
 
 
-/*
- * Given a name, return the appropriate spec fun.
- */
 SPEC_FUN *spec_lookup( const char *name )
 {
-    if ( !str_cmp( name, "spec_breath_any"	  ) ) return spec_breath_any;
-    if ( !str_cmp( name, "spec_breath_acid"	  ) ) return spec_breath_acid;
-    if ( !str_cmp( name, "spec_breath_fire"	  ) ) return spec_breath_fire;
-    if ( !str_cmp( name, "spec_breath_frost"	  ) ) return spec_breath_frost;
-    if ( !str_cmp( name, "spec_breath_gas"	  ) ) return spec_breath_gas;
-    if ( !str_cmp( name, "spec_breath_lightning"  ) ) return
-							spec_breath_lightning;
-    if ( !str_cmp( name, "spec_cast_adept"	  ) ) return spec_cast_adept;
-    if ( !str_cmp( name, "spec_cast_cleric"	  ) ) return spec_cast_cleric;
-    if ( !str_cmp( name, "spec_cast_ghost"        ) ) return spec_cast_ghost;
-    if ( !str_cmp( name, "spec_cast_judge"	  ) ) return spec_cast_judge;
-    if ( !str_cmp( name, "spec_cast_mage"	  ) ) return spec_cast_mage;
-    if ( !str_cmp( name, "spec_cast_psionicist"   ) ) return
-                                                        spec_cast_psionicist;
-    if ( !str_cmp( name, "spec_cast_undead"	  ) ) return spec_cast_undead;
-    if ( !str_cmp( name, "spec_executioner"	  ) ) return spec_executioner;
-    if ( !str_cmp( name, "spec_fido"		  ) ) return spec_fido;
-    if ( !str_cmp( name, "spec_guard"		  ) ) return spec_guard;
-    if ( !str_cmp( name, "spec_janitor"		  ) ) return spec_janitor;
-    if ( !str_cmp( name, "spec_mayor"		  ) ) return spec_mayor;
-    if ( !str_cmp( name, "spec_poison"		  ) ) return spec_poison;
-    if ( !str_cmp( name, "spec_repairman"	  ) ) return spec_repairman;
-    if ( !str_cmp( name, "spec_thief"		  ) ) return spec_thief;
+    int cmd;
+
+    for ( cmd = 0; *spec_table[cmd].spec_name; cmd++ )
+        if ( !str_cmp( name, spec_table[cmd].spec_name ) )
+            return spec_table[cmd].spec_fun;
+
     return 0;
 }
+
+
+char *spec_string( SPEC_FUN *fun )
+{
+    int cmd;
+
+    for ( cmd = 0; *spec_table[cmd].spec_fun; cmd++ )
+        if ( fun == spec_table[cmd].spec_fun )
+            return spec_table[cmd].spec_name;
+
+    return 0;
+}
+
+/*
+ * Special function commands.
+ */
+const	struct	spec_type	spec_table	[ ]	=
+{
+    { "spec_breath_any",        spec_breath_any         },
+    { "spec_breath_acid",       spec_breath_acid        },
+    { "spec_breath_fire",       spec_breath_fire        },
+    { "spec_breath_frost",      spec_breath_frost       },
+    { "spec_breath_gas",        spec_breath_gas         },
+    { "spec_breath_lightning",  spec_breath_lightning   },
+    { "spec_cast_adept",        spec_cast_adept         },
+    { "spec_cast_cleric",       spec_cast_cleric        },
+    { "spec_cast_ghost",        spec_cast_ghost         },
+    { "spec_cast_judge",        spec_cast_judge         },
+    { "spec_cast_mage",         spec_cast_mage          },
+    { "spec_cast_psionicist",   spec_cast_psionicist    },
+    { "spec_cast_undead",       spec_cast_undead        },
+    { "spec_executioner",       spec_executioner        },
+    { "spec_fido",              spec_fido               },
+    { "spec_guard",             spec_guard              },
+    { "spec_janitor",           spec_janitor            },
+    { "spec_mayor",             spec_mayor              },
+    { "spec_poison",            spec_poison             },
+    { "spec_repairman",         spec_repairman          },
+    { "spec_thief",             spec_thief              },
+    { "",                       0			}
+};  
 
 
 
@@ -202,9 +221,9 @@ bool spec_cast_adept( CHAR_DATA *ch )
 	return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
@@ -277,9 +296,9 @@ bool spec_cast_cleric( CHAR_DATA *ch )
 	return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
@@ -333,9 +352,9 @@ bool spec_cast_judge( CHAR_DATA *ch )
 	return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
@@ -366,9 +385,9 @@ bool spec_cast_mage( CHAR_DATA *ch )
 	return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
@@ -423,9 +442,9 @@ bool spec_cast_undead( CHAR_DATA *ch )
 	return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
@@ -453,7 +472,7 @@ bool spec_cast_undead( CHAR_DATA *ch )
 	case  7: min_level = 21; spell = "teleport";       break;
 	case  8:
 	case  9:
-	case 10: if ( ch->race == race_lookup( "Vampire" ) )
+	case 10: if ( !strcmp( race_table[ ch->race ].name, "Vampire" ) )
 	         {
 		     min_level = 24;
 		     spell = "vampiric bite";  break;
@@ -486,9 +505,6 @@ bool spec_executioner( CHAR_DATA *ch )
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
         if ( victim->deleted )
-	    continue;
-
-	if ( victim->level > LEVEL_HERO )
 	    continue;
 
 	if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_KILLER ) )
@@ -568,9 +584,6 @@ bool spec_guard( CHAR_DATA *ch )
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
         if ( victim->deleted )
-	    continue;
-
-	if ( victim->level > LEVEL_HERO )
 	    continue;
 
 	if ( !IS_NPC( victim ) && IS_SET( victim->act, PLR_KILLER ) )
@@ -776,9 +789,8 @@ bool spec_thief( CHAR_DATA *ch )
 	    || !can_see( ch, victim ) )	/* Thx Glop */
 	    continue;
 
-	/* Thanks to Zeke from MudX for pointing the percent bug */
 	if ( IS_AWAKE( victim ) && victim->level > 5
-	    && number_percent( ) + victim->level - ch->level >= 33 )
+	    && number_percent( ) + ch->level - victim->level >= 33 )
 	{
 	    act( "You discover $n's hands in your wallet!",
 		ch, NULL, victim, TO_VICT );
@@ -812,9 +824,9 @@ bool spec_cast_psionicist( CHAR_DATA *ch )
         return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {
@@ -888,9 +900,9 @@ bool spec_cast_ghost( CHAR_DATA *ch )
 	return FALSE;
 
     if ( IS_AFFECTED( ch, AFF_MUTE )
-	|| IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
+        || IS_SET( race_table[ch->race].race_abilities, RACE_MUTE )
         || IS_SET( ch->in_room->room_flags, ROOM_CONE_OF_SILENCE ) )
-	return FALSE;
+        return FALSE;
 
     for ( victim = ch->in_room->people; victim; victim = victim->next_in_room )
     {

@@ -32,14 +32,7 @@ while ( 1 )
     endif
 
     # Run envy.
-    # Check if already running
-    set matches = `netstat -a | grep ":$port " | grep -c LISTEN`
-    if ( $matches >= 1 ) then
-        # Already running
-        echo MUD Already running.
-        exit 0
-    endif
-    ../src/envy $port >&! $logfile
+    ../src/envy2 $port >&! $logfile
 
     if ( -e core ) then
 	\mv core ../src/
@@ -51,5 +44,5 @@ while ( 1 )
 	exit 0
     endif
 
-    sleep 5
+    sleep 10
 end
