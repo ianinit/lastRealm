@@ -2406,7 +2406,7 @@ void area_update( void )
 		    && pch->in_room
 		    && pch->in_room->area == pArea )
 		{
-		    send_to_char( "You hear the patter of little feet.\n\r",
+		    send_to_char( "A silver owl swoops low.\n\r",
 			pch );
 		}
 	    }
