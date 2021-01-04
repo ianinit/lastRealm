@@ -1,6 +1,6 @@
 #AREADATA
 Name        {{ 1 10} Generic Smurf Village~
-Builders    Rusty~
+Builders    Rusty Carolinus~
 VNUMs       100 129
 Security    1
 Recall      3001
@@ -810,6 +810,10 @@ M 109 spec_thief
 M 110 spec_cast_mage
 M 111 spec_cast_cleric
 M 112 spec_poison
+S
+
+
+#GAMES
 S
 
 
