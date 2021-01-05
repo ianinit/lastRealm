@@ -921,7 +921,7 @@ void char_update( void )
 		dmg *= 3;
 	      }
 
-	    damage( ch, ch, dmg, gsn_poison, WEAR_NONE, DAM_LIGHT );
+	    //damage( ch, ch, dmg, gsn_poison, WEAR_NONE, DAM_LIGHT );
 	}
 	else
 	    if ( (   ch->in_room->sector_type == SECT_UNDERWATER
