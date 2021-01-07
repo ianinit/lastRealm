@@ -833,9 +833,24 @@ void damage( CHAR_DATA *ch, CHAR_DATA *victim, int dam, int dt, int wpn,
 
 	if ( !IS_NPC( ch ) && IS_NPC( victim ) )
 	{
+		/* how much gold does the player have now*/
+		int gold;
+		char sgold[20];
+		gold = ch->gold;
+
 	    /* Autogold by Morpheus */
 	    if ( IS_SET( ch->act, PLR_AUTOGOLD ) )
 	        do_get( ch, "coins corpse" );  /* autogold mod by Canth */
+
+	    gold = ch->gold - gold; /* get difference */
+
+	    /* AUTOSPLIT by Ommadon */
+	    if ( IS_SET( ch->act, PLR_AUTOSPLIT ) ) {
+	    	if ( gold > 1 ) {
+	    		sprintf(sgold,"%d",gold);
+	    		do_split( ch, sgold );
+	    	}
+	    }
 
 	    if ( IS_SET( ch->act, PLR_AUTOLOOT ) )
 		do_get( ch, "all corpse" );

@@ -1318,6 +1318,7 @@ struct attack_type
 #define PLR_EDIT_INFO		   BV27
 #define PLR_PAGER		   BV28
 #define PLR_MOUNTABLE              BV29         /* Can be mounted       */
+#define PLR_AUTOSPLIT           BV30
 
 /* WIZNET flags */
 #define WIZ_ON			   BV00		/* On|Off switch	*/
@@ -2059,6 +2060,7 @@ DECLARE_DO_FUN( do_auto         );
 DECLARE_DO_FUN( do_autoexit     );
 DECLARE_DO_FUN( do_autoloot     );
 DECLARE_DO_FUN( do_autogold     );
+DECLARE_DO_FUN( do_autosplit     );
 DECLARE_DO_FUN( do_autosac      );
 DECLARE_DO_FUN(	do_backstab	);
 DECLARE_DO_FUN(	do_bamfin	);

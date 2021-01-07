@@ -1298,6 +1298,7 @@ The options are:
     AUTOGOLD  You automatically loot corpses of their gold.
     AUTOLOOT  You automatically loot corpses.
     AUTOSAC   You automatically sacrifice corpses.
+    AUTOSPLIT You automatically split gold with your group.
     BLANK     You have a blank line before your prompt.
     BRIEF     You see brief descriptions only.
     COLOUR    You see ANSI coloured text.
@@ -1333,6 +1334,14 @@ Syntax: autogold
 
 AUTOGOLD toggles your ability to automatically loot corpses of their
 gold after you deal the final blow.
+
+See CONFIG to find out which toggle is on and which is off.
+~
+
+0 AUTOSPLIT~
+Syntax: autosplit
+
+AUTOSPLIT toggles your ability to automatically split gold looted from corpses with your group.
 
 See CONFIG to find out which toggle is on and which is off.
 ~
