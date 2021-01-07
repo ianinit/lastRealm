@@ -20,11 +20,11 @@ Ever shining, the tree stands as both a protecor of the pool and guide for the g
 0 0
 0 God~ 0
 #402
-silver owl~
-A Silver Owl Of The Full Moon~
+owl~
+A Silver Owl of the Full Moon~
 A Silver Owl swoops over head.
 ~
-A Silver Owl of the Full Moon swoops over head, guiding lost souls to the light.
+A Silver Owl swoops over head, guiding lost souls to the light.
 You better quit wasting time if you don't want to end up here forever.
 ~
 65 0 0 S
@@ -884,7 +884,7 @@ S
 #426
 Antiquity~
 Yes! You finally found your way through this God forsaken place.  Up ahead,
-you see glintng silver pool. Next to which lay a pile of cadavers.
+you see a glintng silver pool, next to which lay a pile of cadavers.
 ~
 0 8206 0
 D1
@@ -894,8 +894,9 @@ D1
 S
 #427
 The Limpid Pool of Time~
-Limpid Pool of Time lays before you. Looking into the pool you begin to see the actions
-of your past life. Overwhelmed by regret and anxiety, tears begin flowing. You beg Antiquity for mercy and search desperately for your corpse.  TRUST THE JUDGMENT OF ANTIQUITY!
+The Limpid Pool of Time lays before you. Looking into the pool you begin to see the actions
+of your past life. Overwhelmed by regret and anxiety, tears begin flowing. You beg Antiquity for
+mercy and search desperately for your corpse.  Go down into the pool and TRUST THE JUDGMENT OF ANTIQUITY!
 A sign is posted here.
 ~
 0 8202 11
@@ -906,16 +907,20 @@ The sign reads:
 Please remember to take your invisible items.  We will not be responsible 
 for any losses due to your own negligence.  Don't say we didn't warn you!
 ~
-D4
+D5
 ~
 ~
-0 -1 3054
+0 0 3054
 S
 #0
 
 
 #SPECIALS
 M 401 spec_cast_mage
+S
+
+
+#GAMES
 S
 
 
