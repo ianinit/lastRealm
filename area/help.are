@@ -72,8 +72,10 @@ or to render them null and void.
 
 -1 MOTD~
 ************************* This is the MOTD **************************
-We made some big changes. I hope you enjoy. Submit bugs using the bug
-command.
+Added Autosplit to automatically split gold looted from corpses with
+your group.
+
+Purgatory is now Antiquity. It still functions the same.
 ~
 
 50 IMOTD~
