@@ -971,19 +971,21 @@ void do_score( CHAR_DATA *ch, char *argument )
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "{o{cDEX  : %2d(%2d)      Wimpy: %d{x\n\r",
-	    get_curr_dex( ch ), get_max_dex( ch ), ch->wimpy );
+	    "{o{cDEX  : %2d(%2d)      Wimpy: %d                                      Autosplit(%c){x\n\r",
+	    get_curr_dex( ch ), get_max_dex( ch ), ch->wimpy,
+        ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOSPLIT  ) ) ? 'X'
+                                                             : ' ' );
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "{o{cCON  : %2d(%2d)                                                    Autosac (%c){x\n\r",
+	    "{o{cCON  : %2d(%2d)                                                    Autosac  (%c){x\n\r",
 	    get_curr_con( ch ), get_max_con( ch ),
 	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOSAC  ) ) ? 'X'
 	                                                         : ' ' );
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "{o{cPRACT: %3.3d         Hitpoints: %-5d of %5d   Pager: (%c) %3d    Autoexit(%c){x\n\r",
+	    "{o{cPRACT: %3.3d         Hitpoints: %-5d of %5d   Pager: (%c) %3d    Autoexit (%c){x\n\r",
 	    ch->practice,
 	    ch->hit,  ch->max_hit,
 	    ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_PAGER    ) ) ? 'X'
@@ -994,7 +996,7 @@ void do_score( CHAR_DATA *ch, char *argument )
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "{o{cXP   : %-9d        Mana: %-5d of %5d   MKills:  %-5.5d    Autoloot(%c){x\n\r",
+	    "{o{cXP   : %-9d        Mana: %-5d of %5d   MKills:  %-5.5d    Autoloot (%c){x\n\r",
 	    ch->exp,
 	    ch->mana, ch->max_mana,
 	    ( IS_NPC( ch ) ? 0 : ch->pcdata->mkills ),
@@ -1003,7 +1005,7 @@ void do_score( CHAR_DATA *ch, char *argument )
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "{o{cGOLD : %-10d       Move: %-5d of %5d   MDeaths: %-5.5d    Autogold(%c){x\n\r",
+	    "{o{cGOLD : %-10d       Move: %-5d of %5d   MDeaths: %-5.5d    Autogold (%c){x\n\r",
 	    ch->gold,
 	    ch->move, ch->max_move,
 	    ( IS_NPC( ch ) ? 0 : ch->pcdata->mdeaths ),
@@ -2465,6 +2467,11 @@ void do_config( CHAR_DATA *ch, char *argument )
 	    : "[-autogold ] You don't automatically get gold from corpses.\n\r"
 	    , ch );
 
+    send_to_char(  IS_SET( ch->act, PLR_AUTOSPLIT  )
+        ? "[+AUTOSPLIT ] You automatically split gold with your group.\n\r"
+        : "[-autosplit ] You don't automatically split gold with your group.\n\r"
+        , ch );
+
 	send_to_char(  IS_SET( ch->act, PLR_AUTOSAC   )
 	    ? "[+AUTOSAC  ] You automatically sacrifice corpses.\n\r"
 	    : "[-autosac  ] You don't automatically sacrifice corpses.\n\r"
@@ -2539,6 +2546,7 @@ void do_config( CHAR_DATA *ch, char *argument )
         else if ( !str_cmp( arg+1, "autoexit" ) ) bit = PLR_AUTOEXIT;
 	else if ( !str_cmp( arg+1, "autoloot" ) ) bit = PLR_AUTOLOOT;
 	else if ( !str_cmp( arg+1, "autogold" ) ) bit = PLR_AUTOGOLD;
+    else if ( !str_cmp( arg+1, "autosplit" ) ) bit = PLR_AUTOSPLIT;
 	else if ( !str_cmp( arg+1, "autosac"  ) ) bit = PLR_AUTOSAC;
 	else if ( !str_cmp( arg+1, "blank"    ) ) bit = PLR_BLANK;
 	else if ( !str_cmp( arg+1, "brief"    ) ) bit = PLR_BRIEF;
@@ -2719,6 +2727,20 @@ void do_autogold ( CHAR_DATA *ch, char *argument )
     ( IS_SET ( ch->act, PLR_AUTOGOLD )
      ? sprintf( buf, "-autogold" )
      : sprintf( buf, "+autogold" ) );
+
+    do_config( ch, buf );
+
+    return;
+
+}
+
+void do_autosplit ( CHAR_DATA *ch, char *argument )
+{
+    char buf[ MAX_STRING_LENGTH ];
+
+    ( IS_SET ( ch->act, PLR_AUTOSPLIT )
+     ? sprintf( buf, "-autosplit" )
+     : sprintf( buf, "+autosplit" ) );
 
     do_config( ch, buf );
 
