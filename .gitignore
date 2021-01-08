@@ -1,5 +1,6 @@
 src/*.o
 envy
+envy.old
 envy2
 log/
 envy.sublime-project
@@ -10,3 +11,4 @@ area/TIME.TXT
 area/IDEAS.TXT
 area/NOTES.TXT
 area/TYPOS.TXT
+player/

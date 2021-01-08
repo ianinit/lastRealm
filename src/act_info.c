@@ -971,7 +971,7 @@ void do_score( CHAR_DATA *ch, char *argument )
     strcat( buf1, buf );
 
     sprintf( buf,
-	    "{o{cDEX  : %2d(%2d)      Wimpy: %d                                      Autosplit(%c){x\n\r",
+	    "{o{cDEX  : %2d(%2d)      Wimpy: %-38d Autosplit(%c){x\n\r",
 	    get_curr_dex( ch ), get_max_dex( ch ), ch->wimpy,
         ( !IS_NPC( ch ) && IS_SET( ch->act, PLR_AUTOSPLIT  ) ) ? 'X'
                                                              : ' ' );

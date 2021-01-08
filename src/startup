@@ -26,9 +26,9 @@ while ( 1 )
     end
 
     # Update to new code if possible.
-    if ( -e ../src/envy.new ) then
+    if ( -e ../src/envy ) then
 	\mv ../src/envy2 ../src/envy.old
-	\mv ../src/envy.new ../src/envy2
+	\mv ../src/envy ../src/envy2
     endif
 
     # Run envy.
