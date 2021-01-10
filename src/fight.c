@@ -1912,29 +1912,46 @@ void dam_message( CHAR_DATA *ch, CHAR_DATA *victim, int dam, int dt,
            char          buf4           [ 256 ];
            char          buf5           [ 256 ];
            char          punct;
+           int 			raw_dam;
 
 	     if ( dam ==   0 ) { vp = "misses";              }
     else
     {
+    	raw_dam = dam;
         dam *= 100;
 	if ( victim->hit > 0 )
 	    dam /= victim->hit;
 
-             if ( dam <=   1 ) { vp = "scratches";           }
-	else if ( dam <=   2 ) { vp = "grazes";              }
-	else if ( dam <=   4 ) { vp = "hits";                }
-	else if ( dam <=   6 ) { vp = "injures";             }
-	else if ( dam <=   8 ) { vp = "wounds";              }
-	else if ( dam <=  10 ) { vp = "mauls";               }
-	else if ( dam <=  20 ) { vp = "decimates";           }
-	else if ( dam <=  30 ) { vp = "devastates";          }
-	else if ( dam <=  40 ) { vp = "maims";               }
-	else if ( dam <=  50 ) { vp = "MUTILATES";           }
-	else if ( dam <=  60 ) { vp = "DISEMBOWELS";         }
-	else if ( dam <=  70 ) { vp = "EVISCERATES";         }
-	else if ( dam <=  80 ) { vp = "MASSACRES";           }
-	else if ( dam <=  90 ) { vp = "*** DEMOLISHES ***";  }
-	else                   { vp = "*** ANNIHILATES ***"; }
+            /* if ( dam <=   1 ) { vp = "scratches";           }
+			else if ( dam <=   2 ) { vp = "grazes";              }
+			else if ( dam <=   4 ) { vp = "hits";                }
+			else if ( dam <=   6 ) { vp = "injures";             }
+			else if ( dam <=   8 ) { vp = "wounds";              }
+			else if ( dam <=  10 ) { vp = "mauls";               }
+			else if ( dam <=  20 ) { vp = "decimates";           }
+			else if ( dam <=  30 ) { vp = "devastates";          }
+			else if ( dam <=  40 ) { vp = "maims";               }
+			else if ( dam <=  50 ) { vp = "MUTILATES";           }
+			else if ( dam <=  60 ) { vp = "DISEMBOWELS";         }
+			else if ( dam <=  70 ) { vp = "EVISCERATES";         }
+			else if ( dam <=  80 ) { vp = "MASSACRES";           }
+			else if ( dam <=  90 ) { vp = "*** DEMOLISHES ***";  }
+			else                   { vp = "*** ANNIHILATES ***"; }*/
+		if ( raw_dam <=   1 ) { vp = "scratches";           }
+			else if ( raw_dam <=   2 ) { vp = "grazes";              }
+			else if ( raw_dam <=   3 ) { vp = "hits";                }
+			else if ( raw_dam <=   4 ) { vp = "injures";             }
+			else if ( raw_dam <=   5 ) { vp = "wounds";              }
+			else if ( raw_dam <=   6 ) { vp = "mauls";               }
+			else if ( raw_dam <=   8 ) { vp = "decimates";           }
+			else if ( raw_dam <=  10 ) { vp = "devastates";          }
+			else if ( raw_dam <=  15 ) { vp = "maims";               }
+			else if ( raw_dam <=  20 ) { vp = "MUTILATES";           }
+			else if ( raw_dam <=  25 ) { vp = "DISEMBOWELS";         }
+			else if ( raw_dam <=  30 ) { vp = "EVISCERATES";         }
+			else if ( raw_dam <=  35 ) { vp = "MASSACRES";           }
+			else if ( raw_dam <=  40 ) { vp = "*** DEMOLISHES ***";  }
+			else                   { vp = "*** ANNIHILATES ***"; }
     }
 
     punct   = ( dam <= 10 ) ? '.' : '!';
