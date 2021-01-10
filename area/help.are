@@ -72,6 +72,9 @@ or to render them null and void.
 
 -1 MOTD~
 ************************* This is the MOTD **************************
+Damage descriptors are now based on raw damamge rather than 
+percentages.
+
 Added Autosplit to automatically split gold looted from corpses with
 your group.
 
