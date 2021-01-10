@@ -1937,6 +1937,7 @@ void dam_message( CHAR_DATA *ch, CHAR_DATA *victim, int dam, int dt,
 			else if ( dam <=  80 ) { vp = "MASSACRES";           }
 			else if ( dam <=  90 ) { vp = "*** DEMOLISHES ***";  }
 			else                   { vp = "*** ANNIHILATES ***"; }*/
+
 		if ( raw_dam <=   1 ) { vp = "scratches";           }
 			else if ( raw_dam <=   2 ) { vp = "grazes";              }
 			else if ( raw_dam <=   3 ) { vp = "hits";                }
@@ -1954,7 +1955,7 @@ void dam_message( CHAR_DATA *ch, CHAR_DATA *victim, int dam, int dt,
 			else                   { vp = "*** ANNIHILATES ***"; }
     }
 
-    punct   = ( dam <= 10 ) ? '.' : '!';
+    punct   = ( raw_dam <= 15 ) ? '.' : '!';
 
     if ( dt == TYPE_HIT )
     {
