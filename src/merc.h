@@ -204,7 +204,7 @@ typedef bool HIT_FUN			args( ( CHAR_DATA *ch,
 #define MAX_CHUNKS                 33			/* Used in ssm.c */
 
 #define EXP_PER_LEVEL		 1000
-#define MAX_SKILL		  188
+#define MAX_SKILL		  190
 #define MAX_ATTACK                 17
 #define MAX_CLASS		    5
 #define MAX_RACE                   41
@@ -2458,6 +2458,11 @@ DECLARE_SPELL_FUN(	spell_flame_shield	);
 DECLARE_SPELL_FUN(	spell_frost_shield	);
 DECLARE_SPELL_FUN(	spell_shock_shield	);
 DECLARE_SPELL_FUN(	spell_ethereal_shield	);
+
+/*
+ * Mana refresh by Ommadon
+ */
+DECLARE_SPELL_FUN(  spell_refresh_mana );
 
 
 /*

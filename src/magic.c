@@ -4645,3 +4645,18 @@ void spell_ethereal_shield( int sn, int level, CHAR_DATA *ch, void *vo )
 
     return;
 }
+
+void spell_refresh_mana( int sn, int level, CHAR_DATA *ch, void *vo )
+{
+    CHAR_DATA *victim = (CHAR_DATA *) vo;
+    int        refresh;
+
+    refresh = dice( 3, 8 ) + level - 6;
+    victim->mana = UMIN( victim->mana + refresh, victim->max_mana );
+    update_pos( victim );
+
+    if ( ch != victim )
+	send_to_char( "Ok.\n\r", ch );
+    send_to_char( "You feel more powerful!\n\r", victim );
+    return;
+}

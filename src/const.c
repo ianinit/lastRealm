@@ -2659,6 +2659,14 @@ struct	skill_type	skill_table	[MAX_SKILL]	=
         "vampiric bite",        "You feel well fed.",
 	SCHOOL_NONE,
 	MANA_NONE
-    }
+    },
+	{
+        "refresh mana",        { L_APP },
+        spell_refresh_mana,    TAR_CHAR_DEFENSIVE,     POS_FIGHTING,
+        NULL,     10,     12,
+        "",        "!Refresh Mana!",
+	SCHOOL_NECROMANCY,
+	MANA_EARTH
+    }    
 
 };
