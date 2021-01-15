@@ -4646,7 +4646,7 @@ void spell_ethereal_shield( int sn, int level, CHAR_DATA *ch, void *vo )
     return;
 }
 
-void spell_refresh_mana( int sn, int level, CHAR_DATA *ch, void *vo )
+void spell_lesser_mana_restore( int sn, int level, CHAR_DATA *ch, void *vo )
 {
     CHAR_DATA *victim = (CHAR_DATA *) vo;
     int        refresh;
@@ -4658,5 +4658,20 @@ void spell_refresh_mana( int sn, int level, CHAR_DATA *ch, void *vo )
     if ( ch != victim )
 	send_to_char( "Ok.\n\r", ch );
     send_to_char( "You feel more powerful!\n\r", victim );
+    return;
+}
+
+void spell_greater_mana_restore( int sn, int level, CHAR_DATA *ch, void *vo )
+{
+    CHAR_DATA *victim = (CHAR_DATA *) vo;
+    int        refresh;
+
+    refresh = dice( 5, 10 ) + level;
+    victim->mana = UMIN( victim->mana + refresh, victim->max_mana );
+    update_pos( victim );
+
+    if ( ch != victim )
+	send_to_char( "Ok.\n\r", ch );
+    send_to_char( "You feel much more powerful!\n\r", victim );
     return;
 }

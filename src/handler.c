@@ -422,7 +422,7 @@ int can_carry_n( CHAR_DATA *ch )
 
 
 /*
- * Retrieve a character's carry capacity.
+ * Retrieve a character's carry weight capacity.
  */
 int can_carry_w( CHAR_DATA *ch )
 {

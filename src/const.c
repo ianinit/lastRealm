@@ -2661,10 +2661,18 @@ struct	skill_type	skill_table	[MAX_SKILL]	=
 	MANA_NONE
     },
 	{
-        "refresh mana",        { L_APP },
-        spell_refresh_mana,    TAR_CHAR_DEFENSIVE,     POS_FIGHTING,
+        "lesser mana restore",        { L_APP },
+        spell_lesser_mana_restore,    TAR_CHAR_DEFENSIVE,     POS_FIGHTING,
         NULL,     10,     12,
-        "",        "!Refresh Mana!",
+        "",        "!Restore Mana!",
+	SCHOOL_NECROMANCY,
+	MANA_EARTH
+    },
+    {
+        "greater mana restore",        { L_APP },
+        spell_greater_mana_restore,    TAR_CHAR_DEFENSIVE,     POS_FIGHTING,
+        NULL,     10,     12,
+        "",        "!Restore Mana!",
 	SCHOOL_NECROMANCY,
 	MANA_EARTH
     }    

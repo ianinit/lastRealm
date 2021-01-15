@@ -2235,16 +2235,28 @@ card clan~
 This item allows you to join a Clan to kill other players!
 ~
 #3382
-potion milk~
+potion glass milk~
 a glass of milk~
 Someone left a glass of milk here.~
 ~
 10 64 1
-12~ refresh mana~  ~  ~  ~
+5~ lesser mana restore~  ~  ~  ~
 1 400 0
 E
 potion white~
 The potion is a glass of white milk.
+~
+#3383
+potion jug milk~
+a jug of milk~
+Someone left a jug of milk here.~
+~
+10 64 1
+20~ greater mana restore~  ~  ~  ~
+5 800 0
+E
+potion white~
+The potion is a jug of white milk.
 ~
 #0
 
