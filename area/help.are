@@ -72,6 +72,9 @@ or to render them null and void.
 
 -1 MOTD~
 ************************* This is the MOTD **************************
+Items in Containers don't count against your character's item
+count.
+
 Damage descriptors are now based on raw damamge rather than 
 percentages.
 
