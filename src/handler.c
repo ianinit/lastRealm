@@ -1119,7 +1119,7 @@ void obj_to_obj( OBJ_DATA *obj, OBJ_DATA *obj_to )
 	    continue;
 	if ( obj_to->carried_by )
 	{
-	    obj_to->carried_by->carry_number += get_obj_number( obj );
+	    //obj_to->carried_by->carry_number += get_obj_number( obj );
 	    obj_to->carried_by->carry_weight += get_obj_weight( obj );
 	}
     }
@@ -1175,7 +1175,7 @@ void obj_from_obj( OBJ_DATA *obj )
 	    continue;
 	if ( obj_from->carried_by )
 	{
-	    obj_from->carried_by->carry_number -= get_obj_number( obj );
+	    //obj_from->carried_by->carry_number -= get_obj_number( obj );
 	    obj_from->carried_by->carry_weight -= get_obj_weight( obj );
 	}
     }
