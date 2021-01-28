@@ -1185,7 +1185,7 @@ void do_time( CHAR_DATA *ch, char *argument )
 	    month_name[time_info.month] );
     send_to_char( buf, ch );
     sprintf( buf,
-	    "{o{Last Realm started up %s\rThe system time is %s{x\r",
+	    "{o{yLast Realm started up %s\rThe system time is %s{x\r",
 	    str_boot_time,
 	    (char *) ctime( &current_time ) );
     send_to_char( buf, ch );
