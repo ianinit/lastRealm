@@ -3588,7 +3588,7 @@ Rooms Above the Altar~
 You are above the temple altar.  Here you see rooms meant for the working 
 immortals of this mud to sit down and discuss issues.  To the north, you see
 the general meeting room.  To the east, you see the Builders' room.  To the
-south, you see the Implementors' room.  To the west, you see the Coders' room.
+south, you see the Ommadon's office.  To the west, you see the Coders' room.
 Below you, you see the temple altar.
 ~
 0 1036 0
@@ -3603,7 +3603,7 @@ You see the Builders' room.
 ~
 0 0 3062
 D2
-You see the Implementors' room.
+You see the Ommadon's office.
 ~
 ~
 0 0 3063
@@ -3645,10 +3645,10 @@ D3
 0 0 3060
 S
 #3063
-Implementors' Room~
-You are inside the Implementors' room, where the issues regarding this mud are
+Ommadon's Office~
+You are inside Ommadon's Offiec, where the issues regarding the Last Realm are
 discussed.  You see a large table and chairs, along with a large seat at the 
-far end, meant for the director of implementors, Kith.  The exit is to the 
+far end, meant for Ommadon.  The exit is to the 
 north.
 ~
 0 1036 0
