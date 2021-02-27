@@ -1774,7 +1774,15 @@ void group_gain( CHAR_DATA *ch, CHAR_DATA *victim )
 		xp = 1;
 	}
 
-	sprintf( buf, "{o{rYou receive %d experience points.{x\n\r", xp );
+	if ( xp == 1 ) 
+	{
+		sprintf( buf, "{o{rYou receive %d experience point.{x\n\r", xp );
+	}
+	else 
+	{
+		sprintf( buf, "{o{rYou receive %d experience points.{x\n\r", xp );
+	}
+
 	send_to_char( buf, gch );
 	gain_exp( gch, xp );
 
