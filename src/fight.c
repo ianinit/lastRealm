@@ -1754,20 +1754,26 @@ void group_gain( CHAR_DATA *ch, CHAR_DATA *victim )
 	    continue;
 	}
 
-        if ( IS_SET( victim->in_room->room_flags, ROOM_ARENA ) )
-        {
+    if ( IS_SET( victim->in_room->room_flags, ROOM_ARENA ) )
+    {
 	    send_to_char( "{o{rNo exps from fighting in an Arena.{x\n\r",  gch );
 	    continue;
-        }
+    }
 
 	xp = xp_compute( gch, victim ) / members;
 
 	if ( !str_infix( race_table[lch->race].name,
 			race_table[gch->race].hate) && members > 1 )
-	  {
-	    send_to_char( "{o{rYou lost a third of your exps due to grouping with scum.{x\n\r", ch );
-	    xp -= xp/3;
-	  }
+	{
+		send_to_char( "{o{rYou lost a third of your exps due to grouping with scum.{x\n\r", ch );
+		xp -= xp/3;
+	}
+
+	if ( xp <= 0 )
+	{
+		xp = 1;
+	}
+
 	sprintf( buf, "{o{rYou receive %d experience points.{x\n\r", xp );
 	send_to_char( buf, gch );
 	gain_exp( gch, xp );
@@ -1819,20 +1825,20 @@ int xp_compute( CHAR_DATA *gch, CHAR_DATA *victim )
     xp    = 105 - URANGE( -4, gch->level - victim->level, 6 ) * 25;
     align = gch->alignment - victim->alignment;
 
+	xp = 5 * xp / 4;
+
     if ( align >  500 )
     {
-	gch->alignment  = UMIN( gch->alignment + ( align - 500 ) / 4,  1000 );
-	xp = 5 * xp / 4;
+		gch->alignment  = UMIN( gch->alignment + ( align - 500 ) / 4,  1000 );
+		
     }
     else if ( align < -500 )
     {
-	gch->alignment  = UMAX( gch->alignment + ( align + 500 ) / 4, -1000 );
-	xp = 5 * xp / 4;
+		gch->alignment  = UMAX( gch->alignment + ( align + 500 ) / 4, -1000 );
     }
     else
     {
-	gch->alignment -= gch->alignment / 4;
-	xp = 3 * xp / 4;
+		gch->alignment -= gch->alignment / 4;
     }
 
     if ( IS_AFFECTED( victim, AFF_SANCTUARY )
@@ -1919,11 +1925,11 @@ int xp_compute( CHAR_DATA *gch, CHAR_DATA *victim )
      */
     if ( IS_NPC( victim ) )
     {
-	level  = URANGE( 0, victim->level, MAX_LEVEL - 1 );
-	number = UMAX( 1, kill_table[level].number );
-	extra  = victim->pIndexData->killed - kill_table[level].killed
-	  / number;
-	xp    -= xp * URANGE( -2, extra, 4 ) / 8;
+		level  = URANGE( 0, victim->level, MAX_LEVEL - 1 );
+		number = UMAX( 1, kill_table[level].number );
+		extra  = victim->pIndexData->killed - kill_table[level].killed
+		  / number;
+		xp    -= xp * URANGE( -2, extra, 4 ) / 8;
     }
 
     xp     = number_range( xp * 3 / 4, xp * 5 / 4 );
@@ -1931,6 +1937,11 @@ int xp_compute( CHAR_DATA *gch, CHAR_DATA *victim )
 
     if ( !IS_NPC( victim ) )
         xp = UMIN( xp, 250 );
+
+    // Min XP is now 1
+    if (xp <= 0){
+    	xp = 1;
+    }
 
     return xp;
 }
