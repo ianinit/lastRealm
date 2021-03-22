@@ -66,12 +66,12 @@ void remove_from_clan( CHAR_DATA *ch )
 
     switch ( ch->pcdata->rank )
     {
-    default:								  break;
-    case RANK_CLANSMAN:							  break;
-    case RANK_CLANHERO:  clan->clanheros--;				  break;
-    case RANK_SUBCHIEF:  clan->subchiefs--;				  break;
-    case RANK_CHIEFTAIN: free_string( clan->chieftain );		  break;
-    case RANK_OVERLORD:  free_string( clan->overlord );			  break;
+	    default:								  break;
+	    case RANK_CLANSMAN:							  break;
+	    case RANK_CLANHERO:  clan->clanheros--;				  break;
+	    case RANK_SUBCHIEF:  clan->subchiefs--;				  break;
+	    case RANK_CHIEFTAIN: free_string( clan->chieftain );		  break;
+	    case RANK_OVERLORD:  free_string( clan->overlord );			  break;
     }
 
     clan->members--;
