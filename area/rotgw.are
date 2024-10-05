@@ -1,6 +1,6 @@
 #AREADATA
 Name        {{40 50} Carolin The Realm of the {gGREEN{/ Wizard~
-Builders    None~
+Builders    Carolinus~
 VNUMs       13000 13499
 Security    1
 Recall      3001
@@ -8,18 +8,18 @@ End
 
 
 #MOBILES
-#13100
-animal~
-A Fairy~
-A tiny fairy floats around the room. She is fast and would be impossible to catch.
+#13010
+evil mill worker~
+A grizzled, angry mill worker~
+A grizzled mill worker stands here, scowling with hatred at all things magical. His clothes are tattered, and his hands are scarred from years of labor. His eyes burn with contempt as he grips a heavy tool, ready to strike at those who uphold the ways of magic.
 ~
-This tiny fairy looks to be a guard of this realm.  She looks at you and seems to know your heart.  Only the Good can enter this realm.
+He is one of the mill workers who have turned their back on the magical world, now seeking to destroy it. Hardened by years of work, he believes in nothing but the grinding gears of the mill and the destruction of magic.
 ~
-3 805306368 1000 S
-10 0 0 0d0+0 0d0+0
-0 0
-0 Human~ 2
-#0
+1|32|128 64|512 -500 S
+25 0 3d5+10 2d4+5
+0 1000
+0 human~ 1
+
 
 
 #NEWOBJECTS
@@ -38,13 +38,44 @@ D0
 0 0 13001
 S
 #13001
-Silvenair~
+The Mill~
+You stand before an old mill, its great wooden wheel slowly turning as water flows from the nearby stream. Inside, adventurers barter for supplies, food, and equipment. The sound of grinding grain is accompanied by the chatter of locals.
 ~
-0 0 0
+0 0 1
 D2
 ~
 ~
-0 0 13000
+0 0 13002
+S
+#13002
+Silvenair Wilderness~
+The vast expanse of the wilderness stretches before you, with towering trees and rolling hills. The wild is untamed and full of secrets waiting to be discovered.
+~
+0 0 2
+D3
+~
+~
+0 0 13003
+S
+#13003
+The Hidden Grove~
+Hidden deep within the wilderness, this grove is peaceful yet mysterious. The trees seem to whisper ancient tales, and something magical lingers in the air.
+~
+0 0 4
+D4
+~
+~
+0 0 13004
+S
+#13004
+The Lair of Gorbash~
+The ground trembles as you approach the lair of the mighty dragon Gorbash. His presence is overwhelming, and only the brave dare venture further.
+~
+0 0 4
+D5
+~
+~
+0 0 13005
 S
 #0
 
