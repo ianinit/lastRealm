@@ -10,14 +10,14 @@ End
 #MOBILES
 #13010
 evil mill worker~
-A grizzled, angry mill worker~
-A grizzled mill worker stands here, scowling with hatred at all things magical. His clothes are tattered, and his hands are scarred from years of labor. His eyes burn with contempt as he grips a heavy tool, ready to strike at those who uphold the ways of magic.
+Mill worker~
+A grizzled mill worker stands here, scowling with hatred at all things magical.
 ~
 He is one of the mill workers who have turned their back on the magical world, now seeking to destroy it. Hardened by years of work, he believes in nothing but the grinding gears of the mill and the destruction of magic.
 ~
-1|32|128  64|512 -500 S
-25 0 3d5+10 2d4+5
-0 1000
+1 64 512 S
+25 0 -10 3d5+10 2d4+5
+1000 0
 0 Human~ 1
 
 #NEWOBJECTS
